@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Welcome to HelaFix',
+              'Welcome to HelaFix mobile Application',
               style: TextStyle(
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.settings),
       ),
-      
+
     );
   }
 }
