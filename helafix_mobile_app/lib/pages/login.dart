@@ -13,25 +13,29 @@ class Login extends StatelessWidget{
 
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
 
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/logo_bg_light.png', // Path to your image
-              height: 60, // Adjust height
-            )
-          ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100), 
+        child: Container(
+          margin: const EdgeInsets.only(top: 40), 
+          child: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0, 
+            title: Image.asset(
+              'assets/images/logo_bg_light.png',
+              height: 60,
+            ),
+            centerTitle: true,
+          ),
         ),
       ),
+
 
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
 
-            SizedBox( height: 30),
+            SizedBox( height: 70),
             
             Center(
               child: Text(
@@ -43,7 +47,7 @@ class Login extends StatelessWidget{
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox( height: 35),
 
             TextField(
               decoration: InputDecoration(
@@ -76,22 +80,22 @@ class Login extends StatelessWidget{
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: const Color.fromARGB(255, 0, 255, 0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0), // Rounded corners
+                    borderRadius: BorderRadius.circular(15.0), // Rounded corners
                   ),
                 ),
                 child: Text(
                   'Sign In',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox( height: 85),
 
             SizedBox(
               width: double.infinity,

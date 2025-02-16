@@ -64,6 +64,8 @@ flutter:
     - assets/images/logo_bg_light.png
     - assets/images/logo_bg_dark.png
     - assets/images/google.png
+    - assets/images/logo-dark.png
+    - assets/images/logo-light.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
