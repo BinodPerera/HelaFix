@@ -16,6 +16,7 @@ class Login extends StatelessWidget{
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/logo_bg_light.png', // Path to your image
