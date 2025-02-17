@@ -57,10 +57,19 @@ class Login extends StatelessWidget{
             SizedBox( height: 25),
 
             TextField(
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: "Password",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    null;
+                  },
                 ),
               ),
             ),
