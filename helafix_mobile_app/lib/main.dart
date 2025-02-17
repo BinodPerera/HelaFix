@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // importing pages from pages folder
 import './pages/pages.dart';
 import './pages/login.dart';
+import './pages/home.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Pages(),
-        '/login': (context) => Login()
+        '/login': (context) => Login(),
+        '/home':(context) => Home()
       }
     );
   }
