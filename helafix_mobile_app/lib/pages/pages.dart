@@ -24,6 +24,15 @@ class Pages extends StatelessWidget {
               ),
             ),
 
+            Card(
+              child: ListTile(
+                title: const Text('Register Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+              ),
+            )
+
           ],
         ),
       )

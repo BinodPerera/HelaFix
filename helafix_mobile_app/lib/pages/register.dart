@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 
-// import components
+// importing components
 import '../components/appbar.dart';
 
-class Login extends StatelessWidget{
-  const Login({super.key});
-
+class Register extends StatelessWidget{
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -19,15 +18,16 @@ class Login extends StatelessWidget{
       appBar: CustomAppBar(),
 
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
+        
         child: Column(
           children: [
 
-            SizedBox( height: 30),
-            
+            SizedBox(height: 30),
+
             Center(
               child: Text(
-                'Sign In',
+                'Sign Up',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class Login extends StatelessWidget{
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox(height: 20),
 
             TextField(
               style: TextStyle(
@@ -44,35 +44,68 @@ class Login extends StatelessWidget{
               ),
               decoration: InputDecoration(
                 hintText: "Email Address",
+                hintStyle: TextStyle(
+                  //color: themeProvider.isDarkMode ? Colors.white : const Color.fromARGB(255, 60, 55, 55)
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0), // Rounded corners
                 ),
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox(height: 20),
 
             TextField(
               style: TextStyle(
                 color: themeProvider.isDarkMode ? Colors.white : Colors.black
               ),
-              obscureText: true,
               decoration: InputDecoration(
-                hintText: "Password",
+                hintText: "Mobile Number",
+                hintStyle: TextStyle(
+                  //color: themeProvider.isDarkMode ? Colors.white : const Color.fromARGB(255, 60, 55, 55)
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0), // Rounded corners
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    null;
-                  },
                 ),
               ),
             ),
 
+            SizedBox(height: 20),
+
+            TextField(
+              obscureText: true,
+              style: TextStyle(
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+              ),
+              decoration: InputDecoration(
+                hintText: "Password",
+                hintStyle: TextStyle(
+                  //color: themeProvider.isDarkMode ? const Color.fromARGB(255, 206, 174, 174) : const Color.fromARGB(255, 60, 55, 55)
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                ),
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            TextField(
+              obscureText: true,
+              style: TextStyle(
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+              ),
+              decoration: InputDecoration(
+                hintText: "Confirm Password",
+                hintStyle: TextStyle(
+                  //color: themeProvider.isDarkMode ? const Color.fromARGB(255, 206, 174, 174) : const Color.fromARGB(255, 60, 55, 55)
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                ),
+              ),
+            ),
+            
             SizedBox( height: 25),
 
             SizedBox(
@@ -83,14 +116,14 @@ class Login extends StatelessWidget{
                   // Respond to button press
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
+                  foregroundColor: themeProvider.isDarkMode ? const Color.fromARGB(255, 0, 0, 0) : Colors.black,
                   backgroundColor: Colors.yellow,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0), // Rounded corners
                   ),
                 ),
                 child: Text(
-                  'Sign In',
+                  'Create Account',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold
@@ -101,66 +134,13 @@ class Login extends StatelessWidget{
 
             SizedBox( height: 25),
 
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () {
-                  // Respond to button press
-                },
-                child: Text('Forgot Password?'),
-              ),
+            TextButton(
+              onPressed: (){
+                Navigator.pushNamed(context, '/login');
+              }, 
+              child: Text('Already have an account? Sign In')
             ),
-
-            SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: Text('Create an Account'),
-              ),
-            ),
-
-            Divider(
-              color: Colors.black,
-              thickness: 1, height: 50,
-            ),
-
-
-            SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Respond to button press
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: const Color.fromARGB(255, 240, 240, 240),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0), // Rounded corners
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/google.png', // Path to your image
-                      height: 30, // Adjust height
-                    ),
-
-                    SizedBox(width: 10),
-
-                    Text(
-                      'Login with Google', 
-                      style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-
+            
           ],
         ),
       ),
