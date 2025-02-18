@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme_provider.dart';
 
 // import components
-//import '../components/appbar.dart';
+import '../components/appbar.dart';
 
 class Login extends StatelessWidget{
   const Login({super.key});
@@ -9,25 +11,15 @@ class Login extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
 
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
 
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100), 
-        child: Container(
-          margin: const EdgeInsets.only(top: 40), 
-          child: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 0, 
-            title: Image.asset(
-              'assets/images/logo_bg_light.png',
-              height: 60,
-            ),
-            centerTitle: true,
-          ),
-        ),
-      ),
+
+=======
+      appBar: CustomAppBar(),
+
 
 
       body: Padding(
@@ -42,7 +34,8 @@ class Login extends StatelessWidget{
                 'Sign In',
                 style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -50,6 +43,9 @@ class Login extends StatelessWidget{
             SizedBox( height: 35),
 
             TextField(
+              style: TextStyle(
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+              ),
               decoration: InputDecoration(
                 hintText: "Email Address",
                 border: OutlineInputBorder(
@@ -61,10 +57,22 @@ class Login extends StatelessWidget{
             SizedBox( height: 25),
 
             TextField(
+              style: TextStyle(
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+              ),
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: "Password",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    null;
+                  },
                 ),
               ),
             ),
@@ -104,6 +112,16 @@ class Login extends StatelessWidget{
                   // Respond to button press
                 },
                 child: Text('Forgot Password?'),
+              ),
+            ),
+
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/register');
+                },
+                child: Text('Create an Account'),
               ),
             ),
 
