@@ -56,7 +56,11 @@ class Profile extends StatelessWidget{
 
             SizedBox(height: 20),
 
-            Text('Account Settings', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Account Settings', style: TextStyle( 
+              fontSize: 18, 
+              fontWeight: FontWeight.bold,
+              color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+            )),
 
             Divider(thickness: 2, height: 20),
 
