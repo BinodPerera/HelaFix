@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../theme_provider.dart';
 
+import '../theme/colors.dart';
+
 // importing components
 import '../components/appbar.dart';
 
@@ -13,7 +15,7 @@ class Profile extends StatelessWidget{
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
 
-      backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
 
       appBar: CustomAppBar(),
 
@@ -35,7 +37,14 @@ class Profile extends StatelessWidget{
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Divider(thickness: 2, height: 10),
-                        Text('Binod Perera [Admin]', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('Binod Perera', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          'Admin',
+                          style: TextStyle(
+                            color: themeProvider.isDarkMode ? AppColours.secondaryTextDark : AppColours.secondaryTextLight,
+                            fontSize: 16
+                          )
+                        ),
                         Text('yasindubinod@gmai.com'),
                         Text('+94 77 123 4567'),
                       ],
@@ -85,50 +94,73 @@ class Profile extends StatelessWidget{
 
             Row(
               children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: themeProvider.isDarkMode ? Colors.black : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Recent Activities', style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold)),
-                        Divider(thickness: 0, height: 20),
-                        ListTile(
-                          title: Text('Service Requested'),
-                          subtitle: Text('Service Name'),
-                          trailing: Text('2021-09-01'),
-                        ),
-                        ListTile(
-                          title: Text('Service Requested'),
-                          subtitle: Text('Service Name'),
-                          trailing: Text('2021-09-01'),
-                        ),
-                        ListTile(
-                          title: Text('Service Requested'),
-                          subtitle: Text('Service Name'),
-                          trailing: Text('2021-09-01'),
-                        ),
-                        ListTile(
-                          title: Text('Service Requested'),
-                          subtitle: Text('Service Name'),
-                          trailing: Text('2021-09-01'),
-                        ),
-                        ListTile(
-                          title: Text('Service Requested'),
-                          subtitle: Text('Service Name'),
-                          trailing: Text('2021-09-01'),
-                        ),
+                Text(
+                  'Recent Activities', 
+                  style: TextStyle( 
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                  )
+                ),
 
-                      ],
-                    ),
+                Spacer(),
+
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  child: Text(
+                    'View All', 
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    )
                   ),
                 ),
               ],
-            )
+            ),
 
+            
 
+            Divider(thickness: 2, height: 20),
+
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColours.containerBackgroundLight,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text('Service Requested'),
+                        subtitle: Text('Service Name'),
+                        trailing: Text('2021-09-01'),
+                      ),
+                      ListTile(
+                        title: Text('Service Requested'),
+                        subtitle: Text('Service Name'),
+                        trailing: Text('2021-09-01'),
+                      ),
+                      ListTile(
+                        title: Text('Service Requested'),
+                        subtitle: Text('Service Name'),
+                        trailing: Text('2021-09-01'),
+                      ),
+                      ListTile(
+                        title: Text('Service Requested'),
+                        subtitle: Text('Service Name'),
+                        trailing: Text('2021-09-01'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

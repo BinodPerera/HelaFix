@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
+import '../theme/colors.dart';
 
 // import components
 import '../components/appbar.dart';
@@ -14,7 +15,7 @@ class Login extends StatelessWidget{
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
 
-      backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
 
       appBar: CustomAppBar(),
 
@@ -31,7 +32,7 @@ class Login extends StatelessWidget{
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+                  color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
                 ),
               ),
             ),
@@ -40,7 +41,7 @@ class Login extends StatelessWidget{
 
             TextField(
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               decoration: InputDecoration(
                 hintText: "Email Address",
@@ -54,7 +55,7 @@ class Login extends StatelessWidget{
 
             TextField(
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               obscureText: true,
               decoration: InputDecoration(
@@ -83,8 +84,8 @@ class Login extends StatelessWidget{
                   // Respond to button press
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.yellow,
+                  foregroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnTextDark : AppColours.primaryBtnTextLight,
+                  backgroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnDark : AppColours.primaryBtnLight,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0), // Rounded corners
                   ),

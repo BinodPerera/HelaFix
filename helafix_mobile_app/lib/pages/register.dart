@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
+import '../theme/colors.dart';
 
 // importing components
 import '../components/appbar.dart';
@@ -13,7 +14,7 @@ class Register extends StatelessWidget{
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
 
-      backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
+      backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
 
       appBar: CustomAppBar(),
 
@@ -40,7 +41,7 @@ class Register extends StatelessWidget{
 
             TextField(
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               decoration: InputDecoration(
                 hintText: "Email Address",
@@ -57,7 +58,7 @@ class Register extends StatelessWidget{
 
             TextField(
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               decoration: InputDecoration(
                 hintText: "Mobile Number",
@@ -75,7 +76,7 @@ class Register extends StatelessWidget{
             TextField(
               obscureText: true,
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               decoration: InputDecoration(
                 hintText: "Password",
@@ -93,7 +94,7 @@ class Register extends StatelessWidget{
             TextField(
               obscureText: true,
               style: TextStyle(
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black
+                color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
               ),
               decoration: InputDecoration(
                 hintText: "Confirm Password",
@@ -116,8 +117,8 @@ class Register extends StatelessWidget{
                   // Respond to button press
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: themeProvider.isDarkMode ? const Color.fromARGB(255, 0, 0, 0) : Colors.black,
-                  backgroundColor: Colors.yellow,
+                  foregroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnTextDark : AppColours.primaryBtnTextLight,
+                  backgroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnDark : AppColours.primaryBtnLight,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.0), // Rounded corners
                   ),
