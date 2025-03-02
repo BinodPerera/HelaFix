@@ -64,9 +64,10 @@ flutter:
   assets:
     - assets/images/logo_bg_light.png
     - assets/images/logo_bg_dark.png
+    - assets/images/logo_light.png
+    - assets/images/logo_dark.png
     - assets/images/google.png
-    - assets/images/Logo-dark.png
-    - assets/images/Logo-light.png
+    - assets/images/users/user-1.png
     - assets/images/cleaning.png
     - assets/images/maintenance.png
     - assets/images/pet.png

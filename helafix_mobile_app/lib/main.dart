@@ -8,8 +8,8 @@ import './pages/login.dart';
 
 import './pages/home.dart';
 
-=======
 import './pages/register.dart';
+import './pages/profile.dart';
 
 
 void main() {
@@ -32,11 +32,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Pages(),
         '/login': (context) => Login(),
-
+        '/register': (context) => Register(),
+        '/profile': (context) => Profile(),
         '/home':(context) => Home()
-=======
-        '/register': (context) => Register()
-
       }
     );
   }
