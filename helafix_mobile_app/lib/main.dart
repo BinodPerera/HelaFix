@@ -6,6 +6,7 @@ import 'theme_provider.dart';
 import './pages/pages.dart';
 import './pages/login.dart';
 import './pages/register.dart';
+import './pages/profile.dart';
 
 void main() {
   runApp(
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Pages(),
         '/login': (context) => Login(),
-        '/register': (context) => Register()
+        '/register': (context) => Register(),
+        '/profile': (context) => Profile()
       }
     );
   }

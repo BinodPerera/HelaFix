@@ -12,6 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return AppBar(
+
       backgroundColor: themeProvider.isDarkMode ? Colors.black : Colors.white,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           )
         ],
       ),
+
       actions: [
         IconButton(
           icon: Icon(themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode),
@@ -30,6 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
       ],
+      
     );
   }
 }

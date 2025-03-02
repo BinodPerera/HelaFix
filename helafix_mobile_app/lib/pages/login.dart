@@ -122,7 +122,7 @@ class Login extends StatelessWidget{
             ),
 
             Divider(
-              color: Colors.black,
+              color: themeProvider.isDarkMode ? Colors.white : Colors.black,
               thickness: 1, height: 50,
             ),
 
