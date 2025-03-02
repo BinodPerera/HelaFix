@@ -5,8 +5,12 @@ import 'theme_provider.dart';
 // importing pages from pages folder
 import './pages/pages.dart';
 import './pages/login.dart';
+
+import './pages/home.dart';
+
 import './pages/register.dart';
 import './pages/profile.dart';
+
 
 void main() {
   runApp(
@@ -29,7 +33,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => Pages(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
-        '/profile': (context) => Profile()
+        '/profile': (context) => Profile(),
+        '/home':(context) => Home()
       }
     );
   }

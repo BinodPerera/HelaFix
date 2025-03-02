@@ -19,12 +19,14 @@ class Login extends StatelessWidget{
 
       appBar: CustomAppBar(),
 
+
+
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
 
-            SizedBox( height: 30),
+            SizedBox( height: 70),
             
             Center(
               child: Text(
@@ -37,7 +39,7 @@ class Login extends StatelessWidget{
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox( height: 35),
 
             TextField(
               style: TextStyle(
@@ -84,23 +86,25 @@ class Login extends StatelessWidget{
                   // Respond to button press
                 },
                 style: ElevatedButton.styleFrom(
+
                   foregroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnTextDark : AppColours.primaryBtnTextLight,
                   backgroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnDark : AppColours.primaryBtnLight,
+
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0), // Rounded corners
+                    borderRadius: BorderRadius.circular(15.0), // Rounded corners
                   ),
                 ),
                 child: Text(
                   'Sign In',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
 
-            SizedBox( height: 25),
+            SizedBox( height: 85),
 
             SizedBox(
               width: double.infinity,
