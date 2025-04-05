@@ -124,7 +124,13 @@ class Home extends StatelessWidget {
                         IconButton(icon: const Icon(Icons.home, size: 45), onPressed: () {}),
                         IconButton(icon: const Icon(Icons.bookmark, size: 45), onPressed: () {}),
                         IconButton(icon: const Icon(Icons.history, size: 45), onPressed: () {}),
-                        IconButton(icon: const Icon(Icons.person, size: 45), onPressed: () {}),
+                        IconButton(
+                          icon: const Icon(Icons.person, size: 45),
+                           onPressed: () {
+                            // Navigate to profile page
+                            Navigator.pushNamed( context, '/profile');
+                           }
+                        ),
                       ],
                     ),
                   ),

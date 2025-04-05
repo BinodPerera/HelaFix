@@ -20,4 +20,8 @@ class AppColours {
   static Color primaryBtnDark = const Color.fromARGB(255, 211, 195, 49);
   static Color primaryBtnTextDark = const Color.fromARGB(255, 255, 255, 255);
   static Color primaryBtnTextLight = const Color.fromARGB(255, 0, 0, 0);
+
+  // icon colours
+  static Color iconColorLight = const Color.fromARGB(255, 255, 240, 240);
+  static Color iconColorDark = const Color.fromARGB(255, 52, 52, 52);
 }

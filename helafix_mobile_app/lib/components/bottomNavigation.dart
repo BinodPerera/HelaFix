@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/theme/colors.dart';
+import 'package:helafix_mobile_app/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final Function(int) onItemTapped;
@@ -7,62 +10,36 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: 16,
-      right: 16,
-      bottom: 30,
-      child: SafeArea(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                  offset: Offset(0, 4),
-                ),
-              ],
-              border: Border.all(
-                color: const Color.fromARGB(255, 0, 0, 0),
-                width: 2,
-              ),
-            ),
-            child: BottomAppBar(
-              color: Colors.transparent,
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.home, size: 45),
-                      onPressed: () => onItemTapped(0),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.bookmark, size: 45),
-                      onPressed: () => onItemTapped(1),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.history, size: 45),
-                      onPressed: () => onItemTapped(2),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.person, size: 45),
-                      onPressed: () => onItemTapped(3),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    return BottomNavigationBar(
+        backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon( Icons.home),
+            label: 'Home',
           ),
-        ),
-      ),
-    );
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Bookmarks',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        selectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextDark : AppColours.secondaryTextDark,
+        unselectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextLight : AppColours.secondaryTextLight,
+        currentIndex: 2, // Set the current index to 'Profile'
+        onTap: (index) {
+          // Handle navigation based on the selected index
+          if (index == 0) {
+            Navigator.pushNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/bookmarks');
+          }
+        },
+      );
   }
 }

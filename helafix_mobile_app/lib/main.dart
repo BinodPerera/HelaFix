@@ -10,6 +10,7 @@ import './pages/register.dart';
 import './pages/profile.dart';
 import './pages/service_manage.dart';
 import './pages/service_add.dart';
+import './pages/recent_activities.dart';
 
 
 void main() {
@@ -24,7 +25,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/home':(context) => Home(),
         '/add_service':(context) => AddService(),
         '/manage_service':(context) => ManageService(),
+        '/recent_activities':(context) => RecentActivities(),
       }
     );
   }
