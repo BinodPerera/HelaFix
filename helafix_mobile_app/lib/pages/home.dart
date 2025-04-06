@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
                   // Logo
                   Row(
                     children: [
-                      Image.asset('assets/images/Logo-light.png', height: 40),
+                      Image.asset('assets/images/logo_light.png', height: 40),
                       const SizedBox(width: 8),
                     ],
                   ),

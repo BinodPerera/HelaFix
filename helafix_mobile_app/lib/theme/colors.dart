@@ -24,4 +24,29 @@ class AppColours {
   // icon colours
   static Color iconColorLight = const Color.fromARGB(255, 255, 240, 240);
   static Color iconColorDark = const Color.fromARGB(255, 52, 52, 52);
+
+  // navigation bar
+  static Color navBarLightColor1 = const Color.fromARGB(255, 0, 183, 255);
+  static Color navBarLightColor2 = Color.fromARGB(255, 77, 46, 121);
+
+  static Color navBarDarkColor1 = const Color.fromARGB(255, 0, 183, 255);
+  static Color navBarDarkColor2 = const Color.fromARGB(255, 21, 0, 50);
+
+  static Gradient backgroundGradientLight = const LinearGradient(
+    colors: [
+      Color.fromARGB(255, 0, 183, 255),
+      Color.fromARGB(255, 77, 46, 121),
+    ],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
+  static Gradient backgroundGradientDark = const LinearGradient(
+    colors: [
+      Color.fromARGB(255, 0, 183, 255),
+      Color.fromARGB(255, 21, 0, 50),
+    ],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
 }

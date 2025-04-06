@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return AppBar(
-      backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
+      backgroundColor: themeProvider.isDarkMode ? AppColours.navBarLightColor1 : AppColours.navBarLightColor1,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

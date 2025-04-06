@@ -15,8 +15,11 @@ class RecentActivities extends StatelessWidget {
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
       appBar: CustomAppBar(),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
+      body: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode ? AppColours.backgroundGradientDark : AppColours.backgroundGradientLight,
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -29,7 +32,7 @@ class RecentActivities extends StatelessWidget {
                     fontSize: 25, fontWeight: FontWeight.bold)
                 ),
               ),
-
+        
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: 10,
@@ -58,8 +61,8 @@ class RecentActivities extends StatelessWidget {
               ),
             ],
           ),
+          
         ),
-        
       ),
       bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
         if (index == 0) {
