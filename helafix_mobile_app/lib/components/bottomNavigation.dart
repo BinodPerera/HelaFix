@@ -35,9 +35,9 @@ class CustomBottomNavBar extends StatelessWidget {
             label: 'Profile',
           ),
         ],
-        selectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextDark : AppColours.dark,
-        unselectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextLight : AppColours.secondaryTextLight,
-        currentIndex: 2, // Set the current index to 'Profile'
+        selectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextDark : AppColours.secondaryTextLight,
+        unselectedItemColor: themeProvider.isDarkMode ? AppColours.secondaryTextLight : AppColours.secondaryTextDark,
+        currentIndex: 0, // Set the current index to 'Profile'
         onTap: (index) {
           // Handle navigation based on the selected index
           if (index == 0) {

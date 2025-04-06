@@ -78,9 +78,17 @@ class Pages extends StatelessWidget {
         
             Card(
               child: ListTile(
-                title: const Text('Recent Activity Page'),
+                title: const Text('Recent Activities Page'),
                 onTap: () {
                   Navigator.pushNamed(context, '/recent_activities');
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('My Activities Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/my_activities');
                 },
               ),
             ),
