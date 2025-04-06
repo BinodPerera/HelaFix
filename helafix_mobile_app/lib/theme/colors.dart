@@ -27,7 +27,7 @@ class AppColours {
 
   // navigation bar
   static Color navBarLightColor1 = const Color.fromARGB(255, 0, 183, 255);
-  static Color navBarLightColor2 = Color.fromARGB(255, 77, 46, 121);
+  static Color navBarLightColor2 = Color.fromARGB(255, 232, 216, 255);
 
   static Color navBarDarkColor1 = const Color.fromARGB(255, 0, 183, 255);
   static Color navBarDarkColor2 = const Color.fromARGB(255, 21, 0, 50);
@@ -35,7 +35,7 @@ class AppColours {
   static Gradient backgroundGradientLight = const LinearGradient(
     colors: [
       Color.fromARGB(255, 0, 183, 255),
-      Color.fromARGB(255, 77, 46, 121),
+      Color.fromARGB(255, 232, 216, 255),
     ],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
