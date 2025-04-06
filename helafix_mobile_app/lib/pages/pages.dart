@@ -48,7 +48,25 @@ class Pages extends StatelessWidget {
                   Navigator.pushNamed(context, '/profile');
                 },
               ),
-            )
+            ),
+
+            Card(
+              child: ListTile(
+                title: const Text('Service Add Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/add_service');
+                },
+              ),
+            ),
+
+            Card(
+              child: ListTile(
+                title: const Text('Service Manage Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/manage_service');
+                },
+              ),
+            ),
 
           ],
         ),
