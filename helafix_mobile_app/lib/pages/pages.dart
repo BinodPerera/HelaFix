@@ -92,6 +92,14 @@ class Pages extends StatelessWidget {
                 },
               ),
             ),
+            Card(
+              child: ListTile(
+                title: const Text('Job done page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/job_done');
+                },
+              ),
+            ),
           ],
         ),
       ),
