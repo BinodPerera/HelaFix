@@ -6,6 +6,12 @@ import 'theme_provider.dart';
 import './pages/pages.dart';
 import './pages/login.dart';
 import './pages/register.dart';
+import './pages/profile.dart';
+import './pages/service_manage.dart';
+import './pages/service_add.dart';
+import './pages/recent_activities.dart';
+import './pages/myActivities.dart';
+
 
 void main() {
   runApp(
@@ -19,7 +25,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +32,13 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Pages(),
         '/login': (context) => Login(),
-        '/register': (context) => Register()
+        '/register': (context) => Register(),
+        '/profile': (context) => Profile(),
+        '/home':(context) => Pages(),
+        '/add_service':(context) => AddService(),
+        '/manage_service':(context) => ManageService(),
+        '/recent_activities':(context) => RecentActivities(),
+        '/my_activities':(context) => Myactivities(),
       }
     );
   }

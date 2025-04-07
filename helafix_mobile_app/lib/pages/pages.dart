@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:helafix_mobile_app/theme_provider.dart';
+import 'package:helafix_mobile_app/components/appbar.dart';
+import 'package:helafix_mobile_app/components/bottomNavigation.dart';
+import 'package:helafix_mobile_app/theme/colors.dart';
 
 class Pages extends StatelessWidget {
   const Pages({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pages'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
+      appBar: CustomAppBar(),
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode ? AppColours.backgroundGradientDark : AppColours.backgroundGradientLight,
+        ),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
+        
             Card(
               child: ListTile(
                 title: const Text('Login Page'),
@@ -23,7 +31,15 @@ class Pages extends StatelessWidget {
                 },
               ),
             ),
-
+            Card(
+              child: ListTile(
+                title: const Text('Home Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+              ),
+            ),
+        
             Card(
               child: ListTile(
                 title: const Text('Register Page'),
@@ -31,11 +47,61 @@ class Pages extends StatelessWidget {
                   Navigator.pushNamed(context, '/register');
                 },
               ),
-            )
-
+            ),
+        
+            Card(
+              child: ListTile(
+                title: const Text('User Profile Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+              ),
+            ),
+        
+            Card(
+              child: ListTile(
+                title: const Text('Service Add Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/add_service');
+                },
+              ),
+            ),
+        
+            Card(
+              child: ListTile(
+                title: const Text('Service Manage Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/manage_service');
+                },
+              ),
+            ),
+        
+            Card(
+              child: ListTile(
+                title: const Text('Recent Activities Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/recent_activities');
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('My Activities Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/my_activities');
+                },
+              ),
+            ),
           ],
         ),
-      )
+      ),
+      bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
+        if (index == 0) {
+          Navigator.pushNamed(context, '/home');
+        } else if (index == 1) {
+          Navigator.pushNamed(context, '/bookmarks');
+        }
+      }),
     );
   }
 }
