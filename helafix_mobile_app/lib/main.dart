@@ -11,6 +11,7 @@ import './pages/service_manage.dart';
 import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
+import './pages/job-done.dart';
 
 
 void main() {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/manage_service':(context) => ManageService(),
         '/recent_activities':(context) => RecentActivities(),
         '/my_activities':(context) => Myactivities(),
+        '/job_done':(context) => jobdone(),
       }
     );
   }
