@@ -18,14 +18,16 @@ class Register extends StatelessWidget{
 
       appBar: CustomAppBar(),
 
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode ? AppColours.backgroundGradientDark : AppColours.backgroundGradientLight,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-
+        
             SizedBox(height: 30),
-
+        
             Center(
               child: Text(
                 'Sign Up',
@@ -36,9 +38,9 @@ class Register extends StatelessWidget{
                 ),
               ),
             ),
-
+        
             SizedBox(height: 20),
-
+        
             TextField(
               style: TextStyle(
                 color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
@@ -53,9 +55,9 @@ class Register extends StatelessWidget{
                 ),
               ),
             ),
-
+        
             SizedBox(height: 20),
-
+        
             TextField(
               style: TextStyle(
                 color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight
@@ -70,9 +72,9 @@ class Register extends StatelessWidget{
                 ),
               ),
             ),
-
+        
             SizedBox(height: 20),
-
+        
             TextField(
               obscureText: true,
               style: TextStyle(
@@ -88,9 +90,9 @@ class Register extends StatelessWidget{
                 ),
               ),
             ),
-
+        
             SizedBox(height: 20),
-
+        
             TextField(
               obscureText: true,
               style: TextStyle(
@@ -108,7 +110,7 @@ class Register extends StatelessWidget{
             ),
             
             SizedBox( height: 25),
-
+        
             SizedBox(
               width: double.infinity,
               height: 60,
@@ -132,14 +134,21 @@ class Register extends StatelessWidget{
                 ),
               ),
             ),
-
+        
             SizedBox( height: 25),
-
+        
             TextButton(
               onPressed: (){
                 Navigator.pushNamed(context, '/login');
               }, 
-              child: Text('Already have an account? Sign In')
+              child: Text(
+                'Already have an account? Sign In',
+                style: TextStyle(
+                  color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             ),
             
           ],
