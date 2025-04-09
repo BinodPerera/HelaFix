@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/manage_service':(context) => ManageService(),
         '/recent_activities':(context) => RecentActivities(),
         '/my_activities':(context) => Myactivities(),
-        '/job_done':(context) => jobdone(),
+        '/job_done':(context) => JobDone(),
       }
     );
   }
