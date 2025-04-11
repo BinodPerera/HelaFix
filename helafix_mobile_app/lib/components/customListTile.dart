@@ -40,25 +40,26 @@ Widget customListTile({
               ),
             ),
             
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  isDone ? 'Done' : 'Active',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold
+            if(type != 'Upcoming')
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    isDone ? 'Done' : 'Active',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
-                ),
-                SizedBox(width: 5),
-                Icon(
-                  isDone ? Icons.check_circle : Icons.hourglass_top, 
-                  color: isDone ? Colors.green : Colors.red,
-                  size: 12,
-                ),
-              ],
-            ),
+                  SizedBox(width: 5),
+                  Icon(
+                    isDone ? Icons.check_circle : Icons.hourglass_top, 
+                    color: isDone ? Colors.green : Colors.red,
+                    size: 12,
+                  ),
+                ],
+              ),
           ],
         ),
         ListTile(
