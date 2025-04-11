@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/components/SplashScreen.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -11,6 +12,7 @@ import './pages/service_manage.dart';
 import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
+import './pages/profile_details.dart';
 
 
 void main() {
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Pages(),
+        '/': (context) => SplashScreen(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/profile': (context) => Profile(),
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/manage_service':(context) => ManageService(),
         '/recent_activities':(context) => RecentActivities(),
         '/my_activities':(context) => Myactivities(),
-      }
+        '/profile_details':(context) => ProfileDetails()
+      },
     );
   }
 }

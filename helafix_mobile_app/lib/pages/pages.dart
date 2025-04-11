@@ -15,84 +15,95 @@ class Pages extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
+        height: double.infinity,
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           gradient: themeProvider.isDarkMode ? AppColours.backgroundGradientDark : AppColours.backgroundGradientLight,
         ),
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-        
-            Card(
-              child: ListTile(
-                title: const Text('Login Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/login');
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+          
+              Card(
+                child: ListTile(
+                  title: const Text('Login Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                ),
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('Home Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/home');
-                },
+              Card(
+                child: ListTile(
+                  title: const Text('Home Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
+                ),
               ),
-            ),
-        
-            Card(
-              child: ListTile(
-                title: const Text('Register Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/register');
-                },
+          
+              Card(
+                child: ListTile(
+                  title: const Text('Register Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                ),
               ),
-            ),
-        
-            Card(
-              child: ListTile(
-                title: const Text('User Profile Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
+          
+              Card(
+                child: ListTile(
+                  title: const Text('User Profile Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                ),
               ),
-            ),
-        
-            Card(
-              child: ListTile(
-                title: const Text('Service Add Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/add_service');
-                },
+          
+              Card(
+                child: ListTile(
+                  title: const Text('Service Add Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/add_service');
+                  },
+                ),
               ),
-            ),
-        
-            Card(
-              child: ListTile(
-                title: const Text('Service Manage Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/manage_service');
-                },
+          
+              Card(
+                child: ListTile(
+                  title: const Text('Service Manage Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/manage_service');
+                  },
+                ),
               ),
-            ),
-        
-            Card(
-              child: ListTile(
-                title: const Text('Recent Activities Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/recent_activities');
-                },
+          
+              Card(
+                child: ListTile(
+                  title: const Text('Recent Activities Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/recent_activities');
+                  },
+                ),
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: const Text('My Activities Page'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/my_activities');
-                },
+              Card(
+                child: ListTile(
+                  title: const Text('My Activities Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/my_activities');
+                  },
+                ),
               ),
-            ),
-          ],
+              Card(
+                child: ListTile(
+                  title: const Text('Profile Details Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/profile_details');
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
