@@ -102,6 +102,22 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Change Password Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/change_password');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Change language Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/change_language');
+                  },
+                ),
+              )
             ],
           ),
         ),

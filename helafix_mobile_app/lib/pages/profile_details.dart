@@ -1,12 +1,33 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileDetails extends StatelessWidget {
+class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});
 
+  @override
+  State<ProfileDetails> createState() => _ProfileDetailsState();
+}
+
+class _ProfileDetailsState extends State<ProfileDetails> {
+
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -34,7 +55,9 @@ class ProfileDetails extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: AssetImage('assets/images/users/user-1.png'),
+                      backgroundImage: _imageFile != null
+                        ? FileImage(_imageFile!)
+                        : AssetImage('assets/images/users/user-1.png'),
                     ),
                     Positioned(
                       bottom: 0,
