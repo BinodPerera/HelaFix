@@ -18,7 +18,7 @@ class JobDone extends StatelessWidget {
     final ValueNotifier<int> currentStep = ValueNotifier(1);
     final TextEditingController priceController = TextEditingController();
     final ValueNotifier<String> matchMessage = ValueNotifier('');
-
+    final ValueNotifier<String> matchStatus = ValueNotifier("");
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -260,14 +260,14 @@ class JobDone extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      final inputText = priceController.text.replaceAll(',', '').trim();
+                      final inputText =
+                          priceController.text.replaceAll(',', '').trim();
                       final inputPrice = double.tryParse(inputText);
+                      isWaiting.value = false;
                       if (inputPrice == 180000.00) {
-                        isWaiting.value = false;
-                        matchMessage.value = "Value matched ✅";
+                        matchStatus.value = "matched";
                       } else {
-                        isWaiting.value = false;
-                        matchMessage.value = "";
+                        matchStatus.value = "unmatched";
                       }
                       buttonColor.value = const Color.fromARGB(255, 30, 255, 0);
                     },
@@ -345,30 +345,107 @@ class JobDone extends StatelessWidget {
                               return msg.isEmpty
                                   ? Column(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(20),
-                                          child: Text(
-                                            'Checking values......',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: themeProvider.isDarkMode
-                                                  ? AppColours.dark
-                                                  : AppColours.light,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
+
+                                        //Check value part
+
+                                        // Container(
+                                        //   padding: EdgeInsets.all(20),
+                                        //   child: Text(
+                                        //     'Checking values......',
+                                        //     textAlign: TextAlign.center,
+                                        //     style: TextStyle(
+                                        //       color: themeProvider.isDarkMode
+                                        //           ? AppColours.dark
+                                        //           : AppColours.light,
+                                        //       fontSize: 14,
+                                        //       fontWeight: FontWeight.bold,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        // Container(
+                                        //   alignment: Alignment.center,
+                                        //   padding: EdgeInsets.all(0),
+                                        //   child: SpinKitFadingCircle(
+                                        //     color: themeProvider.isDarkMode
+                                        //         ? Colors.white
+                                        //         : Colors.black,
+                                        //     size: 60.0,
+                                        //   ),
+                                        // ),
+
                                         Container(
                                           alignment: Alignment.center,
-                                          padding: EdgeInsets.all(0),
-                                          child: SpinKitFadingCircle(
-                                            color: themeProvider.isDarkMode
-                                                ? Colors.white
-                                                : Colors.black,
-                                            size: 60.0,
+                                          padding: EdgeInsets.all(20),
+                                          child: Image.asset(
+                                            'assets/images/check.png',
+                                            height: 60,
                                           ),
                                         ),
+
+                                        SizedBox(height: 0),
+                                        Text(
+                                          'Values Matched.',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: SizedBox(
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:  const Color.fromARGB(255, 30, 255, 0),
+                                                    shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(10),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                    'Try again',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                                width:10), 
+                                            Expanded(
+                                              child: SizedBox(
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:const Color.fromARGB(255, 226, 226, 226),
+                                                    shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(10),
+                                                    ),
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                    'Special Inquiries',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
                                   : Padding(
