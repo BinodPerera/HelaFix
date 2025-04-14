@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/bottomNavigation.dart';
 import 'package:provider/provider.dart';
-import '../theme_provider.dart';
-import '../theme/colors.dart';
+import '../../theme_provider.dart';
+import '../../theme/colors.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

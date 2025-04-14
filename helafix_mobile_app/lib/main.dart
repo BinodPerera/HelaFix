@@ -11,8 +11,14 @@ import './pages/service_manage.dart';
 import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
-import './pages/job-done.dart';
 import './pages/sp-details.dart';
+
+
+import 'pages/job_done/job_done_1.1.dart';
+import 'pages/job_done/job_done_1.2.dart';
+import 'pages/job_done/job_done_2.1.dart';
+import 'pages/job_done/job_done_2.2.dart';
+import 'pages/job_done/job_done_2.3.dart';
 
 
 void main() {
@@ -41,7 +47,11 @@ class MyApp extends StatelessWidget {
         '/manage_service':(context) => ManageService(),
         '/recent_activities':(context) => RecentActivities(),
         '/my_activities':(context) => Myactivities(),
-        '/job_done':(context) => JobDone(),
+        '/job_done_1.1':(context) => JobDoneOne(),
+        '/job_done_1.2':(context) => JobDoneOneTwo(),
+        '/job_done_2.1':(context) => JobDoneTwoOne(),
+        '/job_done_2.2':(context) => JobDoneTwoTwo(),
+        '/job_done_2.3':(context) => JobDoneTwoThree(),
         '/Sp-details':(context) => SpDetails(),
       }
     );
