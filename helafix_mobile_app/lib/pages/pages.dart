@@ -31,8 +31,15 @@ class Pages extends StatelessWidget {
                   Navigator.pushNamed(context, '/register');
                 },
               ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Home Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+              ),
             )
-
           ],
         ),
       )
