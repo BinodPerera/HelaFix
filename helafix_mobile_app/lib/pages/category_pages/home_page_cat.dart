@@ -3,8 +3,8 @@ import 'repair_button.dart';
 import 'sub_repairs_page.dart';
 import 'repair_category.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePageCat extends StatelessWidget {
+  const HomePageCat({super.key});
 
   @override
   Widget build(BuildContext context) {

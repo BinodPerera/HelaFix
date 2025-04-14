@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Pages(),
         '/login': (context) => Login(),
-        '/register': (context) => Register()
+        '/register': (context) => Register(),
+        '/HomePageCat': (context) => HomePageCat(),
       }
     );
   }
