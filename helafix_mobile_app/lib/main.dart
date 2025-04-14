@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/SplashScreen.dart';
 import 'package:helafix_mobile_app/pages/changeLanguage.dart';
+import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
         '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
-      },
+        '/HomePageCat': (context) => HomePageCat(),
+      }
     );
   }
 }
