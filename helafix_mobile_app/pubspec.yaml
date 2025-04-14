@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^1.0.7
 
 
 
@@ -48,6 +49,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.3.1
+
+flutter_native_splash:
+  color: "#ffffff" # Background color
+  image: assets/images/logo_bg_light.png # Your splash image
+  android: true
+  ios: true
+  web: false
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,8 +74,12 @@ flutter:
   assets:
     - assets/images/logo_bg_light.png
     - assets/images/logo_bg_dark.png
+    - assets/images/logo_light.png
+    - assets/images/logo_dark.png
     - assets/images/google.png
-    - assets/logos/
+    - assets/images/users/user-1.png
+    - assets/images/damro_logo.jpg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
