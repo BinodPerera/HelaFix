@@ -117,6 +117,14 @@ class Pages extends StatelessWidget {
                     Navigator.pushNamed(context, '/change_language');
                   },
                 ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('HomePageCat Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/HomePageCat');
+                  },
+                ),
               )
             ],
           ),
