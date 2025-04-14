@@ -94,9 +94,17 @@ class Pages extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                title: const Text('Job done page'),
+                title: const Text('Job Done Page'),
                 onTap: () {
                   Navigator.pushNamed(context, '/job_done');
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: const Text('Sp Details Page'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/Sp-details');
                 },
               ),
             ),

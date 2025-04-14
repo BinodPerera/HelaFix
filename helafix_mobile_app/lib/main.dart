@@ -12,6 +12,7 @@ import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
 import './pages/job-done.dart';
+import './pages/sp-details.dart';
 
 
 void main() {
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/recent_activities':(context) => RecentActivities(),
         '/my_activities':(context) => Myactivities(),
         '/job_done':(context) => JobDone(),
+        '/Sp-details':(context) => SpDetails(),
       }
     );
   }
