@@ -19,6 +19,8 @@ import 'pages/job_done/job_done_1.2.dart';
 import 'pages/job_done/job_done_2.1.dart';
 import 'pages/job_done/job_done_2.2.dart';
 import 'pages/job_done/job_done_2.3.dart';
+import 'pages/job_done/payment.dart';
+import 'pages/job_done/review.dart';
 
 
 void main() {
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
         '/job_done_2.1':(context) => JobDoneTwoOne(),
         '/job_done_2.2':(context) => JobDoneTwoTwo(),
         '/job_done_2.3':(context) => JobDoneTwoThree(),
+        '/payment':(context) => Payment(),
+        '/review':(context) => Review(),
         '/Sp-details':(context) => SpDetails(),
       }
     );

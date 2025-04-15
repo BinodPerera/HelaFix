@@ -130,6 +130,22 @@ class Pages extends StatelessWidget {
               ),
               Card(
                 child: ListTile(
+                  title: const Text('Payment Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/payment');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Review Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/review');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
                   title: const Text('Sp Details Page'),
                   onTap: () {
                     Navigator.pushNamed(context, '/Sp-details');
