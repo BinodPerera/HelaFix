@@ -11,8 +11,6 @@ class Review extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final ValueNotifier<Color> buttonColor =
-        ValueNotifier(const Color.fromRGBO(217, 217, 217, 1));
     final ValueNotifier<int> currentStep = ValueNotifier(1);
 
     return Scaffold(
@@ -27,7 +25,6 @@ class Review extends StatelessWidget {
               : AppColours.backgroundGradientLight,
         ),
         child: Column(
-
           children: [
             ValueListenableBuilder(
               valueListenable: currentStep,
@@ -40,8 +37,9 @@ class Review extends StatelessWidget {
                       for (int i = 1; i <= 3; i++) ...[
                         CircleAvatar(
                           radius: 20,
-                          backgroundColor:
-                              i < 4 ?  const Color.fromARGB(255, 0, 255, 8) : Colors.white,
+                          backgroundColor: i < 4
+                              ? const Color.fromARGB(255, 0, 255, 8)
+                              : Colors.white,
                           child: Text(
                             '$i',
                             style: TextStyle(
@@ -143,29 +141,23 @@ class Review extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.all(20),
-              child: ValueListenableBuilder(
-                valueListenable: buttonColor,
-                builder: (context, color, child) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 30, 255, 0),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 45, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      'Add Review',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
-                },
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 30, 255, 0),
+                  padding: EdgeInsets.symmetric(horizontal: 45, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Add Review',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],

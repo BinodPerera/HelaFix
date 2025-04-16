@@ -12,15 +12,16 @@ import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
 import './pages/sp-details.dart';
+import './pages/booking.dart';
 
 
-import 'pages/job_done/job_done_1.1.dart';
-import 'pages/job_done/job_done_1.2.dart';
-import 'pages/job_done/job_done_2.1.dart';
-import 'pages/job_done/job_done_2.2.dart';
-import 'pages/job_done/job_done_2.3.dart';
-import 'pages/job_done/payment.dart';
-import 'pages/job_done/review.dart';
+import './pages/job_done/job_done_1.1.dart';
+import './pages/job_done/job_done_1.2.dart';
+import './pages/job_done/job_done_2.1.dart';
+import './pages/job_done/job_done_2.2.dart';
+import './pages/job_done/job_done_2.3.dart';
+import './pages/job_done/payment.dart';
+import './pages/job_done/review.dart';
 
 
 void main() {
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         '/payment':(context) => Payment(),
         '/review':(context) => Review(),
         '/Sp-details':(context) => SpDetails(),
+        '/Booking':(context) => Booking(),
       }
     );
   }

@@ -152,6 +152,14 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Booking Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Booking');
+                  },
+                ),
+              ),
             ],
           ),
         ),
