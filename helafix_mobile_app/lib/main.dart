@@ -13,6 +13,7 @@ import './pages/recent_activities.dart';
 import './pages/myActivities.dart';
 import './pages/sp-details.dart';
 import './pages/booking.dart';
+import './pages/addhome.dart';
 
 
 import './pages/job_done/job_done_1.1.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/review':(context) => Review(),
         '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
+        '/Addhome':(context) => MapScreen(),
       }
     );
   }

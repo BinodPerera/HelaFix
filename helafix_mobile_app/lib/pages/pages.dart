@@ -160,6 +160,14 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Add Home Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Addhome');
+                  },
+                ),
+              ),
             ],
           ),
         ),

@@ -33,7 +33,9 @@ dependencies:
   image_picker: ^1.0.7
   flutter_spinkit: ^5.2.0
   flutter_rating_bar: ^4.0.0
-
+  google_maps_flutter: ^2.5.0
+  geocoding: ^2.1.0
+  location: ^5.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
