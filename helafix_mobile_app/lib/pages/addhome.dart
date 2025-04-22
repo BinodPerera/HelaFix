@@ -18,17 +18,52 @@ class _MapScreenState extends State<MapScreen> {
   // ignore: unused_field
   GoogleMapController? _mapController;
   String _address = 'Tap on the map to get address';
+  Set<Marker> _markers = {};
 
   void _onMapTapped(LatLng position) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude,
-    );
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
 
-    if (placemarks.isNotEmpty) {
-      final place = placemarks.first;
+      if (placemarks.isNotEmpty) {
+        final place = placemarks.first;
+
+        
+        if (place.country?.toLowerCase() == 'sri lanka') {
+          final formattedAddress = [
+            if (place.street != null && place.street!.isNotEmpty) place.street,
+            if (place.locality != null && place.locality!.isNotEmpty)
+              place.locality,
+            if (place.country != null && place.country!.isNotEmpty)
+              place.country,
+          ].join(', ');
+
+          setState(() {
+            _address = formattedAddress;
+            _markers = {
+              Marker(
+                markerId: MarkerId('selected-location'),
+                position: position,
+                infoWindow: InfoWindow(
+                  title: 'Selected Location',
+                  snippet: formattedAddress,
+                ),
+              ),
+            };
+          });
+        } else {
+          setState(() {
+            _address = 'Only locations within Sri Lanka are allowed.';
+            _markers = {};
+          });
+        }
+      }
+    } catch (e) {
       setState(() {
-        _address = "${place.street}, ${place.locality}, ${place.country}";
+        _address = 'Failed to get address: $e';
+        _markers = {};
       });
     }
   }
@@ -66,6 +101,7 @@ class _MapScreenState extends State<MapScreen> {
                 onTap: _onMapTapped,
                 myLocationEnabled: true,
                 myLocationButtonEnabled: true,
+                markers: _markers,
               ),
             ),
             Container(

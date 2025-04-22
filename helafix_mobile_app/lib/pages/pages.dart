@@ -168,6 +168,30 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Active Job'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Activejob');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Upcoming Job'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Upcomingjob');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Finished Job'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Finishedjob');
+                  },
+                ),
+              ),
             ],
           ),
         ),

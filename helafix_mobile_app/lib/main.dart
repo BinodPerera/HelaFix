@@ -25,6 +25,11 @@ import './pages/job_done/payment.dart';
 import './pages/job_done/review.dart';
 
 
+import './pages/job_details/active_job.dart';
+import './pages/job_details/upcoming_job.dart';
+import './pages/job_details/finished_job.dart';
+
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -61,6 +66,9 @@ class MyApp extends StatelessWidget {
         '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
         '/Addhome':(context) => MapScreen(),
+        '/Activejob':(context) => JobActive(),
+        '/Upcomingjob':(context) => JobUpcoming(),
+        '/Finishedjob':(context) => JobFinished(),
       }
     );
   }
