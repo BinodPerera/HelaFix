@@ -5,7 +5,7 @@ import 'package:helafix_mobile_app/components/appbar.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});
@@ -18,15 +18,15 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
   File? _imageFile;
 
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  // Future<void> _pickImage() async {
+  //   final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _imageFile = File(pickedFile.path);
+  //     });
+  //   }
+  // }
   
   @override
   Widget build(BuildContext context) {

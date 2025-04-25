@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:helafix_mobile_app/components/bottomNavigation.dart';
-import 'package:helafix_mobile_app/components/customListTile.dart';
+import 'package:helafix_mobile_app/components/bottom_navigation.dart';
+import 'package:helafix_mobile_app/components/custom_list_tile.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../theme/colors.dart';

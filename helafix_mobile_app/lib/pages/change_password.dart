@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:helafix_mobile_app/components/bottomNavigation.dart';
+import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
   @override
-  _ChangePasswordState createState() => _ChangePasswordState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
 class _ChangePasswordState extends State<ChangePassword> {

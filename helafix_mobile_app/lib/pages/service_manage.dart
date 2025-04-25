@@ -9,6 +9,7 @@ import '../theme/colors.dart';
 import '../components/appbar.dart';
 
 class ManageService extends StatelessWidget{
+  const ManageService({super.key});
 
   @override
   Widget build(BuildContext context) {

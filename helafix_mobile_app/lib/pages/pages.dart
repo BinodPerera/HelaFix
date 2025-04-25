@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
-import 'package:helafix_mobile_app/components/bottomNavigation.dart';
+import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 
 class Pages extends StatelessWidget {
