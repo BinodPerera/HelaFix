@@ -15,6 +15,7 @@ import './pages/recent_activities.dart';
 import 'pages/my_activities.dart';
 import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
+import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 
 
 void main() {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/': (context) => Pages(),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/profile': (context) => Profile(),
