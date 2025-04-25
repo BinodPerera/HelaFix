@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
         '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
-      },
+        '/HomePageCat': (context) => HomePageCat(),
+      }
     );
   }
 }
