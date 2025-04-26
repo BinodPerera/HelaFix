@@ -76,7 +76,7 @@ flutter:
     - assets/images/favourite.png
     - assets/images/restore.png
     - assets/images/user.png
-    
+    - assets/images/star.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

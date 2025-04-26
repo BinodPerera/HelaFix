@@ -31,7 +31,7 @@ class HelaFixPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Search Bar
+              // Search bar
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
@@ -48,7 +48,7 @@ class HelaFixPage extends StatelessWidget {
                 ),
               ),
 
-              // Categories Section
+              // Categories
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Categories',
@@ -67,7 +67,7 @@ class HelaFixPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Popular Experts Section
+              // Popular Experts
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Popular Experts',
@@ -78,29 +78,35 @@ class HelaFixPage extends StatelessWidget {
               const ExpertTile(
                 companyLogo: 'assets/images/damro.png',
                 companyName: 'Damro Company PVT LTD',
-                categoryImage: ['assets/images/repair.png', 'assets/images/clean-code.png'],
+                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
+                rating: 5,
               ),
               const ExpertTile(
                 companyLogo: 'assets/images/Arpico.png',
                 companyName: 'Pioneer Cleaning',
-                categoryImage: ['assets/images/repair.png', 'assets/images/clean-code.png'],
+                categoryImage: ['assets/images/clean-code.png'],
+                rating: 4,
               ),
               const ExpertTile(
                 companyLogo: 'assets/images/Arpico.png',
                 companyName: 'Softlogic Holdings PLC',
-                categoryImage: ['assets/images/optimizing.png', 'assets/images/repair.png'],
+                categoryImage: ['assets/images/repair.png','assets/images/optimizing.png','assets/images/clean-code.png'],
+                rating: 4,
               ),
               const ExpertTile(
                 companyLogo: 'assets/images/damro.png',
-                companyName: 'Softlogic Holdings PLC',
-                categoryImage: [
-                  'assets/images/optimizing.png',
-                  'assets/images/repair.png',
-                  'assets/images/pawprint.png'
-                ],
+                companyName: 'Damro Company PVT LTD',
+                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
+                rating: 5,
+              ),
+              const ExpertTile(
+                companyLogo: 'assets/images/damro.png',
+                companyName: 'Damro Company PVT LTD',
+                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
+                rating: 5,
               ),
 
-              // Recent On-Going Activities
+              // Ongoing Activities
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
                 child: Text('Recent On-Going Activities',
@@ -138,7 +144,6 @@ class HelaFixPage extends StatelessWidget {
         ),
       ),
 
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         shape: const CircularNotchedRectangle(),
@@ -182,8 +187,7 @@ class HelaFixPage extends StatelessWidget {
   }
 }
 
-// Reusable Components
-
+// Category Icon
 class CategoryIcon extends StatelessWidget {
   final String imagePath;
   final String label;
@@ -215,15 +219,18 @@ class CategoryIcon extends StatelessWidget {
   }
 }
 
+// Expert Tile
 class ExpertTile extends StatelessWidget {
   final String companyLogo;
   final String companyName;
   final List<String> categoryImage;
+  final int rating;
 
   const ExpertTile({
     required this.companyLogo,
     required this.companyName,
     required this.categoryImage,
+    required this.rating,
     Key? key,
   }) : super(key: key);
 
@@ -231,30 +238,80 @@ class ExpertTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: SizedBox(
-          width: 100,
-          height: 100,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(companyLogo, fit: BoxFit.cover),
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Logo
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    companyLogo,
+                    width: 95,
+                    height: 60,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 10),
+
+                // Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        companyName,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: categoryImage
+                            .map((img) => Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: Image.asset(
+                                    img,
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        title: Text(companyName, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Row(
-          children: categoryImage
-              .map((image) => Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: Image.asset(image, width: 20, height: 20),
-                  ))
-              .toList(),
-        ),
-        trailing: const Icon(Icons.star, color: Colors.yellow),
+
+          // Positioned Stars (bottom right)
+          Positioned(
+            bottom: 8,
+            right: 12,
+            child: Row(
+              children: List.generate(
+                rating,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(right: 2),
+                  child: Image.asset(
+                    'assets/images/star.png',
+                    width: 13,
+                    height: 13,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
+// Activity Card
 class ActivityCard extends StatelessWidget {
   final String serviceFlow;
   final String logo;
@@ -285,10 +342,7 @@ class ActivityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(serviceFlow,
-                style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w400)),
+                style: const TextStyle(fontSize: 12, color: Colors.black54)),
             const SizedBox(height: 6),
             Row(
               children: [
