@@ -1,0 +1,2 @@
+C:/Users/sandi/OneDrive/Documents/GitHub/HelaFix/helafix_mobile_app/android/app/.cxx/Debug/v1s3a6x5/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/sandi/OneDrive/Documents/GitHub/HelaFix/helafix_mobile_app/android/app/.cxx/Debug/v1s3a6x5/x86_64/CMakeFiles/rebuild_cache.dir

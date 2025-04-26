@@ -126,10 +126,10 @@ class JobFinished extends StatelessWidget {
                                 bottom: -5,
                                 right: 0,
                                 child: Text(
-                                  'COST NEGOTIABLE',
+                                  'COST: LKR 150,000.00',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 22,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
