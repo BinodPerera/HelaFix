@@ -286,23 +286,35 @@ class ExpertTile extends StatelessWidget {
             ),
           ),
 
-          // Positioned Stars (bottom right)
+          // Stars
           Positioned(
             bottom: 8,
             right: 12,
             child: Row(
-              children: List.generate(
-                rating,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(right: 2),
-                  child: Image.asset(
-                    'assets/images/star.png',
-                    width: 13,
-                    height: 13,
-                    fit: BoxFit.cover,
+              children: [
+                ...List.generate(
+                  rating,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(right: 2),
+                    child: Image.asset(
+                      'assets/images/star.png',
+                      width: 13,
+                      height: 13,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
+                if (rating == 4) 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Image.asset(
+                      'assets/images/rating.png', 
+                      width: 13,
+                      height: 13,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
@@ -311,7 +323,7 @@ class ExpertTile extends StatelessWidget {
   }
 }
 
-// Activity Card
+// Activity Card 
 class ActivityCard extends StatelessWidget {
   final String serviceFlow;
   final String logo;
@@ -336,49 +348,64 @@ class ActivityCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(serviceFlow,
-                style: const TextStyle(fontSize: 12, color: Colors.black54)),
-            const SizedBox(height: 6),
-            Row(
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(logo, width: 50, height: 50),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(serviceName,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    Text(date,
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black45)),
-                  ],
-                ),
-                const Spacer(),
+                Text(serviceFlow,
+                    style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                const SizedBox(height: 6),
                 Row(
                   children: [
-                    Text(status,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 4),
-                    const Icon(Icons.circle, size: 10, color: Colors.green),
+                    Image.asset(logo, width: 50, height: 50),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(serviceName,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(date,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.black45)),
+                      ],
+                    ),
                   ],
                 ),
+                const SizedBox(height: 10),
               ],
             ),
-            const SizedBox(height: 10),
-            Text('Cost: $cost',
+          ),
+          
+          
+          Positioned(
+            top: 12,
+            right: 12,
+            child: Row(
+              children: [
+                Text(status,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(width: 4),
+                const Icon(Icons.circle, size: 10, color: Colors.green),
+              ],
+            ),
+          ),
+          
+         
+          Positioned(
+            bottom: 12,
+            right: 12,
+            child: Text(cost,
                 style: const TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold)),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
