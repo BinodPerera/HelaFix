@@ -14,6 +14,7 @@ import './pages/myActivities.dart';
 import './pages/sp-details.dart';
 import './pages/booking.dart';
 import './pages/addhome.dart';
+import './pages/cart.dart';
 
 
 import './pages/job_done/job_done_1.1.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/Activejob':(context) => JobActive(),
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
+        '/Cart':(context) => CartPage(),
       }
     );
   }

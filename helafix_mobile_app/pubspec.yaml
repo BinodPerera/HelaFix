@@ -81,6 +81,9 @@ flutter:
     - assets/images/Visa-card.png
     - assets/images/Arpico.webp
     - assets/images/user.jpg
+    - assets/images/cleaning.png
+    - assets/images/maintenance.png
+    - assets/images/repair.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

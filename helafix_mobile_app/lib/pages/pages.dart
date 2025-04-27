@@ -192,6 +192,14 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Cart'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Cart');
+                  },
+                ),
+              ),
             ],
           ),
         ),
