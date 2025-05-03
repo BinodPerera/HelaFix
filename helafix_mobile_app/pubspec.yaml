@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
   image_picker: ^1.0.7
 
 
@@ -77,6 +78,20 @@ flutter:
     - assets/images/logo_light.png
     - assets/images/logo_dark.png
     - assets/images/google.png
+    - assets/images/damro.png
+    - assets/images/Arpico.png
+    - assets/images/clean-code.png
+    - assets/images/optimizing.png
+    - assets/images/pawprint.png
+    - assets/images/repair.png
+    - assets/images/home.png
+    - assets/images/favourite.png
+    - assets/images/restore.png
+    - assets/images/user.png
+    - assets/images/star.png
+    - assets/images/rating.png
+    - assets/images/users/user-1.png
+    - assets/images/damro_logo.jpg
     - assets/images/users/user-1.png
     - assets/images/damro_logo.jpg
 

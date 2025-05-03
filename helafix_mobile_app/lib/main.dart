@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:helafix_mobile_app/components/splash_screen.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
+
+
 
 // importing pages from pages folder
 import './pages/pages.dart';
 import './pages/login.dart';
 import './pages/register.dart';
+import './pages/home.dart'; 
 import './pages/profile.dart';
 import './pages/service_manage.dart';
 import './pages/service_add.dart';
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
         '/profile': (context) => Profile(),
-        '/home':(context) => Pages(),
+        '/home':(context) => HelaFixPage(),
         '/add_service':(context) => AddService(),
         '/manage_service':(context) => ManageService(),
         '/recent_activities':(context) => RecentActivities(),
