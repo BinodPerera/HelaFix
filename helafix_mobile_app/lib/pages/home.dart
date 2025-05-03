@@ -192,8 +192,7 @@ class CategoryIcon extends StatelessWidget {
   final String imagePath;
   final String label;
 
-  const CategoryIcon({required this.imagePath, required this.label, Key? key})
-      : super(key: key);
+  const CategoryIcon({required this.imagePath, required this.label, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -231,8 +230,8 @@ class ExpertTile extends StatelessWidget {
     required this.companyName,
     required this.categoryImage,
     required this.rating,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -339,8 +338,8 @@ class ActivityCard extends StatelessWidget {
     required this.date,
     required this.status,
     required this.cost,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
