@@ -14,7 +14,7 @@ class HelaFixPage extends StatelessWidget {
         backgroundColor: const Color(0xFF48C2FF),
         elevation: 0,
         title: Image.asset(
-          'assets/images/logo-light.png',
+          'assets/images/logo_light.png',
           height: 40,
         ),
       ),
