@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../theme_provider.dart';
 import '../theme/colors.dart';
-import '../components/bottomNavigation.dart';
+import '../components/bottom_navigation.dart';
 
 class SpDetails extends StatefulWidget {
   const SpDetails({super.key});

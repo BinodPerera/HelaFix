@@ -4,7 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../theme/colors.dart';
-import '../components/bottomNavigation.dart';
+import '../components/bottom_navigation.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helafix_mobile_app/components/bottomNavigation.dart';
+import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import '../../theme_provider.dart';
