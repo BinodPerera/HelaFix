@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'service_provider_data.dart';
 import 'provider_detail_page.dart';
-import 'service_provider.dart';
 
 class ServiceProvidersPage extends StatelessWidget {
   final String subRepairName;
-
   const ServiceProvidersPage({super.key, required this.subRepairName});
 
   @override
