@@ -32,7 +32,11 @@ dependencies:
     sdk: flutter
   
   image_picker: ^1.0.7
-
+  flutter_spinkit: ^5.2.0
+  flutter_rating_bar: ^4.0.0
+  google_maps_flutter: ^2.5.0
+  geocoding: ^2.1.0
+  location: ^5.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -94,6 +98,16 @@ flutter:
     - assets/images/damro_logo.jpg
     - assets/images/users/user-1.png
     - assets/images/damro_logo.jpg
+    - assets/images/check.png
+    - assets/images/cross.png
+    - assets/images/Americanexpress.png
+    - assets/images/Master-card.png
+    - assets/images/Visa-card.png
+    - assets/images/Arpico.webp
+    - assets/images/user.jpg
+    - assets/images/cleaning.png
+    - assets/images/maintenance.png
+    - assets/images/repair.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
