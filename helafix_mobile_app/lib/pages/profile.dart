@@ -4,9 +4,10 @@ import 'package:provider/provider.dart';
 import '../theme_provider.dart';
 import '../theme/colors.dart';
 import '../components/appbar.dart';
-import '../components//bottomNavigation.dart';
+import '../components/bottom_navigation.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({super.key});
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -132,6 +133,7 @@ class Profile extends StatelessWidget {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/profile_details');
                           },
                         ),
                       ),

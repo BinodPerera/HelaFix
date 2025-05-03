@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
-import 'package:helafix_mobile_app/components/bottomNavigation.dart';
+import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 
 class Pages extends StatelessWidget {
@@ -14,6 +14,7 @@ class Pages extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
+        height: double.infinity,
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           gradient: themeProvider.isDarkMode
@@ -24,6 +25,7 @@ class Pages extends StatelessWidget {
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
+          
               Card(
                 child: ListTile(
                   title: const Text('Login Page'),
@@ -40,6 +42,7 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+          
               Card(
                 child: ListTile(
                   title: const Text('Register Page'),
@@ -48,6 +51,7 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+          
               Card(
                 child: ListTile(
                   title: const Text('User Profile Page'),
@@ -56,6 +60,7 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+          
               Card(
                 child: ListTile(
                   title: const Text('Service Add Page'),
@@ -64,6 +69,7 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+          
               Card(
                 child: ListTile(
                   title: const Text('Service Manage Page'),
@@ -72,6 +78,7 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+          
               Card(
                 child: ListTile(
                   title: const Text('Recent Activities Page'),
@@ -200,6 +207,14 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('HomePageCat Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/HomePageCat');
+                  },
+                ),
+              )
             ],
           ),
         ),
