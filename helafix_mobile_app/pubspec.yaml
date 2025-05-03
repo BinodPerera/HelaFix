@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  image_picker: ^1.0.7
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,6 +50,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.3.1
+
+flutter_native_splash:
+  color: "#ffffff" # Background color
+  image: assets/images/logo_bg_light.png # Your splash image
+  android: true
+  ios: true
+  web: false
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,6 +75,8 @@ flutter:
   assets:
     - assets/images/logo_bg_light.png
     - assets/images/logo_bg_dark.png
+    - assets/images/logo_light.png
+    - assets/images/logo_dark.png
     - assets/images/google.png
     - assets/images/damro.png
     - assets/images/Arpico.png
@@ -71,13 +84,16 @@ flutter:
     - assets/images/optimizing.png
     - assets/images/pawprint.png
     - assets/images/repair.png
-    - assets/images/logo-light.png
-    - 'assets/images/home.png'
+    - assets/images/home.png
     - assets/images/favourite.png
     - assets/images/restore.png
     - assets/images/user.png
     - assets/images/star.png
     - assets/images/rating.png
+    - assets/images/users/user-1.png
+    - assets/images/damro_logo.jpg
+    - assets/images/users/user-1.png
+    - assets/images/damro_logo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
