@@ -14,7 +14,7 @@ HelaFix is a mobile application designed to provide convenient and reliable repa
 ## 🛠️ Tech Stack
 
 - **Framework:** Flutter / React Native / Android (Kotlin/Java)  
-- **Backend:** [Link to your backend repo or API docs if available]  
+- **Backend:** FireBase  
 - **State Management:** Provider / Bloc / Redux / etc.  
 - **Other Tools:** Firebase / Google Maps / Stripe / etc.
 
@@ -26,11 +26,10 @@ HelaFix is a mobile application designed to provide convenient and reliable repa
 |------|------------------|---------|
 | ![Home](screenshots/home.png) | ![Details](screenshots/details.png) | ![Booking](screenshots/booking.png) |
 
-> Replace with actual screenshots from your app.
 
 ## 📦 Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/helafix_mobile_app.git
+   git clone [https://github.com/yourusername/helafix_mobile_app.git](https://github.com/BinodPerera/HelaFix.git)
    cd helafix_mobile_app
