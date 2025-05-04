@@ -1,43 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../theme_provider.dart';
-
-import '../theme/colors.dart';
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// importing components
-import '../components/appbar.dart';
+class AddService extends StatefulWidget {
+  const AddService({super.key});
 
-class AddService extends StatelessWidget{
+  @override
+  State<AddService> createState() => _AddServiceState();
+}
+
+class _AddServiceState extends State<AddService> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  late Future<List<Map<String, dynamic>>> _usersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _usersFuture = fetchUsers();
+  }
 
   Future<List<Map<String, dynamic>>> fetchUsers() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('users').get();
     return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
-  AddService({super.key});
-
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-
-  void addUser() {
+  void addUser(BuildContext context) {
     try {
       FirebaseFirestore.instance.collection('users').add({
         'name': nameController.text,
         'email': emailController.text,
         'createdAt': FieldValue.serverTimestamp(),
       }).then((value) {
-        // Clear the text fields after adding the user
         nameController.clear();
         emailController.clear();
+        setState(() {
+          _usersFuture = fetchUsers(); // Refresh the list after adding
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User added successfully')),
+        );
       }).catchError((error) {
         print('Error adding user: $error');
       });
-    } 
-    catch (e) {
+    } catch (e) {
       print('Error adding user: $e');
     }
   }
@@ -59,27 +65,33 @@ class AddService extends StatelessWidget{
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              TextField(controller: nameController, decoration: InputDecoration(labelText: 'Name')),
-              TextField(controller: emailController, decoration: InputDecoration(labelText: 'Email')),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+              ),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: addUser,
+                onPressed: () => addUser(context),
                 child: Text('Add User'),
               ),
               SizedBox(height: 20),
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: fetchUsers(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text('No users found');
-                  } else {
-                    List<Map<String, dynamic>> users = snapshot.data!;
-                    return Expanded(
-                      child: ListView.builder(
+              Expanded(
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: _usersFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No users found'));
+                    } else {
+                      List<Map<String, dynamic>> users = snapshot.data!;
+                      return ListView.builder(
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           return ListTile(
@@ -87,10 +99,10 @@ class AddService extends StatelessWidget{
                             subtitle: Text(users[index]['email']),
                           );
                         },
-                      ),
-                    );
-                  }
-                },
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),

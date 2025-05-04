@@ -72,7 +72,22 @@ class MyApp extends StatelessWidget {
         '/review':(context) => Review(),
         '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
-        '/Addhome':(context) => MapScreen(),
+        '/Addhome': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+          return MapScreen(
+            name: args['name']!,
+            email: args['email']!,
+            mobile: args['mobile']!,
+            password: args['password']!,
+          );
+        },
+        '/success':(context) {
+          final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+          return SuccessMessage(
+            type: args['type']!,
+            message: args['message']!,
+          );
+        },
         '/Activejob':(context) => JobActive(),
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
