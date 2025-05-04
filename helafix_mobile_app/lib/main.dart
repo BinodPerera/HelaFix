@@ -1,9 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
-
-
 
 // importing pages from pages folder
 import './pages/pages.dart';
@@ -19,7 +18,6 @@ import './pages/booking.dart';
 import './pages/addhome.dart';
 import './pages/cart.dart';
 
-
 import './pages/job_done/job_done_1.1.dart';
 import './pages/job_done/job_done_1.2.dart';
 import './pages/job_done/job_done_2.1.dart';
@@ -27,7 +25,6 @@ import './pages/job_done/job_done_2.2.dart';
 import './pages/job_done/job_done_2.3.dart';
 import './pages/job_done/payment.dart';
 import './pages/job_done/review.dart';
-
 
 import './pages/job_details/active_job.dart';
 import './pages/job_details/upcoming_job.dart';
@@ -38,7 +35,9 @@ import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
