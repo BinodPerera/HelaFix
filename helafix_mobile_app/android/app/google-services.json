@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "879035491054",
+    "project_id": "helafix-app-ad90c",
+    "storage_bucket": "helafix-app-ad90c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879035491054:android:77035a612e6d27689b49ff",
+        "android_client_info": {
+          "package_name": "com.helafix.mobileapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGAXd8NKSNqnDydaahC-PFkj6ozq_rH-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
