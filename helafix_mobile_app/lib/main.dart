@@ -14,7 +14,6 @@ import './pages/service_add.dart';
 import './pages/recent_activities.dart';
 import './pages/sp-details.dart';
 import './pages/booking.dart';
-import './pages/addhome.dart';
 import './pages/cart.dart';
 
 import './pages/job_done/job_done_1.1.dart';
@@ -73,22 +72,6 @@ class MyApp extends StatelessWidget {
         '/review':(context) => Review(),
         '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
-        '/Addhome': (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-          return MapScreen(
-            name: args['name']!,
-            email: args['email']!,
-            mobile: args['mobile']!,
-            password: args['password']!,
-          );
-        },
-        '/success':(context) {
-          final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-          return SuccessMessage(
-            type: args['type']!,
-            message: args['message']!,
-          );
-        },
         '/Activejob':(context) => JobActive(),
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
