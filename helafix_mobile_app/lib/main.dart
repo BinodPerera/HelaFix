@@ -5,9 +5,8 @@ import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
 // importing pages from pages folder
-import './pages/pages.dart';
-import './pages/login.dart';
-import './pages/register.dart';
+import 'pages/authentication/login.dart';
+import './pages/authentication/register.dart';
 import './pages/home.dart'; 
 import './pages/profile.dart';
 import './pages/service_manage.dart';
@@ -34,6 +33,8 @@ import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 
+import 'components/splash_screen.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +55,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Pages(),
+        '/': (context) => SplashScreen(),
         '/login': (context) => Login(),
-        '/register': (context) => Register(),
+        '/register': (context) => RegisterPage(),
         '/profile': (context) => Profile(),
         '/home':(context) => HelaFixPage(),
         '/add_service':(context) => AddService(),

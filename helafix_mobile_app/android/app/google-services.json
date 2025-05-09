@@ -12,7 +12,20 @@
           "package_name": "com.helafix.mobileapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "879035491054-bqu7h7j52d5v0q11897gqmjivi2eh974.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.helafix.mobileapp",
+            "certificate_hash": "7ac17ea946efc84f5de5a456cebf6e146d126537"
+          }
+        },
+        {
+          "client_id": "879035491054-ij2atnd3g59s38vi2vifhe79f3dehu1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDGAXd8NKSNqnDydaahC-PFkj6ozq_rH-A"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879035491054-ij2atnd3g59s38vi2vifhe79f3dehu1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
