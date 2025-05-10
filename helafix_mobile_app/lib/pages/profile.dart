@@ -20,6 +20,7 @@ class Profile extends StatelessWidget {
     String phone = user?.phoneNumber ?? 'No Phone';
     String photoURL = user?.photoURL ?? ''; // Might be null for email/password users
 
+
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
       appBar: CustomAppBar(),
