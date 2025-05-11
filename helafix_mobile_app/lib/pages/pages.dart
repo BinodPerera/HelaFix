@@ -214,7 +214,7 @@ class Pages extends StatelessWidget {
                     Navigator.pushNamed(context, '/HomePageCat');
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),
