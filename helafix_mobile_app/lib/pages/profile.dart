@@ -273,6 +273,42 @@ class Profile extends StatelessWidget {
                           },
                         ),
                       ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Admin Settings',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Add Service Provider'),
+                          leading: Icon(Icons.add),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/add_service_provider');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service Provider'),
+                          leading: Icon(Icons.manage_accounts),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/manage_service_provider');
+                          },
+                        ),
+                      ),
                       Card(
                         child: ListTile(
                           title: Text('Logout'),
