@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/category/manage_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
@@ -33,6 +34,7 @@ import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
 import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
+import 'package:helafix_mobile_app/pages/category/add_category.dart';
 
 import 'components/splash_screen.dart';
 
@@ -84,6 +86,8 @@ class MyApp extends StatelessWidget {
         '/HomePageCat': (context) => HomePageCat(),
         '/add_service_provider': (context) => AddServiceProvider(),
         '/manage_service_provider': (context) => ManageServiceProvider(),
+        '/add_category': (context) => AddCategory(),
+        '/manage_category': (context) => ManageCategory()
       }
     );
   }
