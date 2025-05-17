@@ -20,6 +20,7 @@ class Profile extends StatelessWidget {
     String phone = user?.phoneNumber ?? 'No Phone';
     String photoURL = user?.photoURL ?? ''; // Might be null for email/password users
 
+
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
       appBar: CustomAppBar(),
@@ -269,6 +270,42 @@ class Profile extends StatelessWidget {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             // Navigate to add services page
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Admin Settings',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Add Service Provider'),
+                          leading: Icon(Icons.add),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/add_service_provider');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service Provider'),
+                          leading: Icon(Icons.manage_accounts),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/manage_service_provider');
                           },
                         ),
                       ),

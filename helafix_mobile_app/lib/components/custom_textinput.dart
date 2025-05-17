@@ -29,6 +29,9 @@ Widget customTextInput({
     ),
     decoration: InputDecoration(
       hintText: hintText,
+      hintStyle: TextStyle(
+        color: isDarkMode ? Colors.white54 : Colors.black54,
+      ),
       prefixIcon: Icon(icon, color: isDarkMode ? Colors.white : Colors.black),
       filled: true,
       fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],

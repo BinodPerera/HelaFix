@@ -31,6 +31,8 @@ import 'pages/my_activities.dart';
 import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
+import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
+import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
 
 import 'components/splash_screen.dart';
 
@@ -80,6 +82,8 @@ class MyApp extends StatelessWidget {
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
         '/HomePageCat': (context) => HomePageCat(),
+        '/add_service_provider': (context) => AddServiceProvider(),
+        '/manage_service_provider': (context) => ManageServiceProvider(),
       }
     );
   }
