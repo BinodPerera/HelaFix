@@ -214,7 +214,9 @@ class _SpDetailsState extends State<SpDetails> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, '/Booking');
+                                      },
                                       child: const Text(
                                         'Book Appointment',
                                         style: TextStyle(
