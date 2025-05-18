@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/services/auth_service.dart';
+
+import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
-import '../../services/auth_service.dart';
 
-import '../../theme_provider.dart';
-import '../../theme/colors.dart';
+import 'package:helafix_mobile_app/theme/colors.dart';
 
-import '../../components/appbar.dart';
-import '../../components/loading_screen.dart';
-import '../../components/custom_textinput.dart';
+import 'package:helafix_mobile_app/components/appbar.dart';
+import 'package:helafix_mobile_app/components/loading_screen.dart';
+import 'package:helafix_mobile_app/components/custom_textinput.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

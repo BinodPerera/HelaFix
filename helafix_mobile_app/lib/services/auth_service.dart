@@ -23,6 +23,7 @@ class AuthService {
         'email': email,
         'phone': phone,
         'created_at': FieldValue.serverTimestamp(),
+        'admin': false
       });
 
       return null;
@@ -56,6 +57,37 @@ class AuthService {
       return e.message;
     }
   }
+
+  Future<String?> linkGoogleAccount() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return 'Google sign-in aborted';
+
+      final googleAuth = await googleUser.authentication;
+
+      final googleCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Attempt to link Google credential to current user
+      await FirebaseAuth.instance.currentUser?.linkWithCredential(googleCredential);
+
+      return null; // Success
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'provider-already-linked') {
+        return 'Google account is already linked to this user.';
+      } else if (e.code == 'credential-already-in-use') {
+        return 'This Google account is already in use by another user.';
+      } else if (e.code == 'invalid-credential') {
+        return 'Invalid Google credentials.';
+      } else {
+        return e.message;
+      }
+    }
+  }
+
+
 
   // 🔐 Google Sign In
   Future<String?> signInWithGoogle() async {
