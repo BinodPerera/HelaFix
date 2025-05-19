@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../theme_provider.dart';
 import '../theme/colors.dart';
@@ -8,36 +9,49 @@ import '../components/bottom_navigation.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    String name = user?.displayName ?? 'No Name';
+    String email = user?.email ?? 'No Email';
+    String phone = user?.phoneNumber ?? 'No Phone';
+    String photoURL = user?.photoURL ?? ''; // Might be null for email/password users
+
+
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode ? AppColours.primaryDark : AppColours.primaryLight,
       appBar: CustomAppBar(),
       body: Container(
         decoration: BoxDecoration(
-          gradient: themeProvider.isDarkMode ? AppColours.backgroundGradientDark : AppColours.backgroundGradientLight,
+          gradient: themeProvider.isDarkMode
+              ? AppColours.backgroundGradientDark
+              : AppColours.backgroundGradientLight,
         ),
         padding: EdgeInsets.all(20.0),
         child: Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/images/users/user-1.png'),
-                      ),
-                      SizedBox(width: 20),
-                      Column(
+          children: [
+            Card(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: photoURL.isNotEmpty
+                          ? NetworkImage(photoURL)
+                          : AssetImage('assets/images/users/default.png') as ImageProvider,
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Divider(thickness: 2, height: 10),
-                          Text('Binod Perera', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                           Text(
-                            'Admin',
+                            'User',
                             style: TextStyle(
                               color: themeProvider.isDarkMode
                                   ? AppColours.secondaryTextDark
@@ -45,20 +59,22 @@ class Profile extends StatelessWidget {
                               fontSize: 16,
                             ),
                           ),
-                          Text('yasindubinod@gmai.com'),
-                          Text('+94 77 123 4567'),
+                          Text(email),
+                          Text(phone),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 20),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
+            ),
+
+            // 🔽 Existing Profile Menu Items Below This Line
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
@@ -257,6 +273,64 @@ class Profile extends StatelessWidget {
                           },
                         ),
                       ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Admin Settings',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Add Service Provider'),
+                          leading: Icon(Icons.add),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/add_service_provider');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service Provider'),
+                          leading: Icon(Icons.manage_accounts),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/manage_service_provider');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Add Service Category'),
+                          leading: Icon(Icons.category),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/add_category');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service Category'),
+                          leading: Icon(Icons.change_circle),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/manage_category');
+                          },
+                        ),
+                      ),
                       Card(
                         child: ListTile(
                           title: Text('Logout'),
@@ -267,16 +341,37 @@ class Profile extends StatelessWidget {
                           iconColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           onTap: () {
-                            // Navigate to add services page
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Confirm Logout'),
+                                content: Text('Are you sure you want to log out?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(), // Close dialog
+                                    child: Text('No'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop(); // Close dialog
+                                      await FirebaseAuth.instance.signOut();
+                                      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                         ),
                       ),
-                    ],
-                  ),
+
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
         if (index == 0) {

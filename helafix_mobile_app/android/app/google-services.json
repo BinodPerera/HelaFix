@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "879035491054",
+    "project_id": "helafix-app-ad90c",
+    "storage_bucket": "helafix-app-ad90c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879035491054:android:77035a612e6d27689b49ff",
+        "android_client_info": {
+          "package_name": "com.helafix.mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879035491054-bqu7h7j52d5v0q11897gqmjivi2eh974.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.helafix.mobileapp",
+            "certificate_hash": "7ac17ea946efc84f5de5a456cebf6e146d126537"
+          }
+        },
+        {
+          "client_id": "879035491054-ij2atnd3g59s38vi2vifhe79f3dehu1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGAXd8NKSNqnDydaahC-PFkj6ozq_rH-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879035491054-ij2atnd3g59s38vi2vifhe79f3dehu1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
