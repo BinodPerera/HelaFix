@@ -110,7 +110,7 @@ class _SpDetailsState extends State<SpDetails> {
                                 ),
                               ),
                               child: const Text(
-                                'Follow',
+                                'Add to Bookmark',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,

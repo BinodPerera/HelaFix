@@ -44,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
           } 
           else if (index == 1) {
-            Navigator.pushNamed(context, '/bookmarks');
+            Navigator.pushNamed(context, '/Cart');
           }
           else if (index == 2) {
             Navigator.pushNamed(context, '/profile');

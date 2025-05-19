@@ -61,7 +61,9 @@ class BookingDone extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/recent_activities');
+                },
                 child: Text(
                   'Go Recent',
                   style: TextStyle(

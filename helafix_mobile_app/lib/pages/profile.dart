@@ -93,17 +93,17 @@ class Profile extends StatelessWidget {
                           title: Text('Bookings'),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/my_activities');
                           },
                         ),
                       ),
                       Card(
                         child: ListTile(
                           leading: Icon(Icons.save_alt),
-                          title: Text('Cart'),
+                          title: Text('Bookmarks'),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/Cart');
                           },
                         ),
                       ),
@@ -204,7 +204,7 @@ class Profile extends StatelessWidget {
                           leading: Icon(Icons.home),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/addhome');
                           },
                         ),
                       ),
