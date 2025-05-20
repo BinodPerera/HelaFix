@@ -215,6 +215,22 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              Card(
+                child: ListTile(
+                  title: const Text('Provider Home Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/provider_home');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Emergency Contact Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/emergency_contact');
+                  },
+                ),
+              ),
             ],
           ),
         ),
