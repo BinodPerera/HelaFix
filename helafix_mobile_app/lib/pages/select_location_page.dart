@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helafix_mobile_app/pages/home.dart';
 import '../services/auth_service.dart';
-import 'authentication/login.dart';
 
 class SelectLocationPage extends StatefulWidget {
   @override

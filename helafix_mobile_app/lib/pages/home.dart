@@ -243,24 +243,7 @@ class HelaFixPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(String imagePath, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Image.asset(
-        imagePath,
-        width: 30,
-        height: 30,
-      ),
-    );
-  }
 
-  Widget _divider() {
-    return Container(
-      width: 1,
-      height: 30,
-      color: Colors.grey[400],
-    );
-  }
 }
 
 // Category Icon

@@ -16,7 +16,6 @@ class Myactivities extends StatefulWidget {
 class _MyactivitiesState extends State<Myactivities> {
   String selectedValue = 'Inprocess';
 
-  // Step 1: Create a list of all jobs
   final List<Map<String, dynamic>> allJobs = [
     {
       'title': 'Cleaning Service 1',
@@ -27,7 +26,6 @@ class _MyactivitiesState extends State<Myactivities> {
       'isDone': true,
       'type': 'Upcoming',
       'price': 100.0,
-      'onTap': () {},
     },
     {
       'title': 'Cleaning Service 2',
@@ -38,7 +36,6 @@ class _MyactivitiesState extends State<Myactivities> {
       'isDone': false,
       'type': 'Past',
       'price': 100.0,
-      'onTap': () {},
     },
     {
       'title': 'Cleaning Service 3',
@@ -49,51 +46,6 @@ class _MyactivitiesState extends State<Myactivities> {
       'isDone': false,
       'type': 'Inprocess',
       'price': 100.0,
-      'onTap': () {},
-    },
-    {
-      'title': 'Cleaning Service 3',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Inprocess',
-      'price': 100.0,
-      'onTap': () {},
-    },
-    {
-      'title': 'Cleaning Service 3',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Inprocess',
-      'price': 100.0,
-      'onTap': () {},
-    },
-    {
-      'title': 'Cleaning Service 33',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Inprocess',
-      'price': 100.0,
-      'onTap': () {},
-    },
-    {
-      'title': 'Cleaning Service 4',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Inprocess',
-      'price': 100.0,
-      'onTap': () {},
     },
   ];
 
@@ -101,8 +53,8 @@ class _MyactivitiesState extends State<Myactivities> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    // Step 2: Filter jobs based on dropdown selection
-    final filteredJobs = allJobs.where((job) => job['type'] == selectedValue).toList();
+    final filteredJobs =
+        allJobs.where((job) => job['type'] == selectedValue).toList();
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -115,10 +67,9 @@ class _MyactivitiesState extends State<Myactivities> {
         ),
         child: Column(
           children: [
-            // Header with Dropdown
+            // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'My Activities',
@@ -144,12 +95,12 @@ class _MyactivitiesState extends State<Myactivities> {
                       selectedValue = newValue!;
                     });
                   },
-                )
+                ),
               ],
             ),
             SizedBox(height: 20),
 
-            // Step 3: Display filtered list
+            // Job List
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -163,7 +114,12 @@ class _MyactivitiesState extends State<Myactivities> {
                       isDone: job['isDone'],
                       type: job['type'],
                       price: job['price'],
-                      onTap: job['onTap'],
+                      onTap: () {
+                        String route = '/${job['type']}job';
+                        if (job['type'] == 'Inprocess') route = '/Activejob';
+                        if (job['type'] == 'Past') route = '/Finishedjob';
+                        Navigator.pushNamed(context, route);
+                      },
                     );
                   }).toList(),
                 ),
@@ -172,7 +128,6 @@ class _MyactivitiesState extends State<Myactivities> {
           ],
         ),
       ),
-
       bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
         if (index == 0) {
           Navigator.pushNamed(context, '/home');
@@ -180,7 +135,6 @@ class _MyactivitiesState extends State<Myactivities> {
           Navigator.pushNamed(context, '/bookmarks');
         }
       }),
-
     );
   }
 }
