@@ -20,8 +20,20 @@ class _BookingState extends State<Booking> {
   bool isPart2Visible = true;
   bool isPart3Visible = false;
 
-  final List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  final List<int> dates = [1, 2, 3, 4, 5, 6, 7];
+ 
+  List<DateTime> upcomingDates = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    generateUpcomingDates();
+  }
+
+  void generateUpcomingDates() {
+    DateTime now = DateTime.now();
+    upcomingDates = List.generate(7, (i) => now.add(Duration(days: i)));
+  }
 
   void toggleText() {
     setState(() {
@@ -34,6 +46,24 @@ class _BookingState extends State<Booking> {
         isPart3Visible = true;
       }
     });
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return months[month - 1];
   }
 
   @override
@@ -164,9 +194,20 @@ class _BookingState extends State<Booking> {
                   height: 100,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: days.length,
+                    itemCount: upcomingDates.length,
                     itemBuilder: (context, index) {
                       bool isSelected = index == selectedIndex;
+                      DateTime date = upcomingDates[index];
+                      String day = [
+                        'Mon',
+                        'Tue',
+                        'Wed',
+                        'Thu',
+                        'Fri',
+                        'Sat',
+                        'Sun'
+                      ][date.weekday - 1];
+
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -184,7 +225,7 @@ class _BookingState extends State<Booking> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                days[index],
+                                day,
                                 style: TextStyle(
                                   color:
                                       isSelected ? Colors.white : Colors.black,
@@ -192,7 +233,7 @@ class _BookingState extends State<Booking> {
                                 ),
                               ),
                               Text(
-                                '${dates[index]}',
+                                '${date.day}',
                                 style: TextStyle(
                                   color:
                                       isSelected ? Colors.white : Colors.black,
@@ -224,7 +265,15 @@ class _BookingState extends State<Booking> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Available Slots : Wed, 3rd March, 2025',
+                      'Available Slots: ${[
+                        'Mon',
+                        'Tue',
+                        'Wed',
+                        'Thu',
+                        'Fri',
+                        'Sat',
+                        'Sun'
+                      ][upcomingDates[selectedIndex].weekday - 1]}, ${upcomingDates[selectedIndex].day} ${_getMonthName(upcomingDates[selectedIndex].month)} ${upcomingDates[selectedIndex].year}',
                       style: TextStyle(
                         color: themeProvider.isDarkMode
                             ? AppColours.dark

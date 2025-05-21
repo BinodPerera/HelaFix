@@ -93,17 +93,17 @@ class Profile extends StatelessWidget {
                           title: Text('Bookings'),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/my_activities');
                           },
                         ),
                       ),
                       Card(
                         child: ListTile(
                           leading: Icon(Icons.save_alt),
-                          title: Text('Cart'),
+                          title: Text('Bookmarks'),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/Cart');
                           },
                         ),
                       ),
@@ -119,7 +119,7 @@ class Profile extends StatelessWidget {
                       ),
                       Card(
                         child: ListTile(
-                          title: Text('Emergency'),
+                          title: Text('Special Inquiries'),
                           leading: Icon(Icons.contact_emergency),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
@@ -160,6 +160,7 @@ class Profile extends StatelessWidget {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/change_password');
                           },
                         ),
                       ),
@@ -180,6 +181,7 @@ class Profile extends StatelessWidget {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/change_language');
                           },
                         ),
                       ),
@@ -204,7 +206,7 @@ class Profile extends StatelessWidget {
                           leading: Icon(Icons.home),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/addhome');
                           },
                         ),
                       ),
@@ -215,6 +217,7 @@ class Profile extends StatelessWidget {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             // Navigate to manage services page
+                            Navigator.pushNamed(context, '/addhome');
                           },
                         ),
                       ),
@@ -255,7 +258,7 @@ class Profile extends StatelessWidget {
                       ),
                       Card(
                         child: ListTile(
-                          title: Text('Terms of Service'),
+                          title: Text('Terms & Conditions'),
                           leading: Icon(Icons.description),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {

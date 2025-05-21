@@ -110,7 +110,7 @@ class _SpDetailsState extends State<SpDetails> {
                                 ),
                               ),
                               child: const Text(
-                                'Follow',
+                                'Add to Bookmark',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 15,
@@ -214,7 +214,9 @@ class _SpDetailsState extends State<SpDetails> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushNamed(context, '/Booking');
+                                      },
                                       child: const Text(
                                         'Book Appointment',
                                         style: TextStyle(

@@ -17,7 +17,7 @@ class CartPage extends StatelessWidget {
           : AppColours.primaryLight,
       appBar: AppBar(
         title: const Text(
-          'Cart',
+          'Bookmarks',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color.fromARGB(255, 0, 183, 255),
