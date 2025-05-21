@@ -179,7 +179,7 @@ class Pages extends StatelessWidget {
                 child: ListTile(
                   title: const Text('Active Job'),
                   onTap: () {
-                    Navigator.pushNamed(context, '/Activejob');
+                    Navigator.pushNamed(context, '/Inprocessjob');
                   },
                 ),
               ),
@@ -195,7 +195,7 @@ class Pages extends StatelessWidget {
                 child: ListTile(
                   title: const Text('Finished Job'),
                   onTap: () {
-                    Navigator.pushNamed(context, '/Finishedjob');
+                    Navigator.pushNamed(context, '/Pastjob');
                   },
                 ),
               ),
@@ -212,6 +212,22 @@ class Pages extends StatelessWidget {
                   title: const Text('HomePageCat Page'),
                   onTap: () {
                     Navigator.pushNamed(context, '/HomePageCat');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Provider Home Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/provider_home');
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: const Text('Emergency Contact Page'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/emergency_contact');
                   },
                 ),
               ),

@@ -31,5 +31,4 @@ HelaFix is a mobile application designed to provide convenient and reliable repa
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/yourusername/helafix_mobile_app.git](https://github.com/BinodPerera/HelaFix.git)
-   cd helafix_mobile_app
+   git clone https://github.com/BinodPerera/HelaFix.git

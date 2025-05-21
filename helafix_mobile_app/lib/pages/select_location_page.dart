@@ -3,8 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:helafix_mobile_app/pages/home.dart';
 import '../services/auth_service.dart';
-import 'authentication/login.dart';
 
 class SelectLocationPage extends StatefulWidget {
   @override
@@ -71,12 +71,12 @@ class _SelectLocationPageState extends State<SelectLocationPage> {
       );
     }
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Login()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HelaFixPage()));
     });
   }
 
   void _skipLocation() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Login()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HelaFixPage()));
   }
 
   @override

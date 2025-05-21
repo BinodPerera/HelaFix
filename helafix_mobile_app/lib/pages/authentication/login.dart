@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
     setState(() => _loading = false);
 
     if (result == null) {
-      Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
     }
@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
     setState(() => _loading = false);
 
     if (result == null) {
-      Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
     }
