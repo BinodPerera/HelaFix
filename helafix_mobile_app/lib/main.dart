@@ -1,8 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/pages/category/manage_category.dart';
+import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
+import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
 import 'package:helafix_mobile_app/pages/select_location_page.dart';
+import 'package:helafix_mobile_app/pages/emergency_contact.dart';
+import 'package:helafix_mobile_app/pages/provider_home.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -94,6 +98,10 @@ class MyApp extends StatelessWidget {
         '/manage_category': (context) => ManageCategory(),
         '/Providers':(context) => ServiceProvidersPage(subRepairName: '',),
         '/addhome': (context) => SelectLocationPage(),
+        '/add_sub_category': (context) => AddSubCategory(),
+        '/manage_sub_category': (context) => ManageSubCategory(),
+        '/provider_home': (context) => ProviderHome(),
+        '/emergency_contact': (context) => EmergencyContact(),
       }
     );
   }

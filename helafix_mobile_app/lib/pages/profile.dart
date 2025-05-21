@@ -336,6 +336,28 @@ class Profile extends StatelessWidget {
                       ),
                       Card(
                         child: ListTile(
+                          title: Text('Add Service Sub-Category'),
+                          leading: Icon(Icons.category),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/add_sub_category');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service Sub-Category'),
+                          leading: Icon(Icons.change_circle),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            // Navigate to edit profile page
+                            Navigator.pushNamed(context, '/manage_sub_category');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
                           title: Text('Logout'),
                           leading: Icon(Icons.logout),
                           trailing: Icon(Icons.arrow_forward_ios),
