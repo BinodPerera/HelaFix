@@ -4,6 +4,7 @@ import 'package:helafix_mobile_app/pages/category/manage_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
+import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
 import 'package:helafix_mobile_app/pages/provider_home.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,9 @@ import './pages/job_done/job_done_2.2.dart';
 import './pages/job_done/job_done_2.3.dart';
 import './pages/job_done/payment.dart';
 import './pages/job_done/review.dart';
+
+
+import '../pages/service_providers_list_pages/service_providers_page.dart';
 
 import './pages/job_details/active_job.dart';
 import './pages/job_details/upcoming_job.dart';
@@ -92,6 +96,8 @@ class MyApp extends StatelessWidget {
         '/manage_service_provider': (context) => ManageServiceProvider(),
         '/add_category': (context) => AddCategory(),
         '/manage_category': (context) => ManageCategory(),
+        '/Providers':(context) => ServiceProvidersPage(subRepairName: '',),
+        '/addhome': (context) => SelectLocationPage(),
         '/add_sub_category': (context) => AddSubCategory(),
         '/manage_sub_category': (context) => ManageSubCategory(),
         '/provider_home': (context) => ProviderHome(),

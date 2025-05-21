@@ -147,7 +147,9 @@ class JobActive extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/job_done_1.1');
+                },
                 child: Text(
                   'Finish Job',
                   style: TextStyle(

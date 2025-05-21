@@ -179,7 +179,7 @@ class Pages extends StatelessWidget {
                 child: ListTile(
                   title: const Text('Active Job'),
                   onTap: () {
-                    Navigator.pushNamed(context, '/Activejob');
+                    Navigator.pushNamed(context, '/Inprocessjob');
                   },
                 ),
               ),
@@ -195,7 +195,7 @@ class Pages extends StatelessWidget {
                 child: ListTile(
                   title: const Text('Finished Job'),
                   onTap: () {
-                    Navigator.pushNamed(context, '/Finishedjob');
+                    Navigator.pushNamed(context, '/Pastjob');
                   },
                 ),
               ),
