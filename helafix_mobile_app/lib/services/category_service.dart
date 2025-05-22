@@ -6,7 +6,8 @@ class CategoryService {
 
   Future<void> insertCategory({ required Category category }) async {
     await _collection.add({
-      'name': category.name
+      'name': category.name,
+      'image_base64': category.imageBase64
     });
   }
 
@@ -23,11 +24,11 @@ class CategoryService {
     });
   }
 
-  static Future<void> deleteServiceProvider(String docId) async {
+  static Future<void> deleteCategory(String docId) async {
     await _collection.doc(docId).delete();
   }
 
-  static Future<void> updateServiceProvider(String docId, Map<String, dynamic> data) async {
+  static Future<void> updateCategory(String docId, Map<String, dynamic> data) async {
     await _collection.doc(docId).update(data);
   }
 }
