@@ -11,4 +11,27 @@ class SubCategoryService {
       'category_id': subCategory.categoryId
     });
   }
+
+  // static Stream<List<SubCategory>> getSubCategoriesByParent(String categoryId) {
+  //   return FirebaseFirestore.instance
+  //       .collection('sub_categories')
+  //       .where('category_id', isEqualTo: categoryId)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.docs
+  //           .map((doc) => SubCategory.fromMap(doc.data()))
+  //           .toList());
+  // }
+
+  static Stream<Map<String, SubCategory>> getSubCategoriesByParent(String categoryId) {
+    return collection
+        .where('category_id', isEqualTo: categoryId)
+        .snapshots()
+        .map((snapshot) {
+      final map = <String, SubCategory>{};
+      for (var doc in snapshot.docs) {
+        map[doc.id] = SubCategory.fromMap(doc.data());
+      }
+      return map;
+    });
+  }
 }

@@ -57,6 +57,7 @@ class _AddCategoryState extends State<AddCategory> {
 
       categoryService.insertCategory(category: category);
       nameController.clear();
+      _image = null;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Category Added!")),
       );
