@@ -30,6 +30,7 @@ Future<void> fetchServices() async {
     return Category(
       id: doc.id,
       name: doc['name'],
+      imageBase64: 'not required',
     );
   }).toList();
 }
