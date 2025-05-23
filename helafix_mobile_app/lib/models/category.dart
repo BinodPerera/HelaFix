@@ -8,9 +8,9 @@ class Category {
 
   Category({ required this.name, this.id, required this.imageBase64 });
 
-  factory Category.fromMap(Map<String, dynamic> data) {
+  factory Category.fromMap(Map<String, dynamic> data, String? id) {
     return Category(
-      id: data['_id'] ?? '',
+      id: id,
       name: data['name'] ?? '',
       imageBase64: data['image_base64'] ?? '',
     );

@@ -18,7 +18,6 @@ import './pages/profile.dart';
 import './pages/service_manage.dart';
 import './pages/service_add.dart';
 import './pages/recent_activities.dart';
-import './pages/sp-details.dart';
 import './pages/booking.dart';
 import './pages/cart.dart';
 
@@ -39,7 +38,6 @@ import './pages/job_details/finished_job.dart';
 import 'pages/my_activities.dart';
 import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
-import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
 import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
 import 'package:helafix_mobile_app/pages/category/add_category.dart';
@@ -82,7 +80,6 @@ class MyApp extends StatelessWidget {
         '/job_done_2.3':(context) => JobDoneTwoThree(),
         '/payment':(context) => Payment(),
         '/review':(context) => Review(),
-        '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
         '/Activejob':(context) => JobActive(),
         '/Upcomingjob':(context) => JobUpcoming(),
@@ -91,7 +88,6 @@ class MyApp extends StatelessWidget {
         '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
-        '/HomePageCat': (context) => HomePageCat(),
         '/add_service_provider': (context) => AddServiceProvider(),
         '/manage_service_provider': (context) => ManageServiceProvider(),
         '/add_category': (context) => AddCategory(),
