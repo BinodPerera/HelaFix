@@ -67,17 +67,16 @@ class _HomePageCatState extends State<HomePageCat> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: GestureDetector(
-                    // onPressed: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => SubRepairsPage(
-                    //         subCategoryId: subCategoryId,
-                    //         currentCategoryId: categoryId,
-                    //       ),
-                    //     ),
-                    //   );
-                    // },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SubRepairsPage(
+                            category: categoryId,
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 12),

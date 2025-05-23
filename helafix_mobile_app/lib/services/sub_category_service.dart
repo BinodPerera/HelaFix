@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:helafix_mobile_app/models/sub_category.dart';
+import 'package:helafix_mobile_app/models/category_sub.dart';
 
 class SubCategoryService {
   static final collection = FirebaseFirestore.instance.collection('sub_categories');
@@ -29,7 +29,7 @@ class SubCategoryService {
         .map((snapshot) {
       final map = <String, SubCategory>{};
       for (var doc in snapshot.docs) {
-        map[doc.id] = SubCategory.fromMap(doc.data());
+        map[doc.id] = SubCategory.fromMap(doc.data(), doc.id); // ✅ pass doc.id
       }
       return map;
     });

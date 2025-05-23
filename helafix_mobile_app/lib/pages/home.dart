@@ -3,8 +3,11 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/models/category.dart';
+import 'package:helafix_mobile_app/models/service_provider.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
+import 'package:helafix_mobile_app/pages/sp-details.dart';
 import 'package:helafix_mobile_app/services/category_service.dart';
+import 'package:helafix_mobile_app/services/service_provider_service.dart';
 import 'package:provider/provider.dart';
 import '../components/bottom_navigation.dart';
 import '../theme_provider.dart';
@@ -107,11 +110,11 @@ class _HelaFixPageState extends State<HelaFixPage> {
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePageCat(categoryId: categoryId),
-                            ),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePageCat(categoryId: categoryId),
+                              ),
+                            );
                           },
                           child: Container(
                             width: 80,
@@ -167,65 +170,106 @@ class _HelaFixPageState extends State<HelaFixPage> {
               ),
               const SizedBox(height: 10),
 
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png',
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
+              // loading service providers into ExpertTile from firebase
+              StreamBuilder<List<ServiceProvider>>(
+                stream: ServiceProviderService.getServiceProviders(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No service providers found.'));
+                  }
+
+                  final serviceProviders = snapshot.data!;
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: serviceProviders.length,
+                    itemBuilder: (context, index) {
+                      final sp = serviceProviders[index];
+
+                      return ExpertTile(
+                        companyLogoBase64: sp.imageBase64,
+                        companyName: sp.name,
+                        categoryImage: [
+                          'assets/images/repair.png',
+                          'assets/images/optimizing.png',
+                        ],
+                        rating: 5,
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => SpDetails(serviceProvider: sp)),
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
 
-              ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Pioneer Cleaning',
-                categoryImage: ['assets/images/clean-code.png'],
-                rating: 4,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Softlogic Holdings PLC',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png',
-                  'assets/images/clean-code.png'
-                ],
-                rating: 4,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png'
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png'
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Pioneer Cleaning',
+              //   categoryImage: ['assets/images/clean-code.png'],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Softlogic Holdings PLC',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //     'assets/images/clean-code.png'
+              //   ],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
 
               // Ongoing Activities
               const Padding(
@@ -324,7 +368,8 @@ class CategoryIcon extends StatelessWidget {
 
 // Expert Tile
 class ExpertTile extends StatelessWidget {
-  final String companyLogo;
+  final String? companyLogo;
+  final String? companyLogoBase64;
   final String companyName;
   final List<String> categoryImage;
   final int rating;
@@ -332,9 +377,10 @@ class ExpertTile extends StatelessWidget {
 
   const ExpertTile({
     super.key,
-    required this.companyLogo,
+    this.companyLogo,
     required this.companyName,
     required this.categoryImage,
+    this.companyLogoBase64,
     required this.rating,
     this.onTap, // ✅ Add this
   });
@@ -354,15 +400,24 @@ class ExpertTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Logo
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      companyLogo,
-                      width: 95,
-                      height: 60,
+                  // Decode base64 image
+                  if (companyLogoBase64 != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        base64Decode(companyLogoBase64!),
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else
+                    Image.asset(
+                      companyLogo.toString(),
+                      width: 50,
+                      height: 50,
                       fit: BoxFit.cover,
                     ),
-                  ),
                   const SizedBox(width: 10),
 
                   // Info
