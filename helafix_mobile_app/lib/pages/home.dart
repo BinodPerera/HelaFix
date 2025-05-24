@@ -1,12 +1,26 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/models/category.dart';
+import 'package:helafix_mobile_app/models/service_provider.dart';
+import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
+import 'package:helafix_mobile_app/pages/sp-details.dart';
+import 'package:helafix_mobile_app/services/category_service.dart';
+import 'package:helafix_mobile_app/services/service_provider_service.dart';
 import 'package:provider/provider.dart';
 import '../components/bottom_navigation.dart';
 import '../theme_provider.dart';
 import '../theme/colors.dart';
 
-class HelaFixPage extends StatelessWidget {
+class HelaFixPage extends StatefulWidget {
   const HelaFixPage({super.key});
 
+  @override
+  State<HelaFixPage> createState() => _HelaFixPageState();
+}
+
+class _HelaFixPageState extends State<HelaFixPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -67,49 +81,85 @@ class HelaFixPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/HomePageCat');
-                    },
-                    child: const CategoryIcon(
-                      imagePath: 'assets/images/repair.png',
-                      label: 'Repairs',
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/HomePageCat');
-                    },
-                    child: const CategoryIcon(
-                      imagePath: 'assets/images/optimizing.png',
-                      label: 'Maintenance',
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/HomePageCat');
-                    },
-                    child: const CategoryIcon(
-                      imagePath: 'assets/images/clean-code.png',
-                      label: 'Cleaning',
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/HomePageCat');
-                    },
-                    child: const CategoryIcon(
-                      imagePath: 'assets/images/pawprint.png',
-                      label: 'Pets Services',
-                    ),
-                  ),
-                ],
-              ),
+              SizedBox(
+                height: 100,
+                child: StreamBuilder<Map<String, Category>>(
+                  stream: CategoryService.getCategoriesWithIds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-              const SizedBox(height: 20),
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No categories found.'));
+                    }
+
+                    final categoryEntries = snapshot.data!.entries.toList();
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: categoryEntries.length,
+                      itemBuilder: (context, index) {
+                        final categoryId = categoryEntries[index].key;
+                        final category = categoryEntries[index].value;
+
+                        // Decode base64 image
+                        final imageBytes = base64Decode(category.imageBase64);
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePageCat(categoryId: categoryId),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80,
+                            margin: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.memory(
+                                    imageBytes,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  category.name,
+                                  style: TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+
 
               // Popular Experts
               const Padding(
@@ -120,65 +170,106 @@ class HelaFixPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png',
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
+              // loading service providers into ExpertTile from firebase
+              StreamBuilder<List<ServiceProvider>>(
+                stream: ServiceProviderService.getServiceProviders(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No service providers found.'));
+                  }
+
+                  final serviceProviders = snapshot.data!;
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: serviceProviders.length,
+                    itemBuilder: (context, index) {
+                      final sp = serviceProviders[index];
+
+                      return ExpertTile(
+                        companyLogoBase64: sp.imageBase64,
+                        companyName: sp.name,
+                        categoryImage: [
+                          'assets/images/repair.png',
+                          'assets/images/optimizing.png',
+                        ],
+                        rating: 5,
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => SpDetails(serviceProvider: sp)),
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
 
-              ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Pioneer Cleaning',
-                categoryImage: ['assets/images/clean-code.png'],
-                rating: 4,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Softlogic Holdings PLC',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png',
-                  'assets/images/clean-code.png'
-                ],
-                rating: 4,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png'
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
-              ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: [
-                  'assets/images/repair.png',
-                  'assets/images/optimizing.png'
-                ],
-                rating: 5,
-                onTap: () {
-                  Navigator.pushNamed(context, '/Sp-details');
-                },
-              ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Pioneer Cleaning',
+              //   categoryImage: ['assets/images/clean-code.png'],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Softlogic Holdings PLC',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //     'assets/images/clean-code.png'
+              //   ],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
 
               // Ongoing Activities
               const Padding(
@@ -242,8 +333,6 @@ class HelaFixPage extends StatelessWidget {
       }),
     );
   }
-
-
 }
 
 // Category Icon
@@ -279,7 +368,8 @@ class CategoryIcon extends StatelessWidget {
 
 // Expert Tile
 class ExpertTile extends StatelessWidget {
-  final String companyLogo;
+  final String? companyLogo;
+  final String? companyLogoBase64;
   final String companyName;
   final List<String> categoryImage;
   final int rating;
@@ -287,9 +377,10 @@ class ExpertTile extends StatelessWidget {
 
   const ExpertTile({
     super.key,
-    required this.companyLogo,
+    this.companyLogo,
     required this.companyName,
     required this.categoryImage,
+    this.companyLogoBase64,
     required this.rating,
     this.onTap, // ✅ Add this
   });
@@ -309,15 +400,24 @@ class ExpertTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Logo
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      companyLogo,
-                      width: 95,
-                      height: 60,
+                  // Decode base64 image
+                  if (companyLogoBase64 != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        base64Decode(companyLogoBase64!),
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else
+                    Image.asset(
+                      companyLogo.toString(),
+                      width: 50,
+                      height: 50,
                       fit: BoxFit.cover,
                     ),
-                  ),
                   const SizedBox(width: 10),
 
                   // Info

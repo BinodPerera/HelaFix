@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/services/auth_service.dart';
 
@@ -23,6 +24,23 @@ class _LoginState extends State<Login> {
   final authService = AuthService();
 
   bool _loading = false;
+
+  @override
+  void initState(){
+    super.initState();
+    _checkUserLoggedIn();
+  }
+
+  void _checkUserLoggedIn() async{
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User is logged in, navigate to /profile
+      Future.microtask(() {
+        Navigator.pushReplacementNamed(context, '/profile');
+      });
+    }
+  }
 
   void _login() async {
     setState(() => _loading = true);

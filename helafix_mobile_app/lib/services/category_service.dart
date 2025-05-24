@@ -6,28 +6,30 @@ class CategoryService {
 
   Future<void> insertCategory({ required Category category }) async {
     await _collection.add({
-      'name': category.name
+      'name': category.name,
+      'image_base64': category.imageBase64
     });
   }
 
   static Stream<Map<String, Category>> getCategoriesWithIds() {
-    return _collection
-        .orderBy('name', descending: false)
-        .snapshots()
-        .map((snapshot) {
-      final map = <String, Category>{};
-      for (var doc in snapshot.docs) {
-        map[doc.id] = Category.fromMap(doc.data());
-      }
-      return map;
-    });
-  }
+  return _collection
+      .orderBy('name', descending: false)
+      .snapshots()
+      .map((snapshot) {
+    final map = <String, Category>{};
+    for (var doc in snapshot.docs) {
+      map[doc.id] = Category.fromMap(doc.data(), doc.id); // ✅ pass doc.id
+    }
+    return map;
+  });
+}
 
-  static Future<void> deleteServiceProvider(String docId) async {
+
+  static Future<void> deleteCategory(String docId) async {
     await _collection.doc(docId).delete();
   }
 
-  static Future<void> updateServiceProvider(String docId, Map<String, dynamic> data) async {
+  static Future<void> updateCategory(String docId, Map<String, dynamic> data) async {
     await _collection.doc(docId).update(data);
   }
 }
