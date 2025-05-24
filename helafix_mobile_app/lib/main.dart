@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/pages/category/manage_category.dart';
+import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
         '/provider_home': (context) => ProviderHome(),
         '/emergency_contact': (context) => EmergencyContact(),
         '/jobdetails': (context) => JobDetails(),
+        '/Cartdt': (context) => CartDt(subCategoryId: '',),
       }
     );
   }
