@@ -4,6 +4,7 @@ import 'package:helafix_mobile_app/pages/category/manage_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
+import 'package:helafix_mobile_app/pages/job_details/job_details.dart';
 import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
 import 'package:helafix_mobile_app/pages/provider_home.dart';
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
         '/manage_sub_category': (context) => ManageSubCategory(),
         '/provider_home': (context) => ProviderHome(),
         '/emergency_contact': (context) => EmergencyContact(),
+        '/jobdetails': (context) => JobDetails(),
       }
     );
   }
