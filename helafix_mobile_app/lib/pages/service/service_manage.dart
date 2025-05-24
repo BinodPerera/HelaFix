@@ -1,7 +1,7 @@
 // service_manage_page.dart
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/models/service.dart';
-import 'package:helafix_mobile_app/pages/service/ServiceService.dart';
+import 'package:helafix_mobile_app/services/ServiceService.dart';
 import 'package:helafix_mobile_app/pages/service/service.edit.dart';
 
 class ServiceManagePage extends StatefulWidget {
