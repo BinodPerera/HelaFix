@@ -20,15 +20,18 @@ class ServiceService {
       'provider_id': service.providerId,
     });
   }
+  
 
   Future<List<Service>> getAllServices() async {
     final snapshot = await _serviceCollection.get();
     return snapshot.docs.map((doc) => Service.fromMap(doc.data(), doc.id)).toList();
   }
 
+
   Future<void> deleteService(String id) async {
     await _serviceCollection.doc(id).delete();
   }
+
 
   Future<void> updateService(Service service) async {
     if (service.id == null) return;
@@ -42,19 +45,19 @@ class ServiceService {
     });
   }
 
-  // ✅ Add these two new methods
 
   Future<List<Category>> getCategories() async {
     final snapshot = await _categoryCollection.get();
     return snapshot.docs.map((doc) => Category.fromMap(doc.data(), doc.id)).toList();
   }
 
+
   Future<List<ServiceProvider>> getServiceProviders() async {
     final snapshot = await _providerCollection.get();
     return snapshot.docs.map((doc) => ServiceProvider.fromMap(doc.data(), doc.id)).toList();
   }
 
-  // Optional if you're using sub-categories
+
   Future<List<SubCategory>> getSubCategories(String categoryId) async {
     final snapshot = await _subCategoryCollection
         .where('category_id', isEqualTo: categoryId)

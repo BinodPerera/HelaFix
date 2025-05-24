@@ -2,13 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
+import 'package:helafix_mobile_app/components/custom_textinput.dart';
+import 'package:helafix_mobile_app/models/user.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileDetails extends StatefulWidget {
-  const ProfileDetails({super.key});
+
+  final User user;
+  final String? docId;
+
+  const ProfileDetails({
+    super.key,
+    this.docId,
+    required this.user,
+  });
+
 
   @override
   State<ProfileDetails> createState() => _ProfileDetailsState();
@@ -16,7 +27,21 @@ class ProfileDetails extends StatefulWidget {
 
 class _ProfileDetailsState extends State<ProfileDetails> {
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobileNumController = TextEditingController();
+  String? _imageBase64;
   File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers with user data
+    nameController.text = widget.user.name;
+    emailController.text = widget.user.email;
+    mobileNumController.text = widget.user.phone;
+
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -31,6 +56,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
@@ -49,7 +75,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
           
-              SizedBox(height: 20),
+              SizedBox(height: 40),
               Center(
                 child: Stack(
                   children: [
@@ -63,6 +89,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       bottom: 0,
                       right: 4,
                       child: GestureDetector(
+                        onTap: _pickImage, // 👈 Add this line to call the image picker
                         child: Container(
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -77,77 +104,17 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 40),
           
-              Text(
-                'First Name: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                ),
-              ),
-          
-              SizedBox(height: 20),
-          
-              Text(
-                'Last Name: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                ),
-              ),
-          
-              SizedBox(height: 20),
-          
-              Text(
-                'Email Address: ',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
-                ),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                ),
-              ),
+              customTextInput(controller: nameController, hintText: 'Username', icon: Icons.person, isDarkMode: isDarkMode),
           
               SizedBox(height: 20),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Country: ',
-                        labelStyle: TextStyle(
-                          fontSize: 16,
-                          color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16), // space between fields
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Mobile: ',
-                        labelStyle: TextStyle(
-                          fontSize: 16,
-                          color: themeProvider.isDarkMode ? AppColours.primaryTextDark : AppColours.primaryTextLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              customTextInput(controller: emailController, hintText: 'Email Address:', icon: Icons.email, isDarkMode: isDarkMode),
+          
+              SizedBox(height: 20),
+
+              customTextInput(controller: mobileNumController, hintText: 'Mobile Number:', icon: Icons.phone, isDarkMode: isDarkMode),
 
               SizedBox(height: 40),
 
@@ -177,7 +144,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   ),
                 ),
               ),
-              
             ],
           ),
         ),
