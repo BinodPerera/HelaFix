@@ -9,7 +9,7 @@ class ServiceProviderService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) =>
-            snapshot.docs.map((doc) => ServiceProvider.fromMap(doc.data())).toList());
+            snapshot.docs.map((doc) => ServiceProvider.fromMap(doc.data(), doc.id)).toList());
   }
 
   static Stream<Map<String, ServiceProvider>> getServiceProvidersWithIds() {
@@ -19,7 +19,7 @@ class ServiceProviderService {
         .map((snapshot) {
       final map = <String, ServiceProvider>{};
       for (var doc in snapshot.docs) {
-        map[doc.id] = ServiceProvider.fromMap(doc.data());
+        map[doc.id] = ServiceProvider.fromMap(doc.data(), doc.id);
       }
       return map;
     });

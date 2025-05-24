@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/service/service_add.dart';
+import 'package:helafix_mobile_app/pages/service/service_manage.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -353,6 +355,36 @@ class Profile extends StatelessWidget {
                           onTap: () {
                             // Navigate to edit profile page
                             Navigator.pushNamed(context, '/manage_sub_category');
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Add Service'),
+                          leading: Icon(Icons.home_repair_service_sharp),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InsertServicePage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Manage Service'),
+                          leading: Icon(Icons.design_services),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ServiceManagePage(),
+                              ),
+                            );
                           },
                         ),
                       ),

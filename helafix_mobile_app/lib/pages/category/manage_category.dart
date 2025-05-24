@@ -33,7 +33,7 @@ class _ManageCategoryState extends State<ManageCategory> {
           ElevatedButton(
             onPressed: () async {
               Navigator.of(ctx).pop(); // Close the dialog
-              await CategoryService.deleteServiceProvider(docId);
+              await CategoryService.deleteCategory(docId);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Service Category deleted")),
               );
