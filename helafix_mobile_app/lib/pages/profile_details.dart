@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
 import 'package:helafix_mobile_app/components/custom_textinput.dart';
 import 'package:helafix_mobile_app/models/user.dart';
+import 'package:helafix_mobile_app/services/user_service.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -32,24 +35,50 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   final TextEditingController mobileNumController = TextEditingController();
   String? _imageBase64;
   File? _imageFile;
+  UserService userService = UserService();
 
   @override
   void initState() {
     super.initState();
-    // Initialize the controllers with user data
     nameController.text = widget.user.name;
     emailController.text = widget.user.email;
     mobileNumController.text = widget.user.phone;
-
+    _imageBase64 = widget.user.image_base64;
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      final imageBytes = await File(pickedFile.path).readAsBytes();
       setState(() {
         _imageFile = File(pickedFile.path);
+        _imageBase64 = base64Encode(imageBytes);
       });
+    }
+  }
+
+  Future<void> _uploadUser() async {
+    try{
+      // Update user data
+      User updatedUser = User(
+        name: nameController.text,
+        email: emailController.text,
+        phone: mobileNumController.text,
+        image_base64: _imageBase64,
+      );
+
+      userService.userUpdate(updated_user: updatedUser, userId: widget.user.id.toString());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Profile updated successfully!"))
+      );
+      Navigator.pop(context, true);
+    } 
+    catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error updating profile: $e")),
+      );
     }
   }
   
@@ -57,6 +86,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.isDarkMode;
+    final imageBytes = _imageBase64 != null ? base64Decode(_imageBase64!) : null;
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
@@ -83,24 +113,27 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       radius: 60,
                       backgroundImage: _imageFile != null
                         ? FileImage(_imageFile!)
-                        : AssetImage('assets/images/users/user-1.png'),
+                        : AssetImage('assets/images/users/default.png'),
+                        // : _imageBase64 != null
+                        //   ? Image.memory(imageBytes!) as ImageProvider
+                        //   : AssetImage('assets/images/users/user-1.png'),
                     ),
                     Positioned(
-                      bottom: 0,
-                      right: 4,
-                      child: GestureDetector(
-                        onTap: _pickImage, // 👈 Add this line to call the image picker
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: Icon(Icons.add, color: Colors.white, size: 20),
+                    bottom: 0,
+                    right: 4,
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                          border: Border.all(color: Colors.white, width: 2),
                         ),
+                        child: Icon(Icons.add, color: Colors.white, size: 20),
                       ),
                     ),
+                  ),
                   ],
                 ),
               ),
@@ -118,13 +151,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
 
               SizedBox(height: 40),
 
-              // adding update button
+
               SizedBox(
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Respond to button press
+                    _uploadUser();
                   },
                   style: ElevatedButton.styleFrom(
         
@@ -132,7 +165,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     backgroundColor: themeProvider.isDarkMode ? AppColours.primaryBtnDark : AppColours.primaryBtnLight,
         
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40.0), // Rounded corners
+                      borderRadius: BorderRadius.circular(40.0), 
                     ),
                   ),
                   child: Text(

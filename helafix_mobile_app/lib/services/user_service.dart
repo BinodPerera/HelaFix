@@ -17,20 +17,14 @@ class UserService {
       return null;
     }
   }
-
-  Future<bool> userUpdate({
-    required String userId,
-    required String name,
-    required String email,
-    required String phone,
-    required String? imageBase64,
-  }) async {
+  
+  Future<bool> userUpdate({ required  app_model.User updated_user, required String userId}) async {
     try {
       await _collection.doc(userId).update({
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'image_base64': imageBase64 ?? '',
+        'name': updated_user.name,
+        'email': updated_user.email,
+        'phone': updated_user.phone,
+        'image_base64': updated_user.image_base64,
       });
 
       print("User updated successfully.");

@@ -124,7 +124,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-            // 🔽 Existing Profile Menu Items Below This Line
+
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -189,13 +189,16 @@ class _ProfileState extends State<Profile> {
                       SettingsCard(
                         title: 'Personal Information',
                         icon: Icons.edit,
-                        onTap: () {
-                          Navigator.push(
-                            context,
+                        onTap: () async {
+                          final updated = await Navigator.push(context, 
                             MaterialPageRoute(
                               builder: (context) => ProfileDetails(docId:  FirebaseAuth.instance.currentUser.toString(), user: firebaseUser!),
-                            ),
-                          );
+                          ),);
+
+                          // refresh the user data if updated
+                          if (updated == true) {
+                            _initializeUser();
+                          }
                         },
                       ),
                       SettingsCard(

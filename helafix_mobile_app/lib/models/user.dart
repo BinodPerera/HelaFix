@@ -4,7 +4,7 @@ class User {
   final String? id;
   final String name;
   final String email;
-  final bool isAdmin;
+  final bool? isAdmin;
   final String? image_base64;
   final String phone;
   final double? latitude;
@@ -13,14 +13,14 @@ class User {
 
   User({
     this.id,
-    required this.name,
-    required this.email,
-    required this.isAdmin,
+    this.isAdmin,
     this.image_base64,
-    required this.phone,
     this.latitude,
     this.longtude,
     this.createdAt,
+    required this.name,
+    required this.email,
+    required this.phone,
   });
 
   factory User.fromMap(Map<String, dynamic> data, String? id) {
