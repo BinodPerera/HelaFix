@@ -102,7 +102,6 @@ flutter:
     - assets/images/user.png
     - assets/images/star.png
     - assets/images/rating.png
-    - assets/images/users/user-1.png
     - assets/images/damro_logo.jpg
     - assets/images/damro_logo.jpg
     - assets/images/check.png
@@ -115,6 +114,8 @@ flutter:
     - assets/images/cleaning.png
     - assets/images/maintenance.png
     - assets/images/repair.png
+
+    - assets/images/users/user-1.png
 
     - assets/images/users/
     - assets/images/system/

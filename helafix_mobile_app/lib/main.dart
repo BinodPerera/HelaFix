@@ -36,7 +36,6 @@ import './pages/job_details/active_job.dart';
 import './pages/job_details/upcoming_job.dart';
 import './pages/job_details/finished_job.dart';
 import 'pages/my_activities.dart';
-import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
 import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
@@ -85,7 +84,6 @@ class MyApp extends StatelessWidget {
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
         '/Cart':(context) => CartPage(),
-        '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
         '/add_service_provider': (context) => AddServiceProvider(),

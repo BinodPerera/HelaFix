@@ -5,7 +5,7 @@ import 'package:helafix_mobile_app/models/category.dart';
 import 'package:helafix_mobile_app/models/category_sub.dart';
 import 'package:helafix_mobile_app/models/service.dart';
 import 'package:helafix_mobile_app/models/service_provider.dart';
-import 'package:helafix_mobile_app/pages/service/ServiceService.dart';
+import 'package:helafix_mobile_app/services/ServiceService.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditServicePage extends StatefulWidget {
