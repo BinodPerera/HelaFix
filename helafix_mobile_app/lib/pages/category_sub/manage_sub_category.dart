@@ -15,7 +15,7 @@ class ManageSubCategory extends StatefulWidget {
 
 class _ManageSubCategoryState extends State<ManageSubCategory> {
   final CollectionReference subCategoryCollection =
-      FirebaseFirestore.instance.collection('sub_categories'); // Your collection name
+      FirebaseFirestore.instance.collection('sub_categories');
 
   Future<void> _deleteSubCategory(String id) async {
     try {
@@ -34,6 +34,7 @@ class _ManageSubCategoryState extends State<ManageSubCategory> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
         title: const Text('Confirm Delete'),
         content: const Text('Are you sure you want to delete this sub-category?'),
         actions: [
@@ -59,7 +60,7 @@ class _ManageSubCategoryState extends State<ManageSubCategory> {
     final isDark = themeProvider.isDarkMode;
 
     return Scaffold(
-      appBar: AppbarWithTitle(title: 'Manage Sub-Category'),
+      appBar: AppbarWithTitle(title: 'Manage Sub-Category', showModeButton: true,),
       body: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -94,14 +95,32 @@ class _ManageSubCategoryState extends State<ManageSubCategory> {
                 final categoryId = data['category_id'] ?? 'No Category ID';
 
                 return Card(
+                  color: isDark ? Colors.grey[900] : Colors.white,
+                  shadowColor: isDark ? Colors.black : Colors.grey.shade300,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: ListTile(
-                    title: Text(name),
-                    subtitle: Text('Category ID: $categoryId'),
+                    title: Text(
+                      name,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Category ID: $categoryId',
+                      style: TextStyle(
+                        color: isDark ? Colors.grey[400] : Colors.grey[800],
+                      ),
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          icon: Icon(Icons.edit,
+                              color: isDark ? Colors.lightBlueAccent : Colors.blue),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -115,7 +134,6 @@ class _ManageSubCategoryState extends State<ManageSubCategory> {
                             );
                           },
                         ),
-
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () => _confirmDelete(subCategoryId),
