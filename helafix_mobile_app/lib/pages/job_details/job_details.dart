@@ -228,7 +228,6 @@ class JobDetails extends StatelessWidget {
                   ],
                   const SizedBox(height: 20),
                   _buildSectionTitle(context, 'Job Summary,'),
-                  _buildInfo(context, 'Job Id: ${job.jbid}'),
                   _buildInfo(context,
                       'Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.createdAt)}'),
                   _buildInfo(context,

@@ -62,7 +62,7 @@ class BookingDone extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/recent_activities');
+                  Navigator.pushNamed(context, '/my_activities');
                 },
                 child: Text(
                   'Go Recent',

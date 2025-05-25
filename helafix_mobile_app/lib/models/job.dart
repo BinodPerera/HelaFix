@@ -6,7 +6,7 @@ class Job {
   final DateTime createdAt;
   final String description;
   final DateTime endAt;
-  final String jbid;
+  final String subcategoriesid;
   final DateTime paymentAt;
   final int paymentId;
   final String providerId;
@@ -16,7 +16,6 @@ class Job {
   final String? userId;
   final bool providerValue;
   final bool userValue;
-  final String service;
 
   Job({
     this.cardNumber,
@@ -24,7 +23,7 @@ class Job {
     required this.createdAt,
     required this.description,
     required this.endAt,
-    required this.jbid,
+    required this.subcategoriesid,
     required this.paymentAt,
     required this.paymentId,
     required this.providerId,
@@ -32,7 +31,6 @@ class Job {
     required this.stars,
     required this.status,
     this.userId,
-    required this.service,
     required this.providerValue,
     required this.userValue,
   });
@@ -46,7 +44,7 @@ class Job {
       createdAt: (data['created_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       description: data['description'] ?? '',
       endAt: (data['end_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      jbid: data['jbid'] ?? id ?? '',
+      subcategoriesid: data['jbid'] ?? id ?? '',
       paymentAt: (data['payment_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       paymentId: data['payment_id'] is int
           ? data['payment_id']
@@ -58,7 +56,6 @@ class Job {
           : int.tryParse(data['stars'].toString()) ?? 0,
       status: data['status'] ?? '',
       userId: data['user_id'],
-      service: data['service'] ?? '',
       providerValue: data['provider_value'] ?? false,
       userValue: data['user_value'] ?? false,
     );
