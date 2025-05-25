@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Repairs App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePageCat(),
+      //home: const HomePageCat(),
     );
   }
 }

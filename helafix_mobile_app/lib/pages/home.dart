@@ -1,31 +1,53 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../theme_provider.dart';
+import 'dart:convert';
+import 'dart:ffi';
 
-class HelaFixPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/models/category.dart';
+import 'package:helafix_mobile_app/models/service_provider.dart';
+import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
+import 'package:helafix_mobile_app/pages/sp-details.dart';
+import 'package:helafix_mobile_app/services/category_service.dart';
+import 'package:helafix_mobile_app/services/service_provider_service.dart';
+import 'package:provider/provider.dart';
+import '../components/bottom_navigation.dart';
+import '../theme_provider.dart';
+import '../theme/colors.dart';
+
+class HelaFixPage extends StatefulWidget {
   const HelaFixPage({super.key});
 
   @override
+  State<HelaFixPage> createState() => _HelaFixPageState();
+}
+
+class _HelaFixPageState extends State<HelaFixPage> {
+  @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
+      backgroundColor: themeProvider.isDarkMode
+          ? AppColours.primaryDark
+          : AppColours.primaryLight,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF48C2FF),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 0, 183, 255),
         elevation: 0,
-        title: Image.asset(
-          'assets/images/logo_light.png',
-          height: 40,
+        toolbarHeight: 70,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Image.asset(
+            'assets/images/logo_light.png',
+            height: 55,
+            fit: BoxFit.contain,
+          ),
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF48C2FF), Color(0xFFF9F9F9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.41, 1.0],
-          ),
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode
+              ? AppColours.backgroundGradientDark
+              : AppColours.backgroundGradientLight,
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -33,12 +55,14 @@ class HelaFixPage extends StatelessWidget {
             children: [
               // Search bar
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(25.0),
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search Experts here.....',
                     filled: true,
-                    fillColor: theme.isDarkMode ? Colors.grey[800] : Colors.white,
+                    fillColor: themeProvider.isDarkMode
+                        ? Colors.grey[800]
+                        : Colors.white,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
@@ -52,90 +76,247 @@ class HelaFixPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Categories',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 10),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  CategoryIcon(imagePath: 'assets/images/repair.png', label: 'Repairs'),
-                  CategoryIcon(imagePath: 'assets/images/optimizing.png', label: 'Maintenance'),
-                  CategoryIcon(imagePath: 'assets/images/clean-code.png', label: 'Cleaning'),
-                  CategoryIcon(imagePath: 'assets/images/pawprint.png', label: 'Pets Services'),
-                ],
+              SizedBox(
+                height: 100,
+                child: StreamBuilder<Map<String, Category>>(
+                  stream: CategoryService.getCategoriesWithIds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No categories found.'));
+                    }
+
+                    final categoryEntries = snapshot.data!.entries.toList();
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: categoryEntries.length,
+                      itemBuilder: (context, index) {
+                        final categoryId = categoryEntries[index].key;
+                        final category = categoryEntries[index].value;
+
+                        // Decode base64 image
+                        final imageBytes = base64Decode(category.imageBase64);
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePageCat(categoryId: categoryId),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 80,
+                            margin: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.memory(
+                                    imageBytes,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(height: 6),
+                                Text(
+                                  category.name,
+                                  style: TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
+
 
               // Popular Experts
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Popular Experts',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 10),
 
-              const ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
-                rating: 5,
+              // loading service providers into ExpertTile from firebase
+              StreamBuilder<List<ServiceProvider>>(
+                stream: ServiceProviderService.getServiceProviders(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No service providers found.'));
+                  }
+
+                  final serviceProviders = snapshot.data!;
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: serviceProviders.length,
+                    itemBuilder: (context, index) {
+                      final sp = serviceProviders[index];
+
+                      return ExpertTile(
+                        companyLogoBase64: sp.imageBase64,
+                        companyName: sp.name,
+                        categoryImage: [
+                          'assets/images/repair.png',
+                          'assets/images/optimizing.png',
+                        ],
+                        rating: 5,
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => SpDetails(serviceProvider: sp)),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
-              const ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Pioneer Cleaning',
-                categoryImage: ['assets/images/clean-code.png'],
-                rating: 4,
-              ),
-              const ExpertTile(
-                companyLogo: 'assets/images/Arpico.png',
-                companyName: 'Softlogic Holdings PLC',
-                categoryImage: ['assets/images/repair.png','assets/images/optimizing.png','assets/images/clean-code.png'],
-                rating: 4,
-              ),
-              const ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
-                rating: 5,
-              ),
-              const ExpertTile(
-                companyLogo: 'assets/images/damro.png',
-                companyName: 'Damro Company PVT LTD',
-                categoryImage: ['assets/images/repair.png', 'assets/images/optimizing.png'],
-                rating: 5,
-              ),
+
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Pioneer Cleaning',
+              //   categoryImage: ['assets/images/clean-code.png'],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/Arpico.png',
+              //   companyName: 'Softlogic Holdings PLC',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png',
+              //     'assets/images/clean-code.png'
+              //   ],
+              //   rating: 4,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
+              // ExpertTile(
+              //   companyLogo: 'assets/images/damro.png',
+              //   companyName: 'Damro Company PVT LTD',
+              //   categoryImage: [
+              //     'assets/images/repair.png',
+              //     'assets/images/optimizing.png'
+              //   ],
+              //   rating: 5,
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/Sp-details');
+              //   },
+              // ),
 
               // Ongoing Activities
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
                 child: Text('Recent On-Going Activities',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
 
-              const ActivityCard(
-                serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                logo: 'assets/images/damro.png',
-                serviceName: 'Damro Cleaning Service',
-                date: '02/02/2025',
-                cost: 'LKR 150,000',
-                status: 'Active',
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/Activejob');
+                },
+                child: const ActivityCard(
+                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
+                  logo: 'assets/images/damro.png',
+                  serviceName: 'Damro Cleaning Service',
+                  date: '02/02/2025',
+                  cost: 'COST NEGOTIABLE',
+                  status: 'Active',
+                ),
               ),
-              const ActivityCard(
-                serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                logo: 'assets/images/damro.png',
-                serviceName: 'Damro Cleaning Service',
-                date: '02/02/2025',
-                cost: 'LKR 150,000',
-                status: 'Active',
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/Activejob');
+                },
+                child: const ActivityCard(
+                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
+                  logo: 'assets/images/damro.png',
+                  serviceName: 'Damro Cleaning Service',
+                  date: '02/02/2025',
+                  cost: 'COST NEGOTIABLE',
+                  status: 'Active',
+                ),
               ),
-              const ActivityCard(
-                serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                logo: 'assets/images/damro.png',
-                serviceName: 'Damro Cleaning Service',
-                date: '02/02/2025',
-                cost: 'LKR 150,000',
-                status: 'Active',
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/Activejob');
+                },
+                child: const ActivityCard(
+                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
+                  logo: 'assets/images/damro.png',
+                  serviceName: 'Damro Cleaning Service',
+                  date: '02/02/2025',
+                  cost: 'COST NEGOTIABLE',
+                  status: 'Active',
+                ),
               ),
 
               const SizedBox(height: 20),
@@ -143,46 +324,13 @@ class HelaFixPage extends StatelessWidget {
           ),
         ),
       ),
-
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildNavItem('assets/images/home.png'),
-              _divider(),
-              _buildNavItem('assets/images/favourite.png'),
-              _divider(),
-              _buildNavItem('assets/images/restore.png'),
-              _divider(),
-              _buildNavItem('assets/images/user.png'),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(String imagePath) {
-    return InkWell(
-      onTap: () {},
-      child: Image.asset(
-        imagePath,
-        width: 30,
-        height: 30,
-      ),
-    );
-  }
-
-  Widget _divider() {
-    return Container(
-      width: 1,
-      height: 30,
-      color: Colors.grey[400],
+      bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
+        if (index == 0) {
+          Navigator.pushNamed(context, '/home');
+        } else if (index == 1) {
+          Navigator.pushNamed(context, '/bookmarks');
+        }
+      }),
     );
   }
 }
@@ -220,109 +368,127 @@ class CategoryIcon extends StatelessWidget {
 
 // Expert Tile
 class ExpertTile extends StatelessWidget {
-  final String companyLogo;
+  final String? companyLogo;
+  final String? companyLogoBase64;
   final String companyName;
   final List<String> categoryImage;
   final int rating;
+  final VoidCallback? onTap; // ✅ Add this
 
   const ExpertTile({
-    required this.companyLogo,
+    super.key,
+    this.companyLogo,
     required this.companyName,
     required this.categoryImage,
+    this.companyLogoBase64,
     required this.rating,
-    super.key,
+    this.onTap, // ✅ Add this
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Logo
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    companyLogo,
-                    width: 95,
-                    height: 60,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 10),
-
-                // Info
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        companyName,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return InkWell(
+      // ✅ Wrap Card with InkWell
+      onTap: onTap,
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Logo
+                  // Decode base64 image
+                  if (companyLogoBase64 != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        base64Decode(companyLogoBase64!),
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
                       ),
-                      const SizedBox(height: 5),
-                      Row(
-                        children: categoryImage
-                            .map((img) => Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: Image.asset(
-                                    img,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Stars
-          Positioned(
-            bottom: 8,
-            right: 12,
-            child: Row(
-              children: [
-                ...List.generate(
-                  rating,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(right: 2),
-                    child: Image.asset(
-                      'assets/images/star.png',
-                      width: 13,
-                      height: 13,
+                    )
+                  else
+                    Image.asset(
+                      companyLogo.toString(),
+                      width: 50,
+                      height: 50,
                       fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-                if (rating == 4) 
-                  Padding(
-                    padding: const EdgeInsets.only(left: 2),
-                    child: Image.asset(
-                      'assets/images/rating.png', 
-                      width: 13,
-                      height: 13,
-                      fit: BoxFit.cover,
+                  const SizedBox(width: 10),
+
+                  // Info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          companyName,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: categoryImage
+                              .map((img) => Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Image.asset(
+                                      img,
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ],
                     ),
                   ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+
+            // Stars
+            Positioned(
+              bottom: 8,
+              right: 12,
+              child: Row(
+                children: [
+                  ...List.generate(
+                    rating,
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(right: 2),
+                      child: Image.asset(
+                        'assets/images/star.png',
+                        width: 13,
+                        height: 13,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  if (rating == 4)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Image.asset(
+                        'assets/images/rating.png',
+                        width: 13,
+                        height: 13,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// Activity Card 
+// Activity Card
 class ActivityCard extends StatelessWidget {
   final String serviceFlow;
   final String logo;
@@ -355,7 +521,8 @@ class ActivityCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(serviceFlow,
-                    style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                    style:
+                        const TextStyle(fontSize: 12, color: Colors.black54)),
                 const SizedBox(height: 6),
                 Row(
                   children: [
@@ -378,8 +545,6 @@ class ActivityCard extends StatelessWidget {
               ],
             ),
           ),
-          
-          
           Positioned(
             top: 12,
             right: 12,
@@ -395,14 +560,12 @@ class ActivityCard extends StatelessWidget {
               ],
             ),
           ),
-          
-         
           Positioned(
             bottom: 12,
             right: 12,
             child: Text(cost,
-                style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

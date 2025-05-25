@@ -4,6 +4,7 @@ import 'package:helafix_mobile_app/pages/category/manage_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
+import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
 import 'package:helafix_mobile_app/pages/provider_home.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,6 @@ import './pages/profile.dart';
 import './pages/service_manage.dart';
 import './pages/service_add.dart';
 import './pages/recent_activities.dart';
-import './pages/sp-details.dart';
 import './pages/booking.dart';
 import './pages/cart.dart';
 
@@ -29,13 +29,14 @@ import './pages/job_done/job_done_2.3.dart';
 import './pages/job_done/payment.dart';
 import './pages/job_done/review.dart';
 
+
+import '../pages/service_providers_list_pages/service_providers_page.dart';
+
 import './pages/job_details/active_job.dart';
 import './pages/job_details/upcoming_job.dart';
 import './pages/job_details/finished_job.dart';
 import 'pages/my_activities.dart';
-import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
-import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
 import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
 import 'package:helafix_mobile_app/pages/category/add_category.dart';
@@ -78,20 +79,19 @@ class MyApp extends StatelessWidget {
         '/job_done_2.3':(context) => JobDoneTwoThree(),
         '/payment':(context) => Payment(),
         '/review':(context) => Review(),
-        '/Sp-details':(context) => SpDetails(),
         '/Booking':(context) => Booking(),
         '/Activejob':(context) => JobActive(),
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
         '/Cart':(context) => CartPage(),
-        '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
-        '/HomePageCat': (context) => HomePageCat(),
         '/add_service_provider': (context) => AddServiceProvider(),
         '/manage_service_provider': (context) => ManageServiceProvider(),
         '/add_category': (context) => AddCategory(),
         '/manage_category': (context) => ManageCategory(),
+        '/Providers':(context) => ServiceProvidersPage(subRepairName: '',),
+        '/addhome': (context) => SelectLocationPage(),
         '/add_sub_category': (context) => AddSubCategory(),
         '/manage_sub_category': (context) => ManageSubCategory(),
         '/provider_home': (context) => ProviderHome(),

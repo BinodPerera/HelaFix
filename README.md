@@ -13,10 +13,10 @@ HelaFix is a mobile application designed to provide convenient and reliable repa
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Flutter / React Native / Android (Kotlin/Java)  
+- **Framework:** Flutter
 - **Backend:** FireBase  
-- **State Management:** Provider / Bloc / Redux / etc.  
-- **Other Tools:** Firebase / Google Maps / Stripe / etc.
+- **State Management:** Provider / etc.  
+- **Other Tools:** Firebase / Google Maps / etc.
 
 > Update this section to reflect your actual tech stack.
 
