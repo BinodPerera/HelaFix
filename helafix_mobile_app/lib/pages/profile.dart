@@ -105,13 +105,25 @@ class _ProfileState extends State<Profile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text(
-                            isAdmin ? 'Admin' : 'User',
-                            style: TextStyle(
-                              color: themeProvider.isDarkMode
-                                  ? AppColours.secondaryTextDark
-                                  : AppColours.secondaryTextLight,
-                              fontSize: 16,
+                          Container(
+                            width: 60,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: isAdmin
+                                   ? const Color.fromARGB(255, 33, 128, 243)
+                                   : Color.fromARGB(255, 225, 229, 231),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  isAdmin ? 'Admin' : 'Member', 
+                                  style: TextStyle(
+                                    color: isAdmin ? Colors.white : Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Text(email),
@@ -124,6 +136,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
+            SizedBox(height: 20,),
 
             Expanded(
               child: SingleChildScrollView(
@@ -297,7 +310,7 @@ class _ProfileState extends State<Profile> {
                         },
                       ),
                       SizedBox(height: 20),
-                      Row(
+                      isAdmin? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
@@ -311,51 +324,52 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ],
-                      ),
-                      SettingsCard(
+                      )
+                      : 
+                      isAdmin? SettingsCard(
                         title: 'Add Service Provider',
                         icon: Icons.add,
                         onTap: () {
                           Navigator.pushNamed(context, '/add_service_provider');
                         },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Manage Service Provider',
                         icon: Icons.manage_accounts,
                         onTap: () {
                           Navigator.pushNamed(context, '/manage_service_provider');
                         },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Add Service Category',
                         icon: Icons.category,
                         onTap: () {
                           Navigator.pushNamed(context, '/add_category');
                         },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Manage Service Category',
                         icon: Icons.change_circle,
                         onTap: () {
                           Navigator.pushNamed(context, '/manage_category');
                         },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Add Service Sub-Category',
                         icon: Icons.category,
                         onTap: () {
                           Navigator.pushNamed(context, '/add_sub_category');
                         },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Manage Service Sub-Category',
                         icon: Icons.change_circle,
                         onTap: () {
                           Navigator.pushNamed(context, '/manage_sub_category');
                         },
-                      ),
+                      ) :
 
-                      SettingsCard( title: 'Add Service', icon: Icons.home_repair_service_sharp, 
+                      isAdmin? SettingsCard( title: 'Add Service', icon: Icons.home_repair_service_sharp, 
                         onTap: (){
                           Navigator.push(
                               context,
@@ -364,8 +378,8 @@ class _ProfileState extends State<Profile> {
                               ),
                             );
                           },
-                      ),
-                      SettingsCard(
+                      ) :
+                      isAdmin? SettingsCard(
                         title: 'Manage Services', 
                         icon: Icons.design_services, 
                         onTap: (){
@@ -376,7 +390,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           );
                         }
-                      ),
+                      ) :
                       Card(
                         child: ListTile(
                           title: Text('Logout'),

@@ -28,7 +28,7 @@ class User {
       id: id,
       name: data['name'] ?? '',
       email: data['email'] ?? '',
-      isAdmin: data['is_admin'] ?? false,
+      isAdmin: data['admin'] ?? false,
       image_base64: data['image_base64'] ?? '',
       phone: data['phone'] ?? '',
       latitude: data['latitude'],
