@@ -6,14 +6,14 @@ class ServiceProvider {
   final String name;
   final String description;
   final String imageBase64;
-  final List<String> services; // <-- Added for the 'sp' array
+  final List<String> subcategories; // Corrected field name
 
   ServiceProvider({
     this.id,
     required this.name,
     required this.description,
     required this.imageBase64,
-    required this.services,
+    required this.subcategories,
   });
 
   factory ServiceProvider.fromMap(Map<String, dynamic> data, String? id) {
@@ -22,7 +22,7 @@ class ServiceProvider {
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       imageBase64: data['image_base64'] ?? '',
-      services: List<String>.from(data['sp'] ?? []), // Safely parse the array
+      subcategories: List<String>.from(data['subcategories'] ?? []), // Correct key
     );
   }
 
@@ -31,7 +31,7 @@ class ServiceProvider {
       'name': name,
       'description': description,
       'image_base64': imageBase64,
-      'sp': services,
+      'subcategories': subcategories, // Correct key
     };
   }
 
