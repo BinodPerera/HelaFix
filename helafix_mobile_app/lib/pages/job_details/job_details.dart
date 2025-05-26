@@ -12,10 +12,8 @@ class JobDetails extends StatelessWidget {
   const JobDetails({super.key});
 
   Future<Job?> _getJob(String jobId) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('jobs')
-        .doc(jobId)
-        .get();
+    final snapshot =
+        await FirebaseFirestore.instance.collection('jobs').doc(jobId).get();
 
     if (snapshot.exists && snapshot.data() != null) {
       return Job.fromMap(snapshot.data()!, snapshot.id);
@@ -90,8 +88,25 @@ class JobDetails extends StatelessWidget {
                     _buildActionButton(
                       label: "Finish Job",
                       color: const Color.fromARGB(255, 0, 255, 8),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/job_done_1.1');
+                      onPressed: () async {
+                        try {
+                          await FirebaseFirestore.instance
+                              .collection('jobs')
+                              .doc(job.jobId)
+                              .update({'user_value': true});
+
+                          Navigator.pushNamed(
+                            context,
+                            '/job_done_1.1',
+                            arguments: {
+                              'jobId': job.jobId,
+                            },
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to finish job: $e')),
+                          );
+                        }
                       },
                     ),
                   ],
@@ -104,7 +119,6 @@ class JobDetails extends StatelessWidget {
                   _buildInfo(context, 'Description: ${job.description}'),
                   _buildInfo(context,
                       'Start Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.createdAt)}'),
-
                   if (job.status == "Past") ...[
                     _buildInfo(context,
                         'End Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.endAt)}'),
@@ -112,7 +126,6 @@ class JobDetails extends StatelessWidget {
                   const SizedBox(height: 20),
                   _buildSectionTitle(context, 'Service Provider,'),
                   _buildProviderCard(),
-
                   if (job.status == "Future") ...[
                     _buildActionButton(
                       label: "Update Booking",
@@ -122,7 +135,6 @@ class JobDetails extends StatelessWidget {
                       },
                     ),
                   ],
-
                   if (job.status == "Past") ...[
                     const SizedBox(height: 20),
                     _buildSectionTitle(context, 'Payment Details,'),
@@ -131,8 +143,8 @@ class JobDetails extends StatelessWidget {
                     _buildInfo(context,
                         'Time: ${DateFormat('hh:mm a').format(job.paymentAt)}'),
                     _buildInfo(context, 'Final Cost: LKR ${job.cost}'),
-                    _buildInfo(context,
-                        'Card Number: ${job.cardNumber ?? "N/A"}'),
+                    _buildInfo(
+                        context, 'Card Number: ${job.cardNumber ?? "N/A"}'),
                     _buildInfo(context, 'Payment Number: ${job.paymentId}'),
                     const SizedBox(height: 20),
                     _buildSectionTitle(context, 'Your Review,'),
@@ -232,26 +244,32 @@ class JobDetails extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Cleaning > Home Cleaning > Deep Cleaning',
-                  style: TextStyle(fontSize: 15),
+                  'Job ID: ${job.jobId}',
+                  style: const TextStyle(fontSize: 15),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Row(
-                children: const [
+                children: [
                   Text(
-                    'Done',
-                    style: TextStyle(
+                    job.status,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 0, 0, 0),
                       fontSize: 15,
                     ),
                   ),
-                  SizedBox(width: 4),
-                  Icon(Icons.circle,
-                      color: Color.fromARGB(255, 255, 0, 0), size: 10),
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.circle,
+                    size: 10,
+                    color: job.status == "Past"
+                        ? Colors.red
+                        : job.status == "Present"
+                            ? Colors.green
+                            : Colors.black,
+                  ),
                 ],
               ),
             ],
@@ -395,8 +413,8 @@ class JobDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 75),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 75),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
