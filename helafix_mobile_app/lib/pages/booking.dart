@@ -92,6 +92,7 @@ class _BookingState extends State<Booking> {
     final job = {
       'card_number': null,
       'cost': 0,
+      'costsp': 0,
       'created_at': Timestamp.fromDate(selectedDateTime!),
       'description': descriptionController.text,
       'end_at': null,
@@ -105,6 +106,8 @@ class _BookingState extends State<Booking> {
       'user_id': null,
       'provider_value': false,
       'user_value': false,
+      'usercost': false,
+      'spcost': false,
     };
 
     await FirebaseFirestore.instance.collection('jobs').add(job);
