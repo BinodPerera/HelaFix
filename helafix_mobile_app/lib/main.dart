@@ -31,6 +31,8 @@ import './pages/job_done/job_done_2.3.dart';
 import './pages/job_done/payment.dart';
 import './pages/job_done/review.dart';
 
+import './pages/about.dart';
+
 
 import '../pages/service_providers_list_pages/service_providers_page.dart';
 
@@ -100,6 +102,7 @@ class MyApp extends StatelessWidget {
         '/emergency_contact': (context) => EmergencyContact(),
         '/jobdetails': (context) => JobDetails(),
         '/Cartdt': (context) => CartDt(subCategoryId: '',),
+        '/about': (context) => AboutPage(),
       }
     );
   }

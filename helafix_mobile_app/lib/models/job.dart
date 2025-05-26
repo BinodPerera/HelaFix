@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Job {
+  final String jobId; // ✅ Add this
   final String? cardNumber;
   final int cost;
   final DateTime createdAt;
@@ -18,6 +19,7 @@ class Job {
   final bool userValue;
 
   Job({
+    required this.jobId, // ✅ Add this to constructor
     this.cardNumber,
     required this.cost,
     required this.createdAt,
@@ -35,8 +37,9 @@ class Job {
     required this.userValue,
   });
 
-  factory Job.fromMap(Map<String, dynamic> data, String? id) {
+  factory Job.fromMap(Map<String, dynamic> data, String id) {
     return Job(
+      jobId: id, // ✅ assign document ID here
       cardNumber: data['card_number']?.toString(),
       cost: data['cost'] is int
           ? data['cost']
@@ -44,7 +47,7 @@ class Job {
       createdAt: (data['created_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       description: data['description'] ?? '',
       endAt: (data['end_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      subcategoriesid: data['jbid'] ?? id ?? '',
+      subcategoriesid: data['jbid'] ?? id,
       paymentAt: (data['payment_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       paymentId: data['payment_id'] is int
           ? data['payment_id']
@@ -60,6 +63,4 @@ class Job {
       userValue: data['user_value'] ?? false,
     );
   }
-
-  get starsCount => null;
 }

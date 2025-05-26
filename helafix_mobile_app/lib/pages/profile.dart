@@ -285,7 +285,7 @@ class _ProfileState extends State<Profile> {
                         title: 'About Us',
                         icon: Icons.info,
                         onTap: () {
-                          // Navigate to about page
+                          Navigator.pushNamed(context, '/about');
                         },
                       ),
                       SettingsCard(

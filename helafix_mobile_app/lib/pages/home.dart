@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'dart:ffi';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helafix_mobile_app/models/category.dart';
 import 'package:helafix_mobile_app/models/service_provider.dart';
+import 'package:helafix_mobile_app/models/job.dart';
+import 'package:helafix_mobile_app/models/service_sub.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:helafix_mobile_app/pages/sp-details.dart';
 import 'package:helafix_mobile_app/services/category_service.dart';
@@ -21,6 +23,19 @@ class HelaFixPage extends StatefulWidget {
 }
 
 class _HelaFixPageState extends State<HelaFixPage> {
+  Future<String> getSubCategoryName(String subCategoryId) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('sub_categories')
+        .doc(subCategoryId)
+        .get();
+
+    if (snapshot.exists) {
+      final data = snapshot.data() as Map<String, dynamic>;
+      return data['name'] ?? 'Unknown Subcategory';
+    }
+    return 'Unknown Subcategory';
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -53,7 +68,6 @@ class _HelaFixPageState extends State<HelaFixPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Search bar
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: TextField(
@@ -71,8 +85,6 @@ class _HelaFixPageState extends State<HelaFixPage> {
                   ),
                 ),
               ),
-
-              // Categories
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Categories',
@@ -80,7 +92,6 @@ class _HelaFixPageState extends State<HelaFixPage> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 10),
-
               SizedBox(
                 height: 100,
                 child: StreamBuilder<Map<String, Category>>(
@@ -89,13 +100,10 @@ class _HelaFixPageState extends State<HelaFixPage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
-
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Center(child: Text('No categories found.'));
                     }
-
                     final categoryEntries = snapshot.data!.entries.toList();
-
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: EdgeInsets.symmetric(horizontal: 12),
@@ -103,16 +111,14 @@ class _HelaFixPageState extends State<HelaFixPage> {
                       itemBuilder: (context, index) {
                         final categoryId = categoryEntries[index].key;
                         final category = categoryEntries[index].value;
-
-                        // Decode base64 image
                         final imageBytes = base64Decode(category.imageBase64);
-
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomePageCat(categoryId: categoryId),
+                                builder: (context) =>
+                                    HomePageCat(categoryId: categoryId),
                               ),
                             );
                           },
@@ -159,9 +165,6 @@ class _HelaFixPageState extends State<HelaFixPage> {
                 ),
               ),
               SizedBox(height: 20),
-
-
-              // Popular Experts
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text('Popular Experts',
@@ -169,28 +172,22 @@ class _HelaFixPageState extends State<HelaFixPage> {
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 10),
-
-              // loading service providers into ExpertTile from firebase
               StreamBuilder<List<ServiceProvider>>(
                 stream: ServiceProviderService.getServiceProviders(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
-
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(child: Text('No service providers found.'));
                   }
-
                   final serviceProviders = snapshot.data!;
-
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: serviceProviders.length,
                     itemBuilder: (context, index) {
                       final sp = serviceProviders[index];
-
                       return ExpertTile(
                         companyLogoBase64: sp.imageBase64,
                         companyName: sp.name,
@@ -201,8 +198,10 @@ class _HelaFixPageState extends State<HelaFixPage> {
                         rating: 5,
                         onTap: () {
                           Navigator.push(
-                            context, 
-                            MaterialPageRoute(builder: (context) => SpDetails(serviceProvider: sp)),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SpDetails(serviceProvider: sp)),
                           );
                         },
                       );
@@ -210,115 +209,96 @@ class _HelaFixPageState extends State<HelaFixPage> {
                   );
                 },
               ),
-
-              // ExpertTile(
-              //   companyLogo: 'assets/images/damro.png',
-              //   companyName: 'Damro Company PVT LTD',
-              //   categoryImage: [
-              //     'assets/images/repair.png',
-              //     'assets/images/optimizing.png',
-              //   ],
-              //   rating: 5,
-              //   onTap: () {
-              //     Navigator.pushNamed(context, '/Sp-details');
-              //   },
-              // ),
-
-              // ExpertTile(
-              //   companyLogo: 'assets/images/Arpico.png',
-              //   companyName: 'Pioneer Cleaning',
-              //   categoryImage: ['assets/images/clean-code.png'],
-              //   rating: 4,
-              //   onTap: () {
-              //     Navigator.pushNamed(context, '/Sp-details');
-              //   },
-              // ),
-              // ExpertTile(
-              //   companyLogo: 'assets/images/Arpico.png',
-              //   companyName: 'Softlogic Holdings PLC',
-              //   categoryImage: [
-              //     'assets/images/repair.png',
-              //     'assets/images/optimizing.png',
-              //     'assets/images/clean-code.png'
-              //   ],
-              //   rating: 4,
-              //   onTap: () {
-              //     Navigator.pushNamed(context, '/Sp-details');
-              //   },
-              // ),
-              // ExpertTile(
-              //   companyLogo: 'assets/images/damro.png',
-              //   companyName: 'Damro Company PVT LTD',
-              //   categoryImage: [
-              //     'assets/images/repair.png',
-              //     'assets/images/optimizing.png'
-              //   ],
-              //   rating: 5,
-              //   onTap: () {
-              //     Navigator.pushNamed(context, '/Sp-details');
-              //   },
-              // ),
-              // ExpertTile(
-              //   companyLogo: 'assets/images/damro.png',
-              //   companyName: 'Damro Company PVT LTD',
-              //   categoryImage: [
-              //     'assets/images/repair.png',
-              //     'assets/images/optimizing.png'
-              //   ],
-              //   rating: 5,
-              //   onTap: () {
-              //     Navigator.pushNamed(context, '/Sp-details');
-              //   },
-              // ),
-
-              // Ongoing Activities
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-                child: Text('Recent On-Going Activities',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                child: Text(
+                  'Recent On-Going Activities',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
+              FutureBuilder(
+                future: FirebaseFirestore.instance.collection('jobs').get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/jobdetails');
-                },
-                child: const ActivityCard(
-                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                  logo: 'assets/images/damro.png',
-                  serviceName: 'Damro Cleaning Service',
-                  date: '02/02/2025',
-                  cost: 'COST NEGOTIABLE',
-                  status: 'Active',
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/jobdetails');
-                },
-                child: const ActivityCard(
-                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                  logo: 'assets/images/damro.png',
-                  serviceName: 'Damro Cleaning Service',
-                  date: '02/02/2025',
-                  cost: 'COST NEGOTIABLE',
-                  status: 'Active',
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/jobdetails');
-                },
-                child: const ActivityCard(
-                  serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
-                  logo: 'assets/images/damro.png',
-                  serviceName: 'Damro Cleaning Service',
-                  date: '02/02/2025',
-                  cost: 'COST NEGOTIABLE',
-                  status: 'Active',
-                ),
-              ),
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No ongoing jobs found.'));
+                  }
 
+                  final jobs = snapshot.data!.docs
+                      .where((doc) =>
+                          (doc.data() as Map<String, dynamic>)['status']
+                              ?.toLowerCase() ==
+                          'present')
+                      .toList();
+
+                  if (jobs.isEmpty) {
+                    return const Center(child: Text('No present jobs found.'));
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: jobs.length,
+                    itemBuilder: (context, index) {
+                      final jobData = jobs[index].data();
+                      final jobId = jobs[index].id;
+                      final job = Job.fromMap(jobData, jobId);
+
+                      return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection('service_providers')
+                            .doc(job.providerId)
+                            .get(),
+                        builder: (context, spSnapshot) {
+                          if (!spSnapshot.hasData || !spSnapshot.data!.exists) {
+                            return const SizedBox.shrink();
+                          }
+
+                          final sp = ServiceProvider.fromMap(
+                            spSnapshot.data!.data() as Map<String, dynamic>,
+                            spSnapshot.data!.id,
+                          );
+
+                          final createdAt = job.createdAt;
+                          final formattedDate =
+                              "${createdAt.day.toString().padLeft(2, '0')}/${createdAt.month.toString().padLeft(2, '0')}/${createdAt.year}";
+
+                          return FutureBuilder<String>(
+                            future: getSubCategoryName(job.subcategoriesid),
+                            builder: (context, subcatSnapshot) {
+                              if (!subcatSnapshot.hasData)
+                                return const SizedBox.shrink();
+
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/jobdetails');
+                                },
+                                child: ActivityCard(
+                                  serviceFlow: subcatSnapshot.data!,
+                                  logo: sp.imageBase64.isNotEmpty
+                                      ? MemoryImage(
+                                          base64Decode(sp.imageBase64))
+                                      : const AssetImage(
+                                          'assets/images/placeholder.png'),
+                                  serviceName: sp.name,
+                                  date: formattedDate,
+                                  cost: job.cost > 0
+                                      ? "Rs. ${job.cost}"
+                                      : "COST NEGOTIABLE",
+                                  status: job.status,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
               const SizedBox(height: 20),
             ],
           ),
@@ -331,6 +311,109 @@ class _HelaFixPageState extends State<HelaFixPage> {
           Navigator.pushNamed(context, '/bookmarks');
         }
       }),
+    );
+  }
+}
+
+class ActivityCard extends StatelessWidget {
+  final String serviceFlow;
+  final ImageProvider logo;
+  final String serviceName;
+  final String date;
+  final String status;
+  final String cost;
+
+  const ActivityCard({
+    required this.serviceFlow,
+    required this.logo,
+    required this.serviceName,
+    required this.date,
+    required this.status,
+    required this.cost,
+    super.key,
+  });
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return const Color.fromARGB(255, 0, 255, 8);
+      case 'pending':
+        return const Color.fromARGB(255, 0, 255, 0);
+      case 'cancelled':
+        return const Color.fromARGB(255, 0, 255, 0);
+      default:
+        return const Color.fromARGB(255, 0, 255, 0);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 3,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(serviceFlow,
+                    style:
+                        const TextStyle(fontSize: 12, color: Colors.black54)),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Image(
+                      image: logo,
+                      width: 50,
+                      height: 50,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, size: 50),
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(serviceName,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(date,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.black45)),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 12,
+            right: 12,
+            child: Row(
+              children: [
+                Text(status,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold)),
+                const SizedBox(width: 4),
+                Icon(Icons.circle, size: 10, color: _getStatusColor(status)),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 12,
+            right: 12,
+            child: Text(cost,
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -373,7 +456,7 @@ class ExpertTile extends StatelessWidget {
   final String companyName;
   final List<String> categoryImage;
   final int rating;
-  final VoidCallback? onTap; // ✅ Add this
+  final VoidCallback? onTap;
 
   const ExpertTile({
     super.key,
@@ -382,13 +465,12 @@ class ExpertTile extends StatelessWidget {
     required this.categoryImage,
     this.companyLogoBase64,
     required this.rating,
-    this.onTap, // ✅ Add this
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // ✅ Wrap Card with InkWell
       onTap: onTap,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -399,8 +481,6 @@ class ExpertTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo
-                  // Decode base64 image
                   if (companyLogoBase64 != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
@@ -483,91 +563,6 @@ class ExpertTile extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Activity Card
-class ActivityCard extends StatelessWidget {
-  final String serviceFlow;
-  final String logo;
-  final String serviceName;
-  final String date;
-  final String status;
-  final String cost;
-
-  const ActivityCard({
-    required this.serviceFlow,
-    required this.logo,
-    required this.serviceName,
-    required this.date,
-    required this.status,
-    required this.cost,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(serviceFlow,
-                    style:
-                        const TextStyle(fontSize: 12, color: Colors.black54)),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Image.asset(logo, width: 50, height: 50),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(serviceName,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text(date,
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.black45)),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 12,
-            right: 12,
-            child: Row(
-              children: [
-                Text(status,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(width: 4),
-                const Icon(Icons.circle, size: 10, color: Colors.green),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 12,
-            right: 12,
-            child: Text(cost,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          ),
-        ],
       ),
     );
   }

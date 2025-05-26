@@ -434,3 +434,5 @@ class JobDetails extends StatelessWidget {
     );
   }
 }
+
+
