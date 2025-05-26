@@ -274,7 +274,14 @@ class _HelaFixPageState extends State<HelaFixPage> {
 
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/jobdetails');
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/jobdetails',
+                                    arguments: {
+                                      'jobId': job.jobId,
+                                      'providerId': job.providerId,
+                                    },
+                                  );
                                 },
                                 child: ActivityCard(
                                   serviceFlow: subcatSnapshot.data!,

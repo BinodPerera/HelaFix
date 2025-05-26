@@ -11,11 +11,14 @@ import 'package:intl/intl.dart';
 class JobDetails extends StatelessWidget {
   const JobDetails({super.key});
 
-  Future<Job?> _getJob() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('jobs').limit(1).get();
-    if (snapshot.docs.isNotEmpty) {
-      return Job.fromMap(snapshot.docs.first.data(), snapshot.docs.first.id);
+  Future<Job?> _getJob(String jobId) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('jobs')
+        .doc(jobId)
+        .get();
+
+    if (snapshot.exists && snapshot.data() != null) {
+      return Job.fromMap(snapshot.data()!, snapshot.id);
     }
     return null;
   }
@@ -24,8 +27,19 @@ class JobDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args == null || args is! Map || !args.containsKey('jobId')) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Missing or invalid jobId argument'),
+        ),
+      );
+    }
+
+    final String jobId = args['jobId'];
+
     return FutureBuilder<Job?>(
-      future: _getJob(),
+      future: _getJob(jobId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -62,169 +76,24 @@ class JobDetails extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(1),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.black87),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Expanded(
-                              child: Text(
-                                'Cleaning > Home Cleaning > Deep Cleaning',
-                                style: TextStyle(fontSize: 15),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Row(
-                              children: const [
-                                Text(
-                                  'Done',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                SizedBox(width: 4),
-                                Icon(Icons.circle,
-                                    color: Color.fromARGB(255, 255, 0, 0),
-                                    size: 10),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black54),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.asset(
-                                  'assets/images/Arpico.webp',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Damro Cleaning Service',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 30),
-                                      Text(
-                                        "",
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    bottom: -5,
-                                    right: 0,
-                                    child: Text(
-                                      'COST: LKR ${job.cost.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //Future
+                  _buildJobSummaryCard(job),
                   if (job.status == "Future") ...[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 45, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'Cancel Request',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    _buildActionButton(
+                      label: "Cancel Request",
+                      color: Colors.red,
+                      onPressed: () {
+                        // Cancel logic here
+                      },
                     ),
-                  ),
                   ],
-
-
-                  //Present
                   if (job.status == "Present") ...[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 30, 255, 0),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 45, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                    _buildActionButton(
+                      label: "Finish Job",
+                      color: const Color.fromARGB(255, 0, 255, 8),
                       onPressed: () {
                         Navigator.pushNamed(context, '/job_done_1.1');
                       },
-                      child: Text(
-                        'Finish Job',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                     ),
-                  ),
                   ],
                   const SizedBox(height: 20),
                   _buildSectionTitle(context, 'Job Summary,'),
@@ -236,73 +105,54 @@ class JobDetails extends StatelessWidget {
                   _buildInfo(context,
                       'Start Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.createdAt)}'),
 
-                  //Past
                   if (job.status == "Past") ...[
-                  _buildInfo(context,
-                      'End Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.endAt)}'),
+                    _buildInfo(context,
+                        'End Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.endAt)}'),
                   ],
                   const SizedBox(height: 20),
                   _buildSectionTitle(context, 'Service Provider,'),
                   _buildProviderCard(),
 
-                  //Future
                   if (job.status == "Future") ...[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 30, 255, 0),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 45, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'Update Booking',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    _buildActionButton(
+                      label: "Update Booking",
+                      color: Colors.green,
+                      onPressed: () {
+                        // Update booking logic
+                      },
                     ),
-                  ),
                   ],
 
-
-                  //Past
                   if (job.status == "Past") ...[
-                  const SizedBox(height: 20),
-                  _buildSectionTitle(context, 'Payment Details,'),
-                  _buildInfo(context,
-                      'Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.paymentAt)}'),
-                  _buildInfo(context,
-                      'Time: ${DateFormat('hh:mm a').format(job.paymentAt)}'),
-                  _buildInfo(context, 'Final Cost: LKR ${job.cost}'),
-                  _buildInfo(
-                      context, 'Card Number: ${job.cardNumber ?? "N/A"}'),
-                  _buildInfo(context, 'Payment Number: ${job.paymentId}'),
-                  const SizedBox(height: 20),
-                  _buildSectionTitle(context, 'Your Review,'),
-                  _buildInfo(context, job.review),
-                  Container(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: RatingBarIndicator(
-                        rating: job.stars.toDouble(),
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                    const SizedBox(height: 20),
+                    _buildSectionTitle(context, 'Payment Details,'),
+                    _buildInfo(context,
+                        'Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.paymentAt)}'),
+                    _buildInfo(context,
+                        'Time: ${DateFormat('hh:mm a').format(job.paymentAt)}'),
+                    _buildInfo(context, 'Final Cost: LKR ${job.cost}'),
+                    _buildInfo(context,
+                        'Card Number: ${job.cardNumber ?? "N/A"}'),
+                    _buildInfo(context, 'Payment Number: ${job.paymentId}'),
+                    const SizedBox(height: 20),
+                    _buildSectionTitle(context, 'Your Review,'),
+                    _buildInfo(context, job.review),
+                    Container(
+                      padding: const EdgeInsets.only(top: 10, left: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: RatingBarIndicator(
+                          rating: job.stars.toDouble(),
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: job.stars,
+                          itemSize: 20.0,
+                          direction: Axis.horizontal,
                         ),
-                        itemCount: job.stars,
-                        itemSize: 20.0,
-                        direction: Axis.horizontal,
                       ),
                     ),
-                  ),
                   ],
                   const SizedBox(height: 40),
                 ],
@@ -360,6 +210,144 @@ class JobDetails extends StatelessWidget {
     );
   }
 
+  Widget _buildJobSummaryCard(Job job) {
+    return Container(
+      margin: const EdgeInsets.all(1),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black87),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Expanded(
+                child: Text(
+                  'Cleaning > Home Cleaning > Deep Cleaning',
+                  style: TextStyle(fontSize: 15),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Row(
+                children: const [
+                  Text(
+                    'Done',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(width: 4),
+                  Icon(Icons.circle,
+                      color: Color.fromARGB(255, 255, 0, 0), size: 10),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black54),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset(
+                    'assets/images/Arpico.webp',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Damro Cleaning Service',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Text(
+                          "",
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: -5,
+                      right: 0,
+                      child: Text(
+                        'COST: LKR ${job.cost.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildProviderCard() {
     return Container(
       width: 400,
@@ -407,23 +395,18 @@ class JobDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 75),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8, horizontal: 75),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "90% Positive ratings",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
+                  child: const Text(
+                    "90% Positive ratings",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 13,
+                    ),
                   ),
                 ),
               ],
@@ -434,5 +417,3 @@ class JobDetails extends StatelessWidget {
     );
   }
 }
-
-
