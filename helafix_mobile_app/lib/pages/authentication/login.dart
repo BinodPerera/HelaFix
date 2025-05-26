@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
     if (user != null) {
       // User is logged in, navigate to /profile
       Future.microtask(() {
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/home');
       });
     }
   }

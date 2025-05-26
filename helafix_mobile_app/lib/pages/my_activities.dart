@@ -116,8 +116,8 @@ class _MyactivitiesState extends State<Myactivities> {
                       price: job['price'],
                       onTap: () {
                         String route = '/${job['type']}job';
-                        if (job['type'] == 'Inprocess') route = '/Activejob';
-                        if (job['type'] == 'Past') route = '/Finishedjob';
+                        if (job['type'] == 'Inprocess') route = '/jobdetails';
+                        if (job['type'] == 'Past') route = '/jobdetails';
                         Navigator.pushNamed(context, route);
                       },
                     );

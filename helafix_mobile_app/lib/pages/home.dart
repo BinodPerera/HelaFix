@@ -281,7 +281,7 @@ class _HelaFixPageState extends State<HelaFixPage> {
 
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/Activejob');
+                  Navigator.pushNamed(context, '/jobdetails');
                 },
                 child: const ActivityCard(
                   serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
@@ -294,7 +294,7 @@ class _HelaFixPageState extends State<HelaFixPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/Activejob');
+                  Navigator.pushNamed(context, '/jobdetails');
                 },
                 child: const ActivityCard(
                   serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',
@@ -307,7 +307,7 @@ class _HelaFixPageState extends State<HelaFixPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/Activejob');
+                  Navigator.pushNamed(context, '/jobdetails');
                 },
                 child: const ActivityCard(
                   serviceFlow: 'Cleaning > Home Cleaning > Deep Cleaning',

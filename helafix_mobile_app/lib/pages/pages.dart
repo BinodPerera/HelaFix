@@ -231,6 +231,22 @@ class Pages extends StatelessWidget {
                   },
                 ),
               ),
+              // Card(
+              //   child: ListTile(
+              //     title: const Text('Esfsdfsdfsdfsf'),
+              //     onTap: () {
+              //       Navigator.pushNamed(context, '/jobdetails');
+              //     },
+              //   ),
+              // ),
+              Card(
+                child: ListTile(
+                  title: const Text('zdfdzfszdfsdf'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Subcatlist');
+                  },
+                ),
+              ),
             ],
           ),
         ),
