@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
@@ -20,6 +21,9 @@ class AddServiceProvider extends StatefulWidget {
 class _AddServiceProviderState extends State<AddServiceProvider> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController providerEmailController = TextEditingController();
+  final TextEditingController providerPasswordController = TextEditingController();
+  final TextEditingController providerConfirmPasswordController = TextEditingController();
   File? _image;
   final picker = ImagePicker();
   bool _isLoading = false;
@@ -34,7 +38,20 @@ class _AddServiceProviderState extends State<AddServiceProvider> {
   }
 
   Future<void> _uploadServiceProvider() async {
-    if (_image == null || nameController.text.isEmpty) return;
+    if (_image == null || nameController.text.isEmpty || providerPasswordController.text.isEmpty || providerConfirmPasswordController.text.isEmpty){
+      // showing message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill all fields and select an image")),
+      );
+      return;
+    }
+
+    if (providerPasswordController.text != providerConfirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Passwords do not match")),
+      );
+      return;
+    };
 
     setState(() => _isLoading = true);
     try {
@@ -46,6 +63,8 @@ class _AddServiceProviderState extends State<AddServiceProvider> {
         'description': descriptionController.text,
         'image_base64': base64Image,
         'subcategories': _selectedSubcategories,
+        'email': providerEmailController.text,
+        'password': BCrypt.hashpw(providerPasswordController.text, BCrypt.gensalt()),
         'timestamp': FieldValue.serverTimestamp(),
       });
 
@@ -109,6 +128,28 @@ class _AddServiceProviderState extends State<AddServiceProvider> {
                         icon: Icons.description,
                         isDarkMode: isDark,
                       ),
+                      const SizedBox(height: 20),
+                      customTextInput(
+                        controller: providerEmailController,
+                        hintText: 'Email',
+                        icon: Icons.mail,
+                        isDarkMode: isDark,
+                      ),
+                      const SizedBox(height: 20),
+                      customTextInput(
+                        controller: providerPasswordController,
+                        hintText: 'Password',
+                        icon: Icons.password,
+                        isDarkMode: isDark,
+                      ),
+                      const SizedBox(height: 20),
+                      customTextInput(
+                        controller: providerConfirmPasswordController,
+                        hintText: 'Confirm Password',
+                        icon: Icons.confirmation_num,
+                        isDarkMode: isDark,
+                      ),
+                      
                       const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,

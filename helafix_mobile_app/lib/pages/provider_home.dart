@@ -6,7 +6,10 @@ import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/components/appbar_title.dart';
 
 class ProviderHome extends StatefulWidget {
-  const ProviderHome({super.key});
+  const ProviderHome({
+    super.key,
+    required String providerId,
+  });
 
   @override
   State<ProviderHome> createState() => _ProviderHomeState();

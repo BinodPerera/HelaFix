@@ -158,6 +158,28 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 60),
+                  Text(
+                    'Are you having Service Provider Account?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: isDark ? AppColours.primaryTextDark : AppColours.primaryTextLight,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/provider_login');
+                    }, 
+                    child: Text('Log Now')
+                  ),
+                  Divider(
+                    color: isDark ? Colors.white : Colors.black,
+                    thickness: 1,
+                    height: 50,
+                  ),
+                  
                 ],
               ),
             ),
