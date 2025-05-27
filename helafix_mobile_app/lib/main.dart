@@ -100,6 +100,8 @@ class MyApp extends StatelessWidget {
         '/jobdetails': (context) => JobDetails(),
         '/Cartdt': (context) => CartDt(subCategoryId: '',),
         '/provider_login': (context) => ProviderLoginUI(),
+        '/about': (context) => AboutPage(),
+        '/updatebooking': (context) => UpdateBookingPage(),
       }
     );
   }

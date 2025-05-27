@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Job {
+  final String jobId; 
   final String? cardNumber;
   final int cost;
+  final int costsp;
   final DateTime createdAt;
   final String description;
   final DateTime endAt;
@@ -16,10 +18,14 @@ class Job {
   final String? userId;
   final bool providerValue;
   final bool userValue;
+  final bool usercost;
+  final bool spcost;
 
   Job({
+    required this.jobId, 
     this.cardNumber,
     required this.cost,
+    required this.costsp,
     required this.createdAt,
     required this.description,
     required this.endAt,
@@ -33,18 +39,24 @@ class Job {
     this.userId,
     required this.providerValue,
     required this.userValue,
+    required this.usercost,
+    required this.spcost,
   });
 
-  factory Job.fromMap(Map<String, dynamic> data, String? id) {
+  factory Job.fromMap(Map<String, dynamic> data, String id) {
     return Job(
+      jobId: id, // ✅ assign document ID here
       cardNumber: data['card_number']?.toString(),
       cost: data['cost'] is int
           ? data['cost']
           : int.tryParse(data['cost'].toString()) ?? 0,
+      costsp: data['costsp'] is int
+          ? data['costsp']
+          : int.tryParse(data['cost'].toString()) ?? 0,
       createdAt: (data['created_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       description: data['description'] ?? '',
       endAt: (data['end_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      subcategoriesid: data['jbid'] ?? id ?? '',
+      subcategoriesid: data['jbid'] ?? id,
       paymentAt: (data['payment_at'] as Timestamp?)?.toDate() ?? DateTime.now(),
       paymentId: data['payment_id'] is int
           ? data['payment_id']
@@ -58,8 +70,8 @@ class Job {
       userId: data['user_id'],
       providerValue: data['provider_value'] ?? false,
       userValue: data['user_value'] ?? false,
+      usercost: data['usercost'] ?? false,
+      spcost: data['spcost'] ?? false,
     );
   }
-
-  get starsCount => null;
 }

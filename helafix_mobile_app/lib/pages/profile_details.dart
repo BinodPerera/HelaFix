@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
@@ -86,7 +85,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.isDarkMode;
-    final imageBytes = _imageBase64 != null ? base64Decode(_imageBase64!) : null;
     return Scaffold(
       appBar: CustomAppBar(),
       body: Container(
