@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 Widget customListTile({
   required String title,
-  required String subtitle,
   required String path,
   required String date,
   required String image,
   required VoidCallback onTap,
   required bool isDone,
   required String type,
+  Widget? subtitleWidget, // ✅ New parameter
   double price = 0.0,
 }) {
   return GestureDetector(
@@ -56,17 +55,19 @@ Widget customListTile({
                 ),
             ],
           ),
+
           // Info
           ListTile(
             leading: Image.memory(base64Decode(image), height: 60),
             title: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            subtitle: Text(date),
+            subtitle: subtitleWidget ?? const SizedBox(), // ✅ Render custom widget
           ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                isDone ? 'Cost Negotible' : 'Cost Negotible',
+                'Cost Negotiable',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ],

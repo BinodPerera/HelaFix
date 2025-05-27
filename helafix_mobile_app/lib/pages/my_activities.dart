@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/components/custom_list_tile.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
@@ -44,6 +44,17 @@ class _MyactivitiesState extends State<Myactivities> {
         isLoading = true;
       });
 
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        debugPrint('No user is currently signed in.');
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+        return;
+      }
+
       final jobSnapshot = await FirebaseFirestore.instance
           .collection('jobs')
           .where('status', isEqualTo: selectedValue)
@@ -53,6 +64,11 @@ class _MyactivitiesState extends State<Myactivities> {
 
       for (var jobDoc in jobSnapshot.docs) {
         final job = Job.fromMap(jobDoc.data(), jobDoc.id);
+
+        // ✅ Filter by current user
+        if (job.userId != currentUser.uid) {
+          continue;
+        }
 
         final providerDoc = await FirebaseFirestore.instance
             .collection('service_providers')
@@ -74,7 +90,6 @@ class _MyactivitiesState extends State<Myactivities> {
         final subCat =
             ServiceSubCategory.fromMap(subCatDoc.data()!, subCatDoc.id);
 
-        // Convert base64 to temporary file path or pass raw string
         final imageBytes = base64Decode(provider.imageBase64);
 
         combinedData.add({
@@ -86,18 +101,22 @@ class _MyactivitiesState extends State<Myactivities> {
           'imageBytes': imageBytes,
           'isDone': true,
           'type': job.status,
+          'userId': job.userId,
         });
       }
 
+      if (!mounted) return;
       setState(() {
         jobsData = combinedData;
         isLoading = false;
       });
     } catch (e) {
       debugPrint('Error fetching jobs: $e');
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -108,8 +127,6 @@ class _MyactivitiesState extends State<Myactivities> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final filteredJobs =
-        jobsData.where((job) => job['type'] == selectedValue).toList();
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -122,7 +139,6 @@ class _MyactivitiesState extends State<Myactivities> {
         ),
         child: Column(
           children: [
-            // Header with dropdown
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -169,20 +185,31 @@ class _MyactivitiesState extends State<Myactivities> {
               ],
             ),
             const SizedBox(height: 20),
-
-            // Job List
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : filteredJobs.isEmpty
+                  : jobsData.isEmpty
                       ? const Center(child: Text("No jobs found."))
                       : ListView.builder(
-                          itemCount: filteredJobs.length,
+                          itemCount: jobsData.length,
                           itemBuilder: (context, index) {
-                            final job = filteredJobs[index];
+                            final job = jobsData[index];
                             return customListTile(
                               title: job['title'],
-                              subtitle: job['subtitle'],
+                              subtitleWidget: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(job['subtitle']),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'User ID: ${job['userId'] ?? 'N/A'}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
                               path: job['path'],
                               date: job['date'],
                               image: base64Encode(job['imageBytes']),
