@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/Update_booking.dart';
+import 'package:helafix_mobile_app/pages/about.dart';
 import 'package:helafix_mobile_app/pages/category/manage_category.dart';
 import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
