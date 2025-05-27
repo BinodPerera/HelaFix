@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helafix_mobile_app/models/service_sub.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../theme_provider.dart';
 import '../theme/colors.dart';
@@ -81,34 +82,37 @@ class _BookingState extends State<Booking> {
   }
 
   Future<void> submitJob() async {
-    if (providerId.isEmpty ||
-        subCategoryId.isEmpty ||
-        selectedDateTime == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Missing data')));
-      return;
-    }
+  if (providerId.isEmpty ||
+      subCategoryId.isEmpty ||
+      selectedDateTime == null) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Missing data')));
+    return;
+  }
 
-    final job = {
-      'card_number': null,
-      'cost': 0,
-      'costsp': 0,
-      'created_at': Timestamp.fromDate(selectedDateTime!),
-      'description': descriptionController.text,
-      'end_at': null,
-      'jbid': subCategoryId,
-      'payment_at': Timestamp.now(),
-      'payment_id': 0,
-      'provider_id': providerId,
-      'review': '',
-      'stars': 0,
-      'status': 'Future',
-      'user_id': null,
-      'provider_value': false,
-      'user_value': false,
-      'usercost': false,
-      'spcost': false,
-    };
+  final currentUser = FirebaseAuth.instance.currentUser;
+  print("Current UID: ${currentUser?.uid}");
+
+  final job = {
+    'card_number': null,
+    'cost': 0,
+    'costsp': 0,
+    'created_at': Timestamp.fromDate(selectedDateTime!),
+    'description': descriptionController.text,
+    'end_at': null,
+    'jbid': subCategoryId,
+    'payment_at': Timestamp.now(),
+    'payment_id': 0,
+    'provider_id': providerId,
+    'review': '',
+    'stars': 0,
+    'status': 'Future',
+    'user_id': currentUser?.uid,
+    'provider_value': false,
+    'user_value': false,
+    'usercost': false,
+    'spcost': false,
+  };
 
     await FirebaseFirestore.instance.collection('jobs').add(job);
 
