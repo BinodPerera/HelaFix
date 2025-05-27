@@ -79,8 +79,50 @@ class JobDetails extends StatelessWidget {
                     _buildActionButton(
                       label: "Cancel Request",
                       color: Colors.red,
-                      onPressed: () {
-                        // Cancel logic here
+                      onPressed: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Cancel Request"),
+                            content: const Text(
+                                "Are you sure you want to cancel this job request? This action cannot be undone."),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                                child: const Text("No"),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: const Text("Yes"),
+                              ),
+                            ],
+                          ),
+                        );
+
+                        if (confirm ?? false) {
+                          try {
+                            await FirebaseFirestore.instance
+                                .collection('jobs')
+                                .doc(job.jobId)
+                                .delete();
+
+                            // Show success message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Job cancelled successfully.")),
+                            );
+
+                            // Navigate back or to another screen
+                            Navigator.pop(context);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text("Failed to cancel job: $e")),
+                            );
+                          }
+                        }
                       },
                     ),
                   ],
@@ -131,7 +173,13 @@ class JobDetails extends StatelessWidget {
                       label: "Update Booking",
                       color: Colors.green,
                       onPressed: () {
-                        // Update booking logic
+                        Navigator.pushNamed(
+                          context,
+                          '/updatebooking',
+                          arguments: {
+                            'jobId': job.jobId,
+                          },
+                        );
                       },
                     ),
                   ],
