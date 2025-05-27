@@ -1,10 +1,18 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/components/custom_list_tile.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
-import '../theme_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import '../theme/colors.dart';
+import '../theme_provider.dart';
+import '../models/job.dart';
+import '../models/service_provider.dart';
+import '../models/service_sub.dart';
 
 class JobStatus {
   static const past = 'Past';
@@ -21,46 +29,87 @@ class Myactivities extends StatefulWidget {
 
 class _MyactivitiesState extends State<Myactivities> {
   String selectedValue = JobStatus.present;
+  bool isLoading = true;
+  List<Map<String, dynamic>> jobsData = [];
 
-  final List<Map<String, dynamic>> allJobs = [
-    {
-      'title': 'Cleaning Service 1',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': true,
-      'type': JobStatus.future,
-      'price': 100.0,
-    },
-    {
-      'title': 'Cleaning Service 2',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': JobStatus.past,
-      'price': 100.0,
-    },
-    {
-      'title': 'Cleaning Service 3',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': JobStatus.present,
-      'price': 100.0,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchJobsWithDetails();
+  }
+
+  Future<void> fetchJobsWithDetails() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final jobSnapshot = await FirebaseFirestore.instance
+          .collection('jobs')
+          .where('status', isEqualTo: selectedValue)
+          .get();
+
+      List<Map<String, dynamic>> combinedData = [];
+
+      for (var jobDoc in jobSnapshot.docs) {
+        final job = Job.fromMap(jobDoc.data(), jobDoc.id);
+
+        final providerDoc = await FirebaseFirestore.instance
+            .collection('service_providers')
+            .doc(job.providerId)
+            .get();
+
+        final subCatDoc = await FirebaseFirestore.instance
+            .collection('sub_categories')
+            .doc(job.subcategoriesid)
+            .get();
+
+        if (!providerDoc.exists || !subCatDoc.exists) {
+          debugPrint('Missing provider or subcategory for job ${jobDoc.id}');
+          continue;
+        }
+
+        final provider =
+            ServiceProvider.fromMap(providerDoc.data()!, providerDoc.id);
+        final subCat =
+            ServiceSubCategory.fromMap(subCatDoc.data()!, subCatDoc.id);
+
+        // Convert base64 to temporary file path or pass raw string
+        final imageBytes = base64Decode(provider.imageBase64);
+
+        combinedData.add({
+          'id': job.jobId,
+          'title': provider.name,
+          'subtitle': DateFormat('MMM d, y – h:mm a').format(job.createdAt),
+          'path': subCat.name,
+          'date': formatDate(job.endAt),
+          'imageBytes': imageBytes,
+          'isDone': true,
+          'type': job.status,
+        });
+      }
+
+      setState(() {
+        jobsData = combinedData;
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Error fetching jobs: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  String? formatDate(DateTime? date) {
+    return date != null ? DateFormat('MMMM d, y').format(date) : null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
     final filteredJobs =
-        allJobs.where((job) => job['type'] == selectedValue).toList();
+        jobsData.where((job) => job['type'] == selectedValue).toList();
 
     return Scaffold(
       appBar: CustomAppBar(),
@@ -73,7 +122,7 @@ class _MyactivitiesState extends State<Myactivities> {
         ),
         child: Column(
           children: [
-            // Header
+            // Header with dropdown
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -97,7 +146,7 @@ class _MyactivitiesState extends State<Myactivities> {
                         ? AppColours.primaryTextDark
                         : AppColours.primaryTextLight,
                   ),
-                  underline: SizedBox(),
+                  underline: const SizedBox(),
                   items: <String>[
                     JobStatus.past,
                     JobStatus.present,
@@ -109,9 +158,12 @@ class _MyactivitiesState extends State<Myactivities> {
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
+                    if (newValue != null) {
+                      setState(() {
+                        selectedValue = newValue;
+                      });
+                      fetchJobsWithDetails();
+                    }
                   },
                 ),
               ],
@@ -120,36 +172,32 @@ class _MyactivitiesState extends State<Myactivities> {
 
             // Job List
             Expanded(
-              child: ListView.builder(
-                itemCount: filteredJobs.length,
-                itemBuilder: (context, index) {
-                  final job = filteredJobs[index];
-                  return customListTile(
-                    title: job['title'],
-                    subtitle: job['subtitle'],
-                    path: job['path'],
-                    date: job['date'],
-                    image: job['image'],
-                    isDone: job['isDone'],
-                    type: job['type'],
-                    price: job['price'],
-                    onTap: () {
-                      String route;
-                      switch (job['type']) {
-                        case JobStatus.past:
-                        case JobStatus.present:
-                          route = '/jobdetails';
-                          break;
-                        case JobStatus.future:
-                        default:
-                          route = '/jobdetails';
-                          break;
-                      }
-                      Navigator.pushNamed(context, route);
-                    },
-                  );
-                },
-              ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : filteredJobs.isEmpty
+                      ? const Center(child: Text("No jobs found."))
+                      : ListView.builder(
+                          itemCount: filteredJobs.length,
+                          itemBuilder: (context, index) {
+                            final job = filteredJobs[index];
+                            return customListTile(
+                              title: job['title'],
+                              subtitle: job['subtitle'],
+                              path: job['path'],
+                              date: job['date'],
+                              image: base64Encode(job['imageBytes']),
+                              isDone: job['isDone'],
+                              type: job['type'],
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/jobdetails',
+                                  arguments: {'jobId': job['id']},
+                                );
+                              },
+                            );
+                          },
+                        ),
             ),
           ],
         ),

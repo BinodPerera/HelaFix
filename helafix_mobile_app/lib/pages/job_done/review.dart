@@ -189,7 +189,6 @@ class _ReviewState extends State<Review> {
                     Navigator.pushNamed(
                       context,
                       '/my_activities',
-                      arguments: {'jobId': jobId},
                     );
                   },
                   child: const Text(

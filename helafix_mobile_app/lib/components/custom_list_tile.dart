@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 Widget customListTile({
@@ -56,7 +58,7 @@ Widget customListTile({
           ),
           // Info
           ListTile(
-            leading: Image.asset(image, height: 60),
+            leading: Image.memory(base64Decode(image), height: 60),
             title: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             subtitle: Text(date),
           ),
@@ -64,7 +66,7 @@ Widget customListTile({
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                isDone ? 'Price: \$${price.toStringAsFixed(2)}' : 'Cost Negotible',
+                isDone ? 'Cost Negotible' : 'Cost Negotible',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ],
