@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helafix_mobile_app/pages/pages.dart';
-
+import 'package:helafix_mobile_app/pages/authentication/login.dart';
 class SplashScreen extends StatefulWidget {
 
   const SplashScreen({super.key});
@@ -18,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return; // ✅ Prevent using context after dispose
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const Pages()),
+        MaterialPageRoute(builder: (_) => const Login()),
       );
     });
   }
