@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Job {
-  final String jobId; // ✅ Add this
+  final String jobId; 
   final String? cardNumber;
   final int cost;
   final int costsp;
@@ -22,7 +22,7 @@ class Job {
   final bool spcost;
 
   Job({
-    required this.jobId, // ✅ Add this to constructor
+    required this.jobId, 
     this.cardNumber,
     required this.cost,
     required this.costsp,
