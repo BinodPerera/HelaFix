@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helafix_mobile_app/models/category.dart';
 import 'package:helafix_mobile_app/models/service_provider.dart';
 import 'package:helafix_mobile_app/models/job.dart';
-import 'package:helafix_mobile_app/models/service_sub.dart';
 import 'package:helafix_mobile_app/pages/category_pages/home_page_cat.dart';
 import 'package:helafix_mobile_app/pages/sp-details.dart';
 import 'package:helafix_mobile_app/services/category_service.dart';
@@ -14,6 +12,8 @@ import 'package:provider/provider.dart';
 import '../components/bottom_navigation.dart';
 import '../theme_provider.dart';
 import '../theme/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HelaFixPage extends StatefulWidget {
   const HelaFixPage({super.key});
@@ -227,12 +227,14 @@ class _HelaFixPageState extends State<HelaFixPage> {
                     return const Center(child: Text('No ongoing jobs found.'));
                   }
 
-                  final jobs = snapshot.data!.docs
-                      .where((doc) =>
-                          (doc.data() as Map<String, dynamic>)['status']
-                              ?.toLowerCase() ==
-                          'present')
-                      .toList();
+                  final currentUser = FirebaseAuth.instance.currentUser;
+                  print("Current UID: ${currentUser?.uid}");
+
+                  final jobs = snapshot.data!.docs.where((doc) {
+                    final data = doc.data();
+                    return data['status']?.toLowerCase() == 'present' &&
+                        data['user_id'] == currentUser?.uid;
+                  }).toList();
 
                   if (jobs.isEmpty) {
                     return const Center(child: Text('No present jobs found.'));
@@ -269,8 +271,9 @@ class _HelaFixPageState extends State<HelaFixPage> {
                           return FutureBuilder<String>(
                             future: getSubCategoryName(job.subcategoriesid),
                             builder: (context, subcatSnapshot) {
-                              if (!subcatSnapshot.hasData)
+                              if (!subcatSnapshot.hasData) {
                                 return const SizedBox.shrink();
+                              }
 
                               return GestureDetector(
                                 onTap: () {
