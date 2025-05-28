@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-
+import '../../models/service_provider.dart';
 import '../../theme_provider.dart';
 import '../../theme/colors.dart';
 import '../../components/bottom_navigation.dart';
+import '../sp-details.dart'; // Make sure this import path is correct
 
 class CartDt extends StatefulWidget {
   final String subCategoryId;
@@ -19,16 +20,17 @@ class _CartDtState extends State<CartDt> {
   String? categoryName;
   String? subCategoryName;
   bool isLoading = true;
+  List<ServiceProvider> filteredProviders = [];
 
   @override
   void initState() {
     super.initState();
     _fetchCategoryAndSubCategory();
+    _fetchServiceProviders();
   }
 
   Future<void> _fetchCategoryAndSubCategory() async {
     try {
-      // Get sub-category document
       final subCatDoc = await FirebaseFirestore.instance
           .collection('sub_categories')
           .doc(widget.subCategoryId)
@@ -39,7 +41,6 @@ class _CartDtState extends State<CartDt> {
         subCategoryName = subCatData?['name'] ?? 'Sub Repair';
         final categoryId = subCatData?['category_id'];
 
-        // Now fetch the parent category
         final catDoc = await FirebaseFirestore.instance
             .collection('categories')
             .doc(categoryId)
@@ -50,7 +51,6 @@ class _CartDtState extends State<CartDt> {
         }
       }
     } catch (e) {
-      // Handle error gracefully
       categoryName = 'Repair';
       subCategoryName = 'Sub Repair';
     }
@@ -58,6 +58,24 @@ class _CartDtState extends State<CartDt> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> _fetchServiceProviders() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('service_providers')
+          .get();
+
+      final providers = snapshot.docs.map((doc) {
+        return ServiceProvider.fromMap(doc.data(), doc.id);
+      }).where((sp) => sp.subcategories.contains(widget.subCategoryId)).toList();
+
+      setState(() {
+        filteredProviders = providers;
+      });
+    } catch (e) {
+      print("Error fetching service providers: $e");
+    }
   }
 
   @override
@@ -97,11 +115,15 @@ class _CartDtState extends State<CartDt> {
         ),
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                child: Column(
-                  children: List.generate(10, (index) => _CompanyCard(context)),
-                ),
-              ),
+            : filteredProviders.isEmpty
+                ? const Center(child: Text('No service providers found.'))
+                : ListView.builder(
+                    itemCount: filteredProviders.length,
+                    itemBuilder: (context, index) {
+                      final provider = filteredProviders[index];
+                      return _CompanyCard(context, provider);
+                    },
+                  ),
       ),
       bottomNavigationBar: CustomBottomNavBar(
         onItemTapped: (index) {
@@ -114,97 +136,93 @@ class _CartDtState extends State<CartDt> {
       ),
     );
   }
-}
 
-Widget _CompanyCard(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamed(context, '/Sp-details');
-    },
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 6,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                'assets/images/damro_logo.jpg',
-                width: 100,
-                height: 60,
-                fit: BoxFit.contain,
+  Widget _CompanyCard(BuildContext context, ServiceProvider provider) {
+    final imageBytes = provider.imageBytes;
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SpDetails(serviceProvider: provider),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 6,
+                offset: const Offset(0, 4),
               ),
-            ),
-            Expanded(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 247, 247, 247),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
+            ],
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: imageBytes != null
+                    ? Image.memory(
+                        imageBytes,
+                        width: 100,
+                        height: 60,
+                        fit: BoxFit.contain,
+                      )
+                    : const Icon(Icons.image_not_supported, size: 60),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 247, 247, 247),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        provider.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          _serviceIcon('assets/images/cleaning.png'),
+                          const SizedBox(width: 6),
+                          _serviceIcon('assets/images/maintenance.png'),
+                          const SizedBox(width: 6),
+                          _serviceIcon('assets/images/repair.png'),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Damro Company PVT LTD',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            _serviceIcon('assets/images/cleaning.png'),
-                            const SizedBox(width: 6),
-                            _serviceIcon('assets/images/maintenance.png'),
-                            const SizedBox(width: 6),
-                            _serviceIcon('assets/images/repair.png'),
-                          ],
-                        ),
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => const Icon(Icons.star,
-                                color: Colors.amber, size: 18),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _serviceIcon(String path) {
-  return Image.asset(
-    path,
-    width: 20,
-    height: 20,
-    fit: BoxFit.contain,
-  );
+  Widget _serviceIcon(String path) {
+    return Image.asset(
+      path,
+      width: 20,
+      height: 20,
+      fit: BoxFit.contain,
+    );
+  }
 }
