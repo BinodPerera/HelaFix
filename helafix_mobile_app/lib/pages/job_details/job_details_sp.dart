@@ -166,8 +166,8 @@ class JobDetailsSp extends StatelessWidget {
                         'End Date: ${DateFormat('EEE, d MMMM, yyyy').format(job.endAt)}'),
                   ],
                   const SizedBox(height: 20),
-                  _buildSectionTitle(context, 'Service Provider,'),
-                  _buildProviderCard(),
+                  _buildSectionTitle(context, 'Customer,'),
+                  _buildProviderCard(job.userId ?? ''),
                   if (job.status == "Future") ...[
                     _buildActionButton(
                       label: "Update Booking",
@@ -414,72 +414,71 @@ class JobDetailsSp extends StatelessWidget {
     );
   }
 
-  Widget _buildProviderCard() {
-    return Container(
-      width: 400,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(6),
+  Widget _buildProviderCard(String userId) {
+  return FutureBuilder<DocumentSnapshot>(
+    future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
+        return const Text('User not found');
+      }
+
+      final userData = snapshot.data!.data() as Map<String, dynamic>;
+      final String userName = userData['name'] ?? 'Unknown';
+
+      return Container(
+        width: 400,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.asset(
-                'assets/images/Arpico.webp',
-                fit: BoxFit.cover,
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.asset(
+                  'assets/images/user.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Damro Company PVT LTD',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 75),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Text(
-                    "90% Positive ratings",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 13,
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
+    },
+  );
+}
+
 }
