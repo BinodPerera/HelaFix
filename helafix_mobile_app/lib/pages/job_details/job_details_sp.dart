@@ -135,11 +135,11 @@ class JobDetailsSp extends StatelessWidget {
                           await FirebaseFirestore.instance
                               .collection('jobs')
                               .doc(job.jobId)
-                              .update({'user_value': true});
+                              .update({'provider_value': true});
 
                           Navigator.pushNamed(
                             context,
-                            '/job_done_1.1',
+                            '/job_done_1.1Sp',
                             arguments: {
                               'jobId': job.jobId,
                             },
