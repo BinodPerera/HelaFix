@@ -35,7 +35,6 @@ class _LoginState extends State<Login> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      // User is logged in, navigate to /profile
       Future.microtask(() {
         Navigator.pushReplacementNamed(context, '/home');
       });

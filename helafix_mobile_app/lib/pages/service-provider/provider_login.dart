@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:helafix_mobile_app/components/custom_textinput.dart';
-import 'package:helafix_mobile_app/models/provider_login.dart';
 
 import 'package:helafix_mobile_app/components/appbar.dart';
 import 'package:helafix_mobile_app/pages/provider_home.dart';
 import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/theme_provider.dart';
 import 'package:provider/provider.dart';
-
-// import 'package:helafix_mobile_app/theme/colors.dart';
-// import 'package:helafix_mobile_app/theme_provider.dart';
-// import 'package:provider/provider.dart';
 
 class ProviderLoginUI extends StatefulWidget {
   const ProviderLoginUI({super.key});
@@ -22,7 +17,6 @@ class ProviderLoginUI extends StatefulWidget {
 }
 
 class _ProviderLoginUIState extends State<ProviderLoginUI> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -60,12 +54,13 @@ class _ProviderLoginUIState extends State<ProviderLoginUI> {
       bool passwordMatches = BCrypt.checkpw(password, hashedPassword);
 
       if (passwordMatches) {
-        // Navigate to ProviderHome with the provider document ID
+        // ✅ Send email to ProviderHome along with providerId
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ProviderHome(providerId: providerDoc.id),
+            builder: (context) => ProviderHome(
+              email: email,
+            ),
           ),
         );
       } else {

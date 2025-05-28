@@ -82,7 +82,7 @@ class _JobDoneTwoOneState extends State<JobDoneTwoOne> {
         }
 
         // Reset fields after 5 seconds
-        Future.delayed(Duration(seconds: 5), () async {
+        Future.delayed(Duration(seconds: 60), () async {
           await FirebaseFirestore.instance
               .collection('jobs')
               .doc(jobId)

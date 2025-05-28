@@ -6,7 +6,8 @@ class ServiceProvider {
   final String name;
   final String description;
   final String imageBase64;
-  final List<String> subcategories; // Corrected field name
+  final List<String> subcategories;
+  final String email; // New field
 
   ServiceProvider({
     this.id,
@@ -14,6 +15,7 @@ class ServiceProvider {
     required this.description,
     required this.imageBase64,
     required this.subcategories,
+    required this.email, // Include in constructor
   });
 
   factory ServiceProvider.fromMap(Map<String, dynamic> data, String? id) {
@@ -22,7 +24,8 @@ class ServiceProvider {
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       imageBase64: data['image_base64'] ?? '',
-      subcategories: List<String>.from(data['subcategories'] ?? []), // Correct key
+      subcategories: List<String>.from(data['subcategories'] ?? []),
+      email: data['email'] ?? '', // Map email field
     );
   }
 
@@ -31,7 +34,8 @@ class ServiceProvider {
       'name': name,
       'description': description,
       'image_base64': imageBase64,
-      'subcategories': subcategories, // Correct key
+      'subcategories': subcategories,
+      'email': email, // Include in map
     };
   }
 

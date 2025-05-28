@@ -9,7 +9,6 @@ import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
 import 'package:helafix_mobile_app/pages/faq.dart';
 import 'package:helafix_mobile_app/pages/job_details/job_details.dart';
-import 'package:helafix_mobile_app/pages/privacy_policy.dart';
 import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
 import 'package:helafix_mobile_app/pages/service-provider/provider_login.dart';
@@ -84,6 +83,11 @@ class MyApp extends StatelessWidget {
         '/job_done_2.1':(context) => JobDoneTwoOne(),
         '/job_done_2.2':(context) => JobDoneTwoTwo(),
         '/job_done_2.3':(context) => JobDoneTwoThree(),
+        '/job_done_1.1Sp':(context) => JobDoneOneSp(),
+        '/job_done_1.2Sp':(context) => JobDoneOneTwoSp(),
+        '/job_done_2.1Sp':(context) => JobDoneTwoOneSp(),
+        '/job_done_2.2Sp':(context) => JobDoneTwoTwoSp(),
+        '/job_done_2.3Sp':(context) => JobDoneTwoThreeSp(),
         '/payment':(context) => Payment(),
         '/review':(context) => Review(),
         '/Booking':(context) => Booking(),
@@ -103,6 +107,7 @@ class MyApp extends StatelessWidget {
         '/manage_sub_category': (context) => ManageSubCategory(),
         '/emergency_contact': (context) => EmergencyContact(),
         '/jobdetails': (context) => JobDetails(),
+        '/jobdetailsSp': (context) => JobDetailsSp(),
         '/Cartdt': (context) => CartDt(subCategoryId: '',),
         '/provider_login': (context) => ProviderLoginUI(),
         '/about': (context) => AboutPage(),

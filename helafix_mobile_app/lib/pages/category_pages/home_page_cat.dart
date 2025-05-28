@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart'; // Assuming this is CartDt
 import 'package:helafix_mobile_app/pages/category_pages/sub_repairs_page.dart';
+import 'package:helafix_mobile_app/theme/colors.dart';
+import 'package:helafix_mobile_app/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePageCat extends StatefulWidget {
   final String categoryId;
@@ -38,9 +41,12 @@ class _HomePageCatState extends State<HomePageCat> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final textColor = themeProvider.isDarkMode ? Colors.white : Colors.white;
+    
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 0, 183, 255),
         title: FutureBuilder<String>(
           future: _categoryNameFuture,
           builder: (context, snapshot) {
@@ -58,12 +64,10 @@ class _HomePageCatState extends State<HomePageCat> {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue, Colors.white],
-          ),
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode
+              ? AppColours.backgroundGradientDark
+              : AppColours.backgroundGradientLight,
         ),
         child: StreamBuilder<QuerySnapshot>(
           stream: subCategoryCollection
