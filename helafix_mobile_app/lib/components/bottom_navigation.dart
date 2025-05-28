@@ -26,7 +26,7 @@ class CustomBottomNavBar extends StatelessWidget {
             icon: Icon(
               Icons.bookmark,
             ),
-            label: 'Bookmarks',
+            label: 'Bookings',
           ),
           const BottomNavigationBarItem(
             icon: Icon(
@@ -44,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
             Navigator.pushNamed(context, '/home');
           } 
           else if (index == 1) {
-            Navigator.pushNamed(context, '/Cart');
+            Navigator.pushNamed(context, '/my_activities');
           }
           else if (index == 2) {
             Navigator.pushNamed(context, '/profile');

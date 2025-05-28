@@ -1,10 +1,24 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helafix_mobile_app/components/bottom_navigation.dart';
 import 'package:helafix_mobile_app/components/custom_list_tile.dart';
-import 'package:provider/provider.dart';
-import '../theme_provider.dart';
-import '../theme/colors.dart';
 import 'package:helafix_mobile_app/components/appbar.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/colors.dart';
+import '../theme_provider.dart';
+import '../models/job.dart';
+import '../models/service_provider.dart';
+import '../models/service_sub.dart';
+
+class JobStatus {
+  static const past = 'Past';
+  static const present = 'Present';
+  static const future = 'Future';
+}
 
 class Myactivities extends StatefulWidget {
   const Myactivities({super.key});
@@ -14,52 +28,116 @@ class Myactivities extends StatefulWidget {
 }
 
 class _MyactivitiesState extends State<Myactivities> {
-  String selectedValue = 'Inprocess';
+  String selectedValue = JobStatus.present;
+  bool isLoading = true;
+  List<Map<String, dynamic>> jobsData = [];
 
-  final List<Map<String, dynamic>> allJobs = [
-    {
-      'title': 'Cleaning Service 1',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': true,
-      'type': 'Upcoming',
-      'price': 100.0,
-    },
-    {
-      'title': 'Cleaning Service 2',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Past',
-      'price': 100.0,
-    },
-    {
-      'title': 'Cleaning Service 3',
-      'subtitle': '02-02-2025',
-      'path': 'cleaning > Home Cleaning > Deep Cleaning',
-      'date': '02-02-2025',
-      'image': 'assets/images/damro_logo.jpg',
-      'isDone': false,
-      'type': 'Inprocess',
-      'price': 100.0,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchJobsWithDetails();
+  }
+
+  Future<void> fetchJobsWithDetails() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        debugPrint('No user is currently signed in.');
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+        return;
+      }
+
+      final jobSnapshot = await FirebaseFirestore.instance
+          .collection('jobs')
+          .where('status', isEqualTo: selectedValue)
+          .get();
+
+      List<Map<String, dynamic>> combinedData = [];
+
+      for (var jobDoc in jobSnapshot.docs) {
+        final job = Job.fromMap(jobDoc.data(), jobDoc.id);
+
+        // ✅ Filter by current user
+        if (job.userId != currentUser.uid) {
+          continue;
+        }
+
+        final providerDoc = await FirebaseFirestore.instance
+            .collection('service_providers')
+            .doc(job.providerId)
+            .get();
+
+        final subCatDoc = await FirebaseFirestore.instance
+            .collection('sub_categories')
+            .doc(job.subcategoriesid)
+            .get();
+
+        if (!providerDoc.exists || !subCatDoc.exists) {
+          debugPrint('Missing provider or subcategory for job ${jobDoc.id}');
+          continue;
+        }
+
+        final provider =
+            ServiceProvider.fromMap(providerDoc.data()!, providerDoc.id);
+        final subCat =
+            ServiceSubCategory.fromMap(subCatDoc.data()!, subCatDoc.id);
+
+        final imageBytes = base64Decode(provider.imageBase64);
+
+        combinedData.add({
+          'id': job.jobId,
+          'title': provider.name,
+          'subtitle': DateFormat('MMM d, y – h:mm a').format(job.createdAt),
+          'path': subCat.name,
+          'date': formatDate(job.endAt),
+          'imageBytes': imageBytes,
+          'isDone': true,
+          'type': job.status,
+          'userId': job.userId,
+        });
+      }
+
+      if (!mounted) return;
+      setState(() {
+        jobsData = combinedData;
+        isLoading = false;
+      });
+    } catch (e) {
+      debugPrint('Error fetching jobs: $e');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  String? formatDate(DateTime? date) {
+    return date != null ? DateFormat('MMMM d, y').format(date) : null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    final filteredJobs =
-        allJobs.where((job) => job['type'] == selectedValue).toList();
-
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: const Text(
+          'My Activities',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color.fromARGB(255, 0, 183, 255),
+      ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: themeProvider.isDarkMode
               ? AppColours.backgroundGradientDark
@@ -67,12 +145,11 @@ class _MyactivitiesState extends State<Myactivities> {
         ),
         child: Column(
           children: [
-            // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'My Activities',
+                  '',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -81,60 +158,92 @@ class _MyactivitiesState extends State<Myactivities> {
                         : AppColours.primaryTextLight,
                   ),
                 ),
-                DropdownButton(
+                DropdownButton<String>(
                   value: selectedValue,
-                  items: <String>['Past', 'Inprocess', 'Upcoming']
-                      .map((String value) {
+                  dropdownColor: themeProvider.isDarkMode
+                      ? Colors.grey[800]
+                      : Colors.white,
+                  style: TextStyle(
+                    color: themeProvider.isDarkMode
+                        ? AppColours.primaryTextDark
+                        : AppColours.primaryTextLight,
+                  ),
+                  underline: const SizedBox(),
+                  items: <String>[
+                    JobStatus.past,
+                    JobStatus.present,
+                    JobStatus.future
+                  ].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
+                    if (newValue != null) {
+                      setState(() {
+                        selectedValue = newValue;
+                      });
+                      fetchJobsWithDetails();
+                    }
                   },
                 ),
               ],
             ),
-            SizedBox(height: 20),
-
-            // Job List
+            const SizedBox(height: 20),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: filteredJobs.map((job) {
-                    return customListTile(
-                      title: job['title'],
-                      subtitle: job['subtitle'],
-                      path: job['path'],
-                      date: job['date'],
-                      image: job['image'],
-                      isDone: job['isDone'],
-                      type: job['type'],
-                      price: job['price'],
-                      onTap: () {
-                        String route = '/${job['type']}job';
-                        if (job['type'] == 'Inprocess') route = '/Activejob';
-                        if (job['type'] == 'Past') route = '/Finishedjob';
-                        Navigator.pushNamed(context, route);
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : jobsData.isEmpty
+                      ? const Center(child: Text("No jobs found."))
+                      : ListView.builder(
+                          itemCount: jobsData.length,
+                          itemBuilder: (context, index) {
+                            final job = jobsData[index];
+                            return customListTile(
+                              title: job['title'],
+                              subtitleWidget: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(job['subtitle']),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'User ID: ${job['userId'] ?? 'N/A'}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              path: job['path'],
+                              date: job['date'],
+                              image: base64Encode(job['imageBytes']),
+                              isDone: job['isDone'],
+                              type: job['type'],
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/jobdetails',
+                                  arguments: {'jobId': job['id']},
+                                );
+                              },
+                            );
+                          },
+                        ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(onItemTapped: (index) {
-        if (index == 0) {
-          Navigator.pushNamed(context, '/home');
-        } else if (index == 1) {
-          Navigator.pushNamed(context, '/bookmarks');
-        }
-      }),
+      bottomNavigationBar: CustomBottomNavBar(
+        onItemTapped: (index) {
+          if (index == 0) {
+            Navigator.pushNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/bookmarks');
+          }
+        },
+      ),
     );
   }
 }

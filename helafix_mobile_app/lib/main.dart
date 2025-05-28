@@ -1,12 +1,26 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/Update_booking.dart';
+import 'package:helafix_mobile_app/pages/about.dart';
 import 'package:helafix_mobile_app/pages/category/manage_category.dart';
+import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
+import 'package:helafix_mobile_app/pages/faq.dart';
+import 'package:helafix_mobile_app/pages/job_details/job_details.dart';
+import 'package:helafix_mobile_app/pages/job_details/job_details_sp.dart';
+import 'package:helafix_mobile_app/pages/job_done_Sp/job_done_1.1_Sp.dart';
+import 'package:helafix_mobile_app/pages/job_done_Sp/job_done_1.2_Sp.dart';
+import 'package:helafix_mobile_app/pages/job_done_Sp/job_done_2.1_Sp.dart';
+import 'package:helafix_mobile_app/pages/job_done_Sp/job_done_2.2_Sp.dart';
+import 'package:helafix_mobile_app/pages/job_done_Sp/job_done_2.3_SP.dart';
+import 'package:helafix_mobile_app/pages/provider_home.dart';
+import 'package:helafix_mobile_app/pages/privacy_policy.dart';
 import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
-import 'package:helafix_mobile_app/pages/provider_home.dart';
+import 'package:helafix_mobile_app/pages/service-provider/provider_login.dart';
+import 'package:helafix_mobile_app/pages/tearms_and_conditions.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -36,7 +50,6 @@ import './pages/job_details/active_job.dart';
 import './pages/job_details/upcoming_job.dart';
 import './pages/job_details/finished_job.dart';
 import 'pages/my_activities.dart';
-import './pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/change_password.dart';
 import 'package:helafix_mobile_app/pages/service-provider/add_service_provider.dart';
 import 'package:helafix_mobile_app/pages/service-provider/manage-service-provider.dart';
@@ -78,6 +91,11 @@ class MyApp extends StatelessWidget {
         '/job_done_2.1':(context) => JobDoneTwoOne(),
         '/job_done_2.2':(context) => JobDoneTwoTwo(),
         '/job_done_2.3':(context) => JobDoneTwoThree(),
+        '/job_done_1.1Sp':(context) => JobDoneOneSp(),
+        '/job_done_1.2Sp':(context) => JobDoneOneTwoSp(),
+        '/job_done_2.1Sp':(context) => JobDoneTwoOneSp(),
+        '/job_done_2.2Sp':(context) => JobDoneTwoTwoSp(),
+        '/job_done_2.3Sp':(context) => JobDoneTwoThreeSp(),
         '/payment':(context) => Payment(),
         '/review':(context) => Review(),
         '/Booking':(context) => Booking(),
@@ -85,7 +103,6 @@ class MyApp extends StatelessWidget {
         '/Upcomingjob':(context) => JobUpcoming(),
         '/Finishedjob':(context) => JobFinished(),
         '/Cart':(context) => CartPage(),
-        '/profile_details':(context) => ProfileDetails(),
         '/change_password': (context) => ChangePassword(),
         '/change_language': (context) => Changelanguage(),
         '/add_service_provider': (context) => AddServiceProvider(),
@@ -96,8 +113,16 @@ class MyApp extends StatelessWidget {
         '/addhome': (context) => SelectLocationPage(),
         '/add_sub_category': (context) => AddSubCategory(),
         '/manage_sub_category': (context) => ManageSubCategory(),
-        '/provider_home': (context) => ProviderHome(),
         '/emergency_contact': (context) => EmergencyContact(),
+        '/jobdetails': (context) => JobDetails(),
+        '/jobdetailsSp': (context) => JobDetailsSp(),
+        '/Cartdt': (context) => CartDt(subCategoryId: '',),
+        '/provider_login': (context) => ProviderLoginUI(),
+        '/about': (context) => AboutPage(),
+        '/faq': (context) => FAQPage(),
+        '/privacy_policy': (context) => PrivacyPolicyPage(),
+        '/termsConditions': (context) => TermsAndConditionsPage(),
+        '/updatebooking': (context) => UpdateBookingPage(),
       }
     );
   }

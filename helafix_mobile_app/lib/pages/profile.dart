@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/profile_details.dart';
 import 'package:helafix_mobile_app/pages/service/service_add.dart';
 import 'package:helafix_mobile_app/pages/service/service_manage.dart';
 import 'package:helafix_mobile_app/models/user.dart' as app_model;
@@ -104,13 +105,25 @@ class _ProfileState extends State<Profile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text(
-                            isAdmin ? 'Admin' : 'User',
-                            style: TextStyle(
-                              color: themeProvider.isDarkMode
-                                  ? AppColours.secondaryTextDark
-                                  : AppColours.secondaryTextLight,
-                              fontSize: 16,
+                          Container(
+                            width: 60,
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              color: isAdmin
+                                   ? const Color.fromARGB(255, 33, 128, 243)
+                                   : Color.fromARGB(255, 225, 229, 231),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  isAdmin ? 'Admin' : 'Member', 
+                                  style: TextStyle(
+                                    color: isAdmin ? Colors.white : Colors.grey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Text(email),
@@ -123,7 +136,8 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-            // 🔽 Existing Profile Menu Items Below This Line
+            SizedBox(height: 20,),
+
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -188,8 +202,16 @@ class _ProfileState extends State<Profile> {
                       SettingsCard(
                         title: 'Personal Information',
                         icon: Icons.edit,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/profile_details');
+                        onTap: () async {
+                          final updated = await Navigator.push(context, 
+                            MaterialPageRoute(
+                              builder: (context) => ProfileDetails(docId:  FirebaseAuth.instance.currentUser.toString(), user: firebaseUser!),
+                          ),);
+
+                          // refresh the user data if updated
+                          if (updated == true) {
+                            _initializeUser();
+                          }
                         },
                       ),
                       SettingsCard(
@@ -263,111 +285,114 @@ class _ProfileState extends State<Profile> {
                         title: 'About Us',
                         icon: Icons.info,
                         onTap: () {
-                          // Navigate to about page
+                          Navigator.pushNamed(context, '/about');
                         },
                       ),
                       SettingsCard(
                         title: 'Privacy Policy',
                         icon: Icons.privacy_tip,
                         onTap: () {
-                          // Navigate to privacy policy
+                          Navigator.pushNamed(context, '/privacy_policy');
                         },
                       ),
                       SettingsCard(
                         title: 'Terms & Conditions',
                         icon: Icons.description,
                         onTap: () {
-                          // Navigate to terms & conditions
+                          Navigator.pushNamed(context, '/termsConditions');
                         },
                       ),
                       SettingsCard(
                         title: 'FAQ',
                         icon: Icons.question_answer,
                         onTap: () {
-                          // Navigate to FAQ page
+                          Navigator.pushNamed(context, '/faq');
                         },
                       ),
                       SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Admin Settings',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.isDarkMode
-                                  ? AppColours.primaryTextDark
-                                  : AppColours.primaryTextLight,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SettingsCard(
-                        title: 'Add Service Provider',
-                        icon: Icons.add,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/add_service_provider');
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Manage Service Provider',
-                        icon: Icons.manage_accounts,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/manage_service_provider');
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Add Service Category',
-                        icon: Icons.category,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/add_category');
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Manage Service Category',
-                        icon: Icons.change_circle,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/manage_category');
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Add Service Sub-Category',
-                        icon: Icons.category,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/add_sub_category');
-                        },
-                      ),
-                      SettingsCard(
-                        title: 'Manage Service Sub-Category',
-                        icon: Icons.change_circle,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/manage_sub_category');
-                        },
-                      ),
 
-                      SettingsCard( title: 'Add Service', icon: Icons.home_repair_service_sharp, 
-                        onTap: (){
-                          Navigator.push(
+                      if (isAdmin) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Admin Settings',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: themeProvider.isDarkMode
+                                    ? AppColours.primaryTextDark
+                                    : AppColours.primaryTextLight,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SettingsCard(
+                          title: 'Add Service Provider',
+                          icon: Icons.add,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/add_service_provider');
+                          },
+                        ),
+                        SettingsCard(
+                          title: 'Manage Service Provider',
+                          icon: Icons.manage_accounts,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/manage_service_provider');
+                          },
+                        ),
+                        SettingsCard(
+                          title: 'Add Service Category',
+                          icon: Icons.category,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/add_category');
+                          },
+                        ),
+                        SettingsCard(
+                          title: 'Manage Service Category',
+                          icon: Icons.change_circle,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/manage_category');
+                          },
+                        ),
+                        SettingsCard(
+                          title: 'Add Service Sub-Category',
+                          icon: Icons.category,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/add_sub_category');
+                          },
+                        ),
+                        SettingsCard(
+                          title: 'Manage Service Sub-Category',
+                          icon: Icons.change_circle,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/manage_sub_category');
+                          },
+                        ),
+
+                        SettingsCard( title: 'Add Service', icon: Icons.home_repair_service_sharp, 
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InsertServicePage(),
+                                ),
+                              );
+                            },
+                        ),
+                        SettingsCard(
+                          title: 'Manage Services', 
+                          icon: Icons.design_services, 
+                          onTap: (){
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => InsertServicePage(),
+                                builder: (context) => ServiceManagePage(),
                               ),
                             );
-                          },
-                      ),
-                      SettingsCard(
-                        title: 'Manage Services', 
-                        icon: Icons.design_services, 
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ServiceManagePage(),
-                            ),
-                          );
-                        }
-                      ),
+                          }
+                        ),
+                      ],
                       Card(
                         child: ListTile(
                           title: Text('Logout'),

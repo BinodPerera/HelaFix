@@ -6,7 +6,6 @@ import 'package:helafix_mobile_app/theme/colors.dart';
 import 'package:helafix_mobile_app/components/appbar_title.dart';
 
 // import components
-import '../components/appbar.dart';
 
 class EmergencyContact extends StatelessWidget{
   const EmergencyContact({super.key});

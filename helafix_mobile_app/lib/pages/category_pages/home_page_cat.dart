@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart'; // Assuming this is CartDt
 import 'package:helafix_mobile_app/pages/category_pages/sub_repairs_page.dart';
-
-
+import 'package:helafix_mobile_app/theme/colors.dart';
+import 'package:helafix_mobile_app/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePageCat extends StatefulWidget {
   final String categoryId;
@@ -18,27 +20,59 @@ class HomePageCat extends StatefulWidget {
 
 class _HomePageCatState extends State<HomePageCat> {
   final CollectionReference subCategoryCollection =
-      FirebaseFirestore.instance.collection('sub_categories'); // Your collection name
+      FirebaseFirestore.instance.collection('sub_categories');
+
+  late Future<String> _categoryNameFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryNameFuture = _fetchCategoryName();
+  }
+
+  Future<String> _fetchCategoryName() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('categories')
+        .doc(widget.categoryId)
+        .get();
+
+    return doc.exists ? (doc.data()?['name'] ?? 'Unknown Category') : 'Unknown Category';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final textColor = themeProvider.isDarkMode ? Colors.white : Colors.white;
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Repairs',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: const Color.fromARGB(255, 0, 183, 255),
+        title: FutureBuilder<String>(
+          future: _categoryNameFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Loading...');
+            } else if (snapshot.hasError) {
+              return const Text('Error');
+            } else {
+              return Text(
+                snapshot.data!,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              );
+            }
+          },
         ),
-        backgroundColor: Colors.blue,
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue, Colors.white],
-          ),
+        decoration: BoxDecoration(
+          gradient: themeProvider.isDarkMode
+              ? AppColours.backgroundGradientDark
+              : AppColours.backgroundGradientLight,
         ),
         child: StreamBuilder<QuerySnapshot>(
-          stream: subCategoryCollection.where('category_id', isEqualTo: widget.categoryId).snapshots(),
+          stream: subCategoryCollection
+              .where('category_id', isEqualTo: widget.categoryId)
+              .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -62,7 +96,6 @@ class _HomePageCatState extends State<HomePageCat> {
                 final data = doc.data() as Map<String, dynamic>;
                 final subCategoryId = doc.id;
                 final name = data['name'] ?? 'No Name';
-                final categoryId = data['category_id'] ?? 'No Category ID';
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
@@ -71,8 +104,8 @@ class _HomePageCatState extends State<HomePageCat> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SubRepairsPage(
-                            category: categoryId,
+                          builder: (context) => CartDt(
+                            subCategoryId: subCategoryId,
                           ),
                         ),
                       );
@@ -94,7 +127,10 @@ class _HomePageCatState extends State<HomePageCat> {
                       alignment: Alignment.center,
                       child: Text(
                         name,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
