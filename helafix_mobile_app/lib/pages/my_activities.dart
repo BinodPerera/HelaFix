@@ -129,7 +129,13 @@ class _MyactivitiesState extends State<Myactivities> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: const Text(
+          'My Activities',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color.fromARGB(255, 0, 183, 255),
+      ),
       body: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -143,7 +149,7 @@ class _MyactivitiesState extends State<Myactivities> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'My Activities',
+                  '',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
