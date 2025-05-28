@@ -7,10 +7,13 @@ import 'package:helafix_mobile_app/pages/category_pages/cate_dt.dart';
 import 'package:helafix_mobile_app/pages/category_sub/add_sub_category.dart';
 import 'package:helafix_mobile_app/pages/category_sub/manage_sub_category.dart';
 import 'package:helafix_mobile_app/pages/change_language.dart';
+import 'package:helafix_mobile_app/pages/faq.dart';
 import 'package:helafix_mobile_app/pages/job_details/job_details.dart';
+import 'package:helafix_mobile_app/pages/privacy_policy.dart';
 import 'package:helafix_mobile_app/pages/select_location_page.dart';
 import 'package:helafix_mobile_app/pages/emergency_contact.dart';
 import 'package:helafix_mobile_app/pages/service-provider/provider_login.dart';
+import 'package:helafix_mobile_app/pages/tearms_and_conditions.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 
@@ -103,6 +106,9 @@ class MyApp extends StatelessWidget {
         '/Cartdt': (context) => CartDt(subCategoryId: '',),
         '/provider_login': (context) => ProviderLoginUI(),
         '/about': (context) => AboutPage(),
+        '/faq': (context) => FAQPage(),
+        '/privacy_policy': (context) => PrivacyPolicyPage(),
+        '/termsConditions': (context) => TermsAndConditionsPage(),
         '/updatebooking': (context) => UpdateBookingPage(),
       }
     );

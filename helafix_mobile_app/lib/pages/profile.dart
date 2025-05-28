@@ -292,21 +292,21 @@ class _ProfileState extends State<Profile> {
                         title: 'Privacy Policy',
                         icon: Icons.privacy_tip,
                         onTap: () {
-                          // Navigate to privacy policy
+                          Navigator.pushNamed(context, '/privacy_policy');
                         },
                       ),
                       SettingsCard(
                         title: 'Terms & Conditions',
                         icon: Icons.description,
                         onTap: () {
-                          // Navigate to terms & conditions
+                          Navigator.pushNamed(context, '/termsConditions');
                         },
                       ),
                       SettingsCard(
                         title: 'FAQ',
                         icon: Icons.question_answer,
                         onTap: () {
-                          // Navigate to FAQ page
+                          Navigator.pushNamed(context, '/faq');
                         },
                       ),
                       SizedBox(height: 20),
